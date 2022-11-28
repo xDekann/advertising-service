@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Login form</title>
+</head>
+<body>
+	<h3>Login page</h3>
+	<form th:action="@{/authenticateUser}" method="POST"> <!--  po submicie formularza probuje przejsc do /authenticateUser -->    
+		<label for="username">Username</label>
+		<input type="text" placeholder="Username" name="username" th:required="required" id="username"><br>
+		<label for="password">Password</label>
+		<input type="password" placeholder="Password" name="password" th:required="required" id="password"><br>
+		<input type="submit" value="Login"/>  
+	</form>
+	<br>
+	<div th:if="${param.error!=null}">
+		<i>Invalid username or password!</i>
+	</div>
+		<div th:if="${param.logout!=null}">
+		<i>You have successfully logged out!</i>
+	</div>
+	<a th:href="@{/login/start}">Back</a>
+</body>
+</html>

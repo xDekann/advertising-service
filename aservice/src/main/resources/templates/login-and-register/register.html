@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Registration form</title>
+</head>
+<body>
+	<p>Register</p>
+	
+	<form th:action="@{/login/registerForm/creation}" th:object="${user}" method="POST">
+		<input type="hidden" th:field="*{id}"> <!--  musi byc hidden, przyda sie w przyszlosci do updateowania -->
+		Username:<input type="text" th:field="*{username}"><br>
+		Password:<input type="password" th:field="*{password}"><br> <!--  pola z * jak mnie pamiec nie myli uzywaja seterow odnoszac sie do danego pola -->
+		<div th:object="${userDetails}"> <!--  trick z czelusci stackoverflow, bo form sam z siebie nie przyjmie dwoch obiektow -->
+			Name:<input type="text" th:field="*{name}"><br>
+			Surname:<input type="text" th:field="*{surname}"><br>
+			Email:<input type="text" th:field="*{email}"><br>
+			City:<input type="text" th:field="*{city}"><br>
+			Phone number:<input type="text" th:field="*{phoneNumber}"><br>
+		</div>
+		<button type="submit">Submit</button>
+	</form>
+	<a th:href="@{/login/start}">Back</a>
+</body>
+</html>

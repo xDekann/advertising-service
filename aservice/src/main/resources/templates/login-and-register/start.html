@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Home</title>
+</head>
+<body>
+	<h3>Landing site</h3>
+	
+	<div sec:authorize="!hasAnyRole('ROLE_ADMIN','ROLE_USER')">
+	<a th:href="@{/login/showLoginPage}">Login</a><br><br>
+	<a th:href="@{/login/registerForm}">Sign up</a><br><br>
+	</div>
+</body>
+</html>
