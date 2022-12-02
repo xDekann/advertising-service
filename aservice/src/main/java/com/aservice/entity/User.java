@@ -1,6 +1,9 @@
 package com.aservice.entity;
 
+
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -13,6 +16,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+
+import jakarta.persistence.OneToMany;
+
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -40,7 +46,7 @@ public class User {
 	@NonNull
 	private String password;
 	@Column(name="enabled")
-	@NonNull
+
 	private boolean enabled;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -54,6 +60,11 @@ public class User {
 			cascade = CascadeType.ALL)
 	private UserDetails userDetails;
 	
+	@OneToMany(mappedBy="user",
+			   cascade = {CascadeType.MERGE, CascadeType.REMOVE},
+			   orphanRemoval = true)
+	private List<Offer> offers;
+	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", enabled=" + enabled + "]";
@@ -66,5 +77,11 @@ public class User {
 	
 	public void connectUserDetails(UserDetails userDetails) {
 		this.userDetails = userDetails;
+	}
+	
+	public void addOffer(Offer offer) {
+		if(offers==null) offers = new ArrayList<>();
+		offers.add(offer);
+		offer.connectUser(this);
 	}
 }

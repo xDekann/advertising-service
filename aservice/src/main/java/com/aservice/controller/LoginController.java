@@ -1,6 +1,6 @@
 package com.aservice.controller;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -61,7 +61,7 @@ public class LoginController {
 		user.setEnabled(true);
 		user.setPassword(passwdEncoder.encode(user.getPassword()));
 		user.addAuthority(authorityDAO.getAuthorityByName("ROLE_USER"));
-		userDetails.setLastLogin(new Date(System.currentTimeMillis()));
+		userDetails.setLastLogin(new Timestamp(System.currentTimeMillis()));
 		user.connectUserDetails(userDetails);
 		userDetails.connectUser(user);
 		userDAO.addUser(user);

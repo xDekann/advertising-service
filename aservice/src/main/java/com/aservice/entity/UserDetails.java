@@ -1,6 +1,7 @@
 package com.aservice.entity;
 
-import java.util.Date;
+
+import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -43,7 +44,9 @@ public class UserDetails {
 	private String phoneNumber;
 	@Column(name="last_login")
 	@NonNull
-	private Date lastLogin;
+
+	private Timestamp lastLogin;
+
 	
 	@OneToOne
 	@JoinColumn(name="user_id")

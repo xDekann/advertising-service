@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Offer menu</title>
+</head>
+<body>
+	<form th:action="@{/offer/list/viewAll}" method="GET">
+		<button type="submit">View all</button>
+	</form>
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>Title</th>
+			<th>Added</th>
+			<th>Price</th>
+			<th>Author</th>
+			<th>Picture</th>
+		</tr>
+		<tr th:each="offer : ${offers}">
+			<td th:text="${offer.key}"></td>
+			<td th:text="${offer.value.title}"></td>
+			<td th:text="${offer.value.dateOfCreation}"></td>
+			<td th:text="${offer.value.price}"></td>
+			<td th:text="${offer.value.user.username}"></td>
+			<td><img th:src="@{'/img/offer-images/'+${offer.value.user.id}+'/'+${offer.key}+'/photo.png'}"></td>
+		</tr>
+	</table>
+
+	<a th:href="@{/main/}">Back</a> <!--  dorobic role, jak niezalogowany to do landing -->
+</body>
+</html>
