@@ -9,7 +9,10 @@
 </head>
 <body>
 	<p>Home site</p>
-	<p>Welcome, <span th:text="${givenName}"></span></p>
+	<p>Welcome, <span th:text="${givenName}"></span></p><br>
+	<a th:href="@{/main/creation/offer/form}">Create your offer</a><br>
+	<a th:href="@{/offer/list}">View offers</a>
+	
 	<form th:action="@{/logout}" method="POST">
 		<input type="submit" value="Logout">
 	</form>

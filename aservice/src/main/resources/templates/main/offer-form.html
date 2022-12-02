@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Offer form</title>
+</head>
+<body>
+	<form th:action="@{/main/creation/offer/creation}" th:object="${offer}" method="POST" enctype="multipart/form-data">
+		<input type="hidden" th:field="*{id}">
+		Title:<input type="text" th:field="*{title}"><br>
+		Price:<input type="number" th:field="*{price}" step="0.01"><br>
+		Description:<br><textarea rows="10" cols="100" th:field="*{description}" placeholder="Best offer ever..."></textarea><br>
+		Provide an PNG image (Max 10MB):<br><input type="file" th:name="imageParam" accept="image/png">
+		<button type="submit">Submit</button>
+	</form>
+
+</body>
+</html>
