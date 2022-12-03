@@ -16,13 +16,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.aservice.dao.OfferDAO;
-import com.aservice.dao.UserDAO;
+import com.aservice.dao.OfferDao;
+import com.aservice.dao.UserDao;
 import com.aservice.entity.Offer;
 import com.aservice.entity.User;
 
@@ -32,9 +31,9 @@ import com.aservice.entity.User;
 public class MainController {
 	
 	@Autowired
-	private UserDAO userDAO;
+	private UserDao userDAO;
 	@Autowired
-	private OfferDAO offerDAO;
+	private OfferDao offerDAO;
 	
 
 	@GetMapping("/") // po udanym zalogowaniu sie wchodzimy do tej metody (zdefiniowane w securityconfig)
@@ -76,7 +75,7 @@ public class MainController {
 			new File(dirPath.toString()).mkdirs();
 			dirPath.append("/"+offer.getId());
 			new File(dirPath.toString()).mkdirs();
-			Path filePath = Paths.get(dirPath.toString(), "photo.png");
+			Path filePath = Paths.get(dirPath.toString(), image.getOriginalFilename());
 			try {
 				Files.write(filePath,image.getBytes());
 			} catch (IOException ioException) {

@@ -13,7 +13,7 @@
 		Title:<input type="text" th:field="*{title}"><br>
 		Price:<input type="number" th:field="*{price}" step="0.01"><br>
 		Description:<br><textarea rows="10" cols="100" th:field="*{description}" placeholder="Best offer ever..."></textarea><br>
-		Provide an PNG image (Max 10MB):<br><input type="file" th:name="imageParam" accept="image/png">
+		Provide an PNG image (Max 10MB):<br><input type="file" th:name="imageParam" accept="image/*">
 		<button type="submit">Submit</button>
 	</form>
 

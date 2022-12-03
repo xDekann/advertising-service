@@ -1,6 +1,7 @@
 package com.aservice.entity;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -49,5 +50,25 @@ public class Offer {
 	
 	public void connectUser(User user) {
 		this.user=user;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(dateOfCreation, description, id, isActive, price, title);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Offer other = (Offer) obj;
+		return Objects.equals(dateOfCreation, other.dateOfCreation) && Objects.equals(description, other.description)
+				&& id == other.id && isActive == other.isActive
+				&& Double.doubleToLongBits(price) == Double.doubleToLongBits(other.price)
+				&& Objects.equals(title, other.title);
 	}
 }

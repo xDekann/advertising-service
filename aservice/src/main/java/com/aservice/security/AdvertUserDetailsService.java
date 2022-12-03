@@ -5,13 +5,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.aservice.dao.UserDAO;
+import com.aservice.dao.UserDao;
 import com.aservice.entity.User;
 
 public class AdvertUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	private UserDAO userDAO;
+	private UserDao userDAO;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

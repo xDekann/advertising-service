@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.aservice.entity.Offer;
-import com.aservice.entity.User;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -15,7 +14,7 @@ import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 
 @Repository
-public class OfferDAO {
+public class OfferDao {
 	
 	@Autowired
 	private EntityManager entityManager;

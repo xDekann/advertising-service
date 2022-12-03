@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.aservice.dao.AuthorityDAO;
-import com.aservice.dao.UserDAO;
+import com.aservice.dao.AuthorityDao;
+import com.aservice.dao.UserDao;
 import com.aservice.entity.User;
 import com.aservice.entity.UserDetails;
 
@@ -23,9 +23,9 @@ public class LoginController {
 	@Autowired
 	private PasswordEncoder passwdEncoder;
 	@Autowired
-	private AuthorityDAO authorityDAO;
+	private AuthorityDao authorityDAO;
 	@Autowired
-	private UserDAO userDAO;
+	private UserDao userDAO;
 	
 	@GetMapping("/start")
 	public String showStartingPage() {
