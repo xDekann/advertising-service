@@ -11,12 +11,12 @@ import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 
 @Repository
-public class AuthorityDAO {
+public class AuthorityDao {
 	private EntityManager entityManager;
 	
 
 	@Autowired
-	public AuthorityDAO(EntityManager entityManager) {
+	public AuthorityDao(EntityManager entityManager) {
 		this.entityManager=entityManager;
 	}
 	

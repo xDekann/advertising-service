@@ -11,13 +11,13 @@ import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 
 @Repository
-public class UserDAO {
+public class UserDao {
 
 	private EntityManager entityManager;
 	
 	// Spring w tle tworzy obiekt entity managera, ktory zawiera konfiguracje potrzebna do komunikacji z baza (m.in.: z parametrami z application.properties)
 	@Autowired
-	public UserDAO(EntityManager entityManager) {
+	public UserDao(EntityManager entityManager) {
 		this.entityManager=entityManager;
 	}
 	
