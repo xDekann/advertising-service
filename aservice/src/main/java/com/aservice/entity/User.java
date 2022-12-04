@@ -47,8 +47,9 @@ public class User {
 	@NonNull
 	private String password;
 	@Column(name="enabled")
-
 	private boolean enabled;
+	@Column(name="reset_code")
+	private String resetCode;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name="user_auth",

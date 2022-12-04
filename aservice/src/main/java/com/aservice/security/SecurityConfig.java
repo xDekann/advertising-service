@@ -44,6 +44,7 @@ public class SecurityConfig {
 								   			 .requestMatchers("/resources/**").permitAll()
 								   			 .requestMatchers("/login/**").permitAll() // wszyscy maja dostep (takze i nie zalogowani) do calej zawartosci LoginController
 								   			 .requestMatchers("/main/**").hasAnyRole("ADMIN","USER") // zezwalam na dostep adminom i userom do /main (MainController) i podsciezek
+								   			 .requestMatchers("/panel/**").hasAnyRole("ADMIN","USER")
 											 .requestMatchers("/offer/list/**").permitAll().anyRequest().authenticated()) // kazdy inny request wymaga authentication
 				.formLogin(configurer->configurer.loginPage("/login/showLoginPage")
 						 .loginProcessingUrl("/authenticateUser") // url do ktorego przejdziemy po sukcesywnym zalogowaniu sie (nie ma go w controllerach) i od razu zostanie wywolany defaultSuccessUrl, chyba jakies domyslne API

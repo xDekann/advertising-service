@@ -24,6 +24,7 @@ import com.aservice.dao.OfferDao;
 import com.aservice.dao.UserDao;
 import com.aservice.entity.Offer;
 import com.aservice.entity.User;
+import com.aservice.util.UserUtil;
 
 
 @Controller
@@ -39,9 +40,7 @@ public class MainController {
 	@GetMapping("/") // po udanym zalogowaniu sie wchodzimy do tej metody (zdefiniowane w securityconfig)
 	public String loggedIn(Model model) {
 		
-		Authentication userInfo = SecurityContextHolder.getContext().getAuthentication();
-		String username = userInfo.getName();
-		model.addAttribute("givenName", username);
+		model.addAttribute("givenName", UserUtil.getLoggedUserName());
 
 		return "main/home";
 	}
@@ -57,7 +56,7 @@ public class MainController {
 	
 	@PostMapping("/creation/offer/creation")
 	public String createOffer(@ModelAttribute("offer") Offer offer,
-			@RequestParam(value="imageParam", required = false) MultipartFile image) {
+			@RequestParam(value="imageParam", required = false) MultipartFile[] images) {
 		
 		
 		// adding offer to the database
@@ -70,16 +69,18 @@ public class MainController {
 		offerDAO.addOffer(offer);
 
 		// saving image on server
-		if(!image.getOriginalFilename().isEmpty()) {
+		if(!images[0].getOriginalFilename().isEmpty()) {
 			StringBuilder dirPath = new StringBuilder("src/main/resources/static/img/offer-images/"+dbUser.getId());
 			new File(dirPath.toString()).mkdirs();
 			dirPath.append("/"+offer.getId());
 			new File(dirPath.toString()).mkdirs();
-			Path filePath = Paths.get(dirPath.toString(), image.getOriginalFilename());
-			try {
-				Files.write(filePath,image.getBytes());
-			} catch (IOException ioException) {
-				ioException.printStackTrace();
+			for(MultipartFile image : images) {
+				Path filePath = Paths.get(dirPath.toString(), image.getOriginalFilename());
+				try {
+					Files.write(filePath,image.getBytes());
+				} catch (IOException ioException) {
+					ioException.printStackTrace();
+				}
 			}
 		}
 		

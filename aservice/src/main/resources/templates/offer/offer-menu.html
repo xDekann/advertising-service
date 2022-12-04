@@ -21,7 +21,7 @@
 			<th>Picture</th>
 		</tr>
 		<tr th:each="offer : ${offers}">
-			<td th:text="${offer.key.id}"></td>
+			<td><a th:href="@{'/offer/list/'+${offer.key.id}}" th:text="${offer.key.id}"></a></td>
 			<td th:text="${offer.key.title}"></td>
 			<td th:text="${offer.key.dateOfCreation}"></td>
 			<td th:text="${offer.key.price}"></td>

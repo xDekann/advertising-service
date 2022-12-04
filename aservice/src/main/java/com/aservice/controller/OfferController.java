@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.aservice.dao.OfferDao;
 import com.aservice.entity.Offer;
@@ -39,7 +41,7 @@ public class OfferController {
 			File directory = new File("src/main/resources/static/img/offer-images/"
 								 	  + offer.getUser().getId() +"/" + offer.getId() +"/");
 			String[] fileNamesFromDir = directory.list();
-			if(fileNamesFromDir!=null) 
+			if(fileNamesFromDir!=null && fileNamesFromDir.length>0) 
 				offers.put(offer,fileNamesFromDir[0]);
 			else{
 				offers.put(offer,null);
@@ -48,6 +50,10 @@ public class OfferController {
 		
 		model.addAttribute("offers",offers);
 		
+		return "offer/offer-menu";
+	}
+	@GetMapping("/list/{id}")
+	public String showOfferWithId(@PathVariable("id") int id, Model model) {
 		return "offer/offer-menu";
 	}
 }
