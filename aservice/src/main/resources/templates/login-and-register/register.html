@@ -11,7 +11,6 @@
 	<p>Register</p>
 	
 	<form th:action="@{/login/registerForm/creation}" th:object="${user}" method="POST">
-		<input type="hidden" th:field="*{id}"> <!--  musi byc hidden, przyda sie w przyszlosci do updateowania -->
 		Username:<input type="text" th:field="*{username}"><br>
 		Password:<input type="password" th:field="*{password}"><br> <!--  pola z * jak mnie pamiec nie myli uzywaja seterow odnoszac sie do danego pola -->
 		Password reset code: <input type="password" th:field="*{resetCode}"><br>

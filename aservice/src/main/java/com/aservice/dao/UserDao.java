@@ -43,4 +43,12 @@ public class UserDao {
 									// , przypisujemy go do dbUser, i przez to ze on jest z bazy (ma przypisane id), pobieramy jego ID i przypisujemy do obiektu, ktory jest w apce
 	}
 	
+	@Transactional
+	public void deleteUser(User user) {
+		try {
+			entityManager.remove(user);
+		}catch (Exception exception) {
+			exception.printStackTrace();
+		}
+	}
 }

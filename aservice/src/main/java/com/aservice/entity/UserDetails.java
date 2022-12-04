@@ -45,7 +45,6 @@ public class UserDetails {
 	private String phoneNumber;
 	@Column(name="last_login")
 	@NonNull
-
 	private Timestamp lastLogin;
 
 	

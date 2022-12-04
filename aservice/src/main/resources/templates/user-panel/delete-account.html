@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Delete account</title>
+</head>
+<body>
+	<div th:if="${credentials == 'fail'}">
+		<p>Invalid credentials</p>
+	</div>
+	<h3>Account deletion</h3>
+	<form th:action="@{/user/delete}" method="POST">  
+		Password: <input type="password" th:name="passwd">
+		Code: <input type="password" th:name="code">
+		<button type="submit">Confirm</button>
+	</form>
+	<a th:href="@{/user/panel}">Back</a>
+</body>
+</html>

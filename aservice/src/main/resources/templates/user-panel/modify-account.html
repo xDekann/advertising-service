@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Modify account</title>
+</head>
+<body>
+	<p>Modify account</p>
+	<div th:if="${credentials == 'fail'}">
+		<p>Invalid credentials</p>
+	</div>
+	<div th:if="${credentials == 'success'}">
+		<p>Modification succeeded</p>
+	</div>
+	<form th:action="@{/user/modify}" th:object="${userDetails}" method="POST">
+		<input type="hidden" th:field="*{id}">
+		<input type="hidden" th:field="*{email}">
+		<input type="hidden" th:field="*{lastLogin}">
+		Name:<input type="text" th:field="*{name}"><br>
+		Surname:<input type="text" th:field="*{surname}"><br>
+		City:<input type="text" th:field="*{city}"><br>
+		Phone number:<input type="text" th:field="*{phoneNumber}"><br>
+		Password to confirm:<input type="password" th:name="passwdC"><br>
+		<button type="submit">Submit</button>
+	</form>
+	<a th:href="@{/user/panel}">Back</a>
+</body>
+</html>

@@ -40,8 +40,11 @@ public class MainController {
 	@GetMapping("/") // po udanym zalogowaniu sie wchodzimy do tej metody (zdefiniowane w securityconfig)
 	public String loggedIn(Model model) {
 		
+		User userToUpdate = userDAO.getUserByUsername(UserUtil.getLoggedUserName());
 		model.addAttribute("givenName", UserUtil.getLoggedUserName());
-
+		userToUpdate.getUserDetails().setLastLogin(new Timestamp(System.currentTimeMillis()));
+		userDAO.addUser(userToUpdate);
+		
 		return "main/home";
 	}
 	
