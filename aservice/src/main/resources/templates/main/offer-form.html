@@ -8,6 +8,9 @@
 	<title>Offer form</title>
 </head>
 <body>
+	<div th:if="${upload == 'fail'}">
+		<p>Exceeded the maximum upload</p>
+	</div>
 	<form th:action="@{/main/creation/offer/creation}" th:object="${offer}" method="POST" enctype="multipart/form-data">
 		<input type="hidden" th:field="*{id}">
 		Title:<input type="text" th:field="*{title}"><br>
