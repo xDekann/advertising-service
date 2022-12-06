@@ -54,7 +54,7 @@ public class Offer {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(dateOfCreation, description, id, isActive, price, title);
+		return Objects.hash(id);
 	}
 
 	@Override
@@ -66,9 +66,6 @@ public class Offer {
 		if (getClass() != obj.getClass())
 			return false;
 		Offer other = (Offer) obj;
-		return Objects.equals(dateOfCreation, other.dateOfCreation) && Objects.equals(description, other.description)
-				&& id == other.id && isActive == other.isActive
-				&& Double.doubleToLongBits(price) == Double.doubleToLongBits(other.price)
-				&& Objects.equals(title, other.title);
+		return id == other.id;
 	}
 }

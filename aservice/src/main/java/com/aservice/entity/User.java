@@ -89,7 +89,7 @@ public class User {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(enabled, id, password, username);
+		return Objects.hash(id, resetCode, username);
 	}
 
 	@Override
@@ -101,7 +101,6 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		return enabled == other.enabled && id == other.id && Objects.equals(password, other.password)
-				&& Objects.equals(username, other.username);
+		return id == other.id && Objects.equals(resetCode, other.resetCode) && Objects.equals(username, other.username);
 	}
 }

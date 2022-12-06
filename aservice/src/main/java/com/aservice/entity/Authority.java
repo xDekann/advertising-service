@@ -35,7 +35,7 @@ public class Authority {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(authorityName, id);
+		return Objects.hash(id);
 	}
 
 	@Override
@@ -47,6 +47,6 @@ public class Authority {
 		if (getClass() != obj.getClass())
 			return false;
 		Authority other = (Authority) obj;
-		return Objects.equals(authorityName, other.authorityName) && id == other.id;
+		return id == other.id;
 	}
 }

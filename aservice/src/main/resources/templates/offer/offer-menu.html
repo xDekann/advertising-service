@@ -8,28 +8,50 @@
 	<title>Offer menu</title>
 </head>
 <body>
-	<form th:action="@{/offer/list/viewAll}" method="GET">
-		<button type="submit">View all</button>
-	</form>
+	<form th:action="@{/offer/list/viewAll/show}" th:object="${listModifier}"method="GET">
+		<input type="hidden" th:field="*{isShowClicked}">
+		<input type="hidden" th:field="*{isNext}">
+		<input type="hidden" th:field="*{previousPage}">
+		<input type="hidden" th:field="*{currentPage}">
+		<input type="hidden" th:field="*{nextPage}">
+		<input type="hidden" th:field="*{startingRow}">
+		<input type="hidden" th:field="*{comparingMethod}">
+		
+		Title: <input type="text" th:field="*{filter}"><br>
+		<button type="submit">Show</button>
+		<button type="submit" th:formaction="@{/offer/list}">Refresh</button>
+		<a th:href="@{/main/}">Back</a> <!--  dorobic role, jak niezalogowany to do landing -->
 	<table>
 		<tr>
-			<th>ID</th>
-			<th>Title</th>
-			<th>Added</th>
-			<th>Price</th>
-			<th>Author</th>
+			<th><a th:href="@{/offer/list/viewAll/id}">ID</a></th>
+			<th><a th:href="@{/offer/list/viewAll/title}">Title</a></th>
+			<th><a th:href="@{/offer/list/viewAll/dateOfCreation}">Added</a></th>
+			<th><a th:href="@{/offer/list/viewAll/price}">Price</a></th>
+			<th><a th:href="@{/offer/list/viewAll/author}">Author</a></th>
 			<th>Picture</th>
+			<th>Options</th>
 		</tr>
 		<tr th:each="offer : ${offers}">
-			<td><a th:href="@{'/offer/list/'+${offer.key.id}}" th:text="${offer.key.id}"></a></td>
+			<td th:text="${offer.key.id}"></td>
 			<td th:text="${offer.key.title}"></td>
 			<td th:text="${offer.key.dateOfCreation}"></td>
 			<td th:text="${offer.key.price}"></td>
 			<td th:text="${offer.key.user.username}"></td>
-			<td><img th:if="${offer.value}" th:src="@{'/img/offer-images/'+${offer.key.user.id}+'/'+${offer.key.id}+'/'+${offer.value}}" alt="No img included" width="80" height="80"></td>
+			<td><img th:if="${offer.value}" th:src="@{'/img/offer-images/'+${offer.key.user.id}+'/'+${offer.key.id}+'/'+${offer.value}}" alt="Missing image" width="80" height="80"></td>
+			<td><a th:href="@{'/offer/list/'+${offer.key.title}}">See offer</a></td>
 		</tr>
-	</table>
-
-	<a th:href="@{/main/}">Back</a> <!--  dorobic role, jak niezalogowany to do landing -->
+	</table><br>
+	
+	<span th:if="${listModifier.isShowClicked}">
+		<span th:if="${listModifier.previousPage}>0">
+			<button type="submit" th:formaction="@{/offer/list/viewAll/left}">&larr;</button>
+		</span>
+		<span th:text="${'Page: '+listModifier.currentPage}"></span>
+		<span th:if="${listModifier.isNext}">
+			<button type="submit" th:formaction="@{/offer/list/viewAll/right}">&rarr;</button>
+		</span>
+	</span>
+	</form>
+	
 </body>
 </html>
