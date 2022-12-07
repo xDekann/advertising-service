@@ -1,2 +1,2 @@
 # advertising-service
-# turn on auto-refresh on eclipse before the last stage of project!
+# turn on the auto-refresh on eclipse before the last stage of project!
