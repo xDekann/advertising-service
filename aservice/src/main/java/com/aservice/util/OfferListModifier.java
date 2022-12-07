@@ -37,10 +37,6 @@ public class OfferListModifier {
 	public void setShowClicked() {
 		isShowClicked=true;
 	}
-	public void setLRnotClicked() {
-		isLeftClicked=false;
-		isRightClicked=false;
-	}
 	// Thymeleaf getters/setters
 	public boolean getIsShowClicked() {
 		return isShowClicked;
@@ -48,20 +44,6 @@ public class OfferListModifier {
 	public void setIsShowClicked(boolean isShowClicked) {
 		this.isShowClicked=isShowClicked;
 	}
-	/*
-	public boolean getIsLeftClicked() {
-		return isLeftClicked;
-	}
-	public void setIsLeftClicked(boolean isLeftClicked) {
-		this.isLeftClicked=isLeftClicked;
-	}
-	public boolean getIsRigtClicked() {
-		return isRightClicked;
-	}
-	public void setIsRightClicked(boolean isRightClicked) {
-		this.isRightClicked=isRightClicked;
-	}
-	*/
 	public boolean getIsNext() {
 		return isNext;
 	}

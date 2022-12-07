@@ -32,10 +32,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-	// tworzenie obiektu do autoryzacji
-	
-
-	
+	// tworzenie obiektu do autoryzacji	
 	@Bean
 	public SecurityFilterChain web(HttpSecurity http) throws Exception {
 		return http
@@ -45,7 +42,7 @@ public class SecurityConfig {
 								   			 .requestMatchers("/login/**").permitAll() // wszyscy maja dostep (takze i nie zalogowani) do calej zawartosci LoginController
 								   			 .requestMatchers("/main/**").hasAnyRole("ADMIN","USER") // zezwalam na dostep adminom i userom do /main (MainController) i podsciezek
 								   			 .requestMatchers("/panel/**").hasAnyRole("ADMIN","USER")
-											 .requestMatchers("/offer/list/**").permitAll().anyRequest().authenticated()) // kazdy inny request wymaga authentication
+											 .requestMatchers("/offer/**").hasAnyRole("ADMIN","USER").anyRequest().authenticated()) // kazdy inny request wymaga authentication
 				.formLogin(configurer->configurer.loginPage("/login/showLoginPage")
 						 .loginProcessingUrl("/authenticateUser") // url do ktorego przejdziemy po sukcesywnym zalogowaniu sie (nie ma go w controllerach) i od razu zostanie wywolany defaultSuccessUrl, chyba jakies domyslne API
 						 .permitAll()
@@ -53,7 +50,7 @@ public class SecurityConfig {
 				.logout(configurer -> configurer.permitAll()
 						 .logoutSuccessUrl("/login/showLoginPage?logout"))
 				.exceptionHandling(configurer->configurer.accessDeniedPage("/login/access-denied"))// chyba dziala tylko jak ktos jest zalogowany
-				.csrf().disable()
+				.csrf().disable() // TO DO ENABLE
 				.build();
 	}
 	

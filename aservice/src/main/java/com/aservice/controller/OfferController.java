@@ -16,11 +16,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.aservice.dao.OfferDao;
 import com.aservice.entity.Offer;
+import com.aservice.entity.User;
 import com.aservice.util.OfferListModifier;
+import com.aservice.util.OfferUtil;
 
 
 @Controller
@@ -41,13 +44,18 @@ public class OfferController {
 								@ModelAttribute OfferListModifier listModifier,
 								Model model) {
 		
+		// display limit per site
 		int limit=4;
 		List<Offer> dbOffers = null;
+		// if thymeleaf parses object with comma at the beginning
+		if(OfferUtil.checkIfFilterValid(listModifier.getFilter()) && listModifier.getFilter().startsWith(",")) {
+			listModifier.setFilter(listModifier.getFilter().substring(1));
+		}
+		
 		// user button click
 		switch (task) {
 		case "show": {
 			listModifier.setShowClicked();
-			listModifier.setLRnotClicked();
 			break;
 		}
 		case "left": {
@@ -66,54 +74,29 @@ public class OfferController {
 			if(task.equals("id") || task.equals("title") || task.equals("dateOfCreation")
 					|| task.equals("price") || task.equals("author")) {
 				listModifier.setComparingMethod(task);
-				listModifier.setShowClicked();
 				break;
 			}
 			return "redirect:/offer/list";
 		}
 		
 		
-		System.out.println("RAZ");
-		//if(!listModifier.getFilter().isEmpty()) {
-			dbOffers = offerDAO.getPagedOffers(listModifier.getStartingRow(), limit, listModifier.getFilter(), listModifier.getComparingMethod());
-			if(offerDAO.getPagedOffers(listModifier.getStartingRow()+limit, limit, listModifier.getFilter(), listModifier.getComparingMethod())!=null)
-				listModifier.setIsNext(true);
-			else 
-				listModifier.setIsNext(false);
-		//}
-		/*else {
-			dbOffers = offerDAO.getPagedOffers(listModifier.getStartingRow(), limit, null);
-			if(offerDAO.getPagedOffers(listModifier.getStartingRow()+limit, limit, null)!=null)
-				listModifier.setIsNext(true);
-			else 
-				listModifier.setIsNext(false);
-		}
-		*/
+		dbOffers = offerDAO.getPagedOffers(listModifier.getStartingRow(), limit, listModifier.getFilter(), listModifier.getComparingMethod());
+		if(offerDAO.getPagedOffers(listModifier.getStartingRow()+limit, limit, listModifier.getFilter(), listModifier.getComparingMethod())!=null)
+			listModifier.setIsNext(true);
+		else 
+			listModifier.setIsNext(false);
 		Map<Offer,String> offers = new LinkedHashMap<>();
-		/*
-		System.out.println("Debug: \n" + 
-						   "Starting row: " + listModifier.getStartingRow() + "\n" +
-						   "Previous page: " + listModifier.getPreviousPage() + "\n" +
-						   "Current page: " + listModifier.getCurrentPage() + "\n" +
-						   "Next Page: " + listModifier.getNextPage() + "\n" +
-						   "Filter" + listModifier.getFilter() + "\n" +
-						   "isShowClicked: " + listModifier.getIsShowClicked() + "\n" +
-						   "isLeftClicked: " + listModifier.getIsLeftClicked() +"\n" +
-						   "isRightClicked: " + listModifier.getIsRigtClicked() + "\n" +
-						   "isNext: " + listModifier.getIsNext() + "\n");
-		*/
+
+		
 		// only one image per offer supported, read that image and sort map by offer id
-		System.out.println("DWA");
 		if(dbOffers==null) return "redirect:/offer/list";
 		dbOffers.forEach(offer->{
 			File directory = new File("src/main/resources/static/img/offer-images/"
 								 	  + offer.getUser().getId() +"/" + offer.getId() +"/");
 			String[] fileNamesFromDir = directory.list();
-			System.out.println("TRZY");
 			if(fileNamesFromDir!=null && fileNamesFromDir.length>0) 
 				offers.put(offer,fileNamesFromDir[0]);
 			else{
-				System.out.println(offer);
 				offers.put(offer,null);
 			}
 		});
@@ -123,8 +106,22 @@ public class OfferController {
 		
 		return "offer/offer-menu";
 	}
-	@GetMapping("/list/offer/{title}")
-	public String showOfferWithId(@PathVariable("title") String id, Model model) {
-		return "offer/offer-menu";
+	@GetMapping("/list/pickedoffer/{id}")
+	public String showOfferWithId(@PathVariable("id") int id, Model model) {
+		
+		Offer offer = offerDAO.getOfferById(id);
+		User offerOwner = offer.getUser();
+		String formattedDate = OfferUtil.getDateToMin(offer, offer.getDateOfCreation());
+		
+		File directory = new File("src/main/resources/static/img/offer-images/"
+			 	  + offer.getUser().getId() +"/" + offer.getId() +"/");
+		String[] fileNamesFromDir = directory.list();
+			
+		model.addAttribute("offer", offer);
+		model.addAttribute("offerOwner", offerOwner);
+		model.addAttribute("offerImages",fileNamesFromDir);
+		model.addAttribute("date", formattedDate);
+		
+		return "offer/picked-offer";
 	}
 }

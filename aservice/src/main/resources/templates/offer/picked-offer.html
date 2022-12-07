@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Picked offer</title>
+	<style>
+		#imagesCenter{
+			display: inline-block;
+		}
+	
+	</style>
+</head>
+<body>
+	<h3 th:text="${offer.title}"></h3>
+	<span th:text="'Added: '+${date}+' by: '"></span><a th:href="@{'/user/viewprofile/picked/'+${offerOwner.id}}" th:text="${offerOwner.username}"></a>
+	<p th:text="'Price: '+${offer.price}+' USD'"></p>
+	<p th:text="${offer.description}"></p>
+	<div>
+		<span th:each="offerImage : ${offerImages}">
+		<img th:src="@{'/img/offer-images/'+${offerOwner.id}+'/'+${offer.id}+'/'+${offerImage}}" alt="Missing image" width="160" height="160">
+		</span>
+	</div>
+	<a th:href="@{/offer/list}">Back to the list</a>
+</body>
+</html>

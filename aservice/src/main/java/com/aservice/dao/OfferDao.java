@@ -62,9 +62,11 @@ public class OfferDao {
 		List<Offer> dbOffers = null;
 		try {
 			Query query = null;
-			String queryText = "select o from Offer o left join fetch o.user";
+			String queryText = "select o from Offer o left join fetch o.user where o.isActive=:active";
 			if(!isFilterNull && !filter.isEmpty() && !isOrderNull && !order.isEmpty()) {
-				query = entityManager.createQuery(queryText+" where o.title like "+"'%"+filter+"%'"+" order by o."+order+" ASC", Offer.class);
+				query = entityManager.createQuery(queryText+" and o.title like "+"'%"+filter+"%'"+" order by o."+order+" ASC", Offer.class);
+				query.setParameter("active", true);
+				System.out.println("WAR1");
 				//query = entityManager.createQuery("select o from Offer o left join fetch o.user where o.title like :filter order by o.:order DESC", Offer.class);
 				//query.setParameter("filter", "%"+filter+"%");
 				//query.setParameter("order", order);
@@ -72,11 +74,15 @@ public class OfferDao {
 			}
 			else if((isFilterNull || filter.isEmpty()) && !isOrderNull && !order.isEmpty()) {
 				query = entityManager.createQuery(queryText+" order by o."+order+" ASC", Offer.class);
+				query.setParameter("active", true);
+				System.out.println("WAR2");
 				//query = entityManager.createQuery("select o from Offer o left join fetch o.user order by o.:order DESC", Offer.class);
 				//query.setParameter("order", order);
 			}
 			else if(!isFilterNull && !filter.isEmpty() && (!isOrderNull || !order.isEmpty())) {
-				query = entityManager.createQuery(queryText+" where o.title like "+"'%"+filter+"%'", Offer.class);
+				query = entityManager.createQuery(queryText+" and o.title like "+"'%"+filter+"%'", Offer.class);
+				query.setParameter("active", true);
+				System.out.println("WAR3");
 				//query = entityManager.createQuery("select o from Offer o left join fetch o.user where o.title like :filter", Offer.class);
 			}
 			else {
@@ -93,4 +99,18 @@ public class OfferDao {
 		}
 		return dbOffers;
 	}
+	
+	@Transactional
+	public Offer getOfferById(int id) {
+		Offer offer = null;
+		try {
+			Query query = entityManager.createQuery("from Offer o join fetch o.user where o.id=:givenid", Offer.class);
+			query.setParameter("givenid", id);
+			offer = (Offer) query.getSingleResult();
+		}catch (NoResultException noResultException) {
+			noResultException.printStackTrace();
+		}
+		return offer;
+	}
+	
 }

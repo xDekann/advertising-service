@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -98,5 +99,22 @@ public class UserPanelController {
 			userDao.deleteUser(userToDelete);
 			return "redirect:/logout";
 		}
+	}
+	
+	@GetMapping("/viewprofile/picked/{userId}")
+	public String viewUserPickedProfile(@PathVariable("userId") int userId, Model model) {
+		
+		System.out.println("IN PROFILE ID: "+userId);
+		
+		User pickedUser = userDao.getUserById(userId);
+		String lastLogin = UserUtil.getDateToMin(pickedUser, pickedUser.getUserDetails().getLastLogin());
+		
+		
+		model.addAttribute("pickedUser", pickedUser);
+		model.addAttribute("pickedUserD", pickedUser.getUserDetails());
+		model.addAttribute("lastLogin", lastLogin);
+		
+		return "user-panel/user-picked-profile";
+		
 	}
 }

@@ -5,40 +5,63 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+  	<style>
+        #textButton{
+            background:none; 
+            border:none;
+            font-size:12px;
+            font-family: helvetica;
+             text-decoration: underline;
+  			cursor: pointer;
+        }
+        
+        #textNoButton{
+        	font-size: 12px;
+        	text-decoration: none;
+        	font-weight: normal;
+        	font-family: helvetica;
+        }
+    </style>
+
 	<title>Offer menu</title>
 </head>
 <body>
-	<form th:action="@{/offer/list/viewAll/show}" th:object="${listModifier}"method="GET">
+	<form th:action="@{/offer/list/viewAll/show}" th:object="${listModifier}" method="GET">
 		<input type="hidden" th:field="*{isShowClicked}">
 		<input type="hidden" th:field="*{isNext}">
 		<input type="hidden" th:field="*{previousPage}">
 		<input type="hidden" th:field="*{currentPage}">
 		<input type="hidden" th:field="*{nextPage}">
+		<input type="hidden" th:field="*{filter}">
+		
 		<input type="hidden" th:field="*{startingRow}">
 		<input type="hidden" th:field="*{comparingMethod}">
 		
+		<span th:if="${listModifier.filter}==null">
 		Title: <input type="text" th:field="*{filter}"><br>
+		</span>
+		
 		<button type="submit">Show</button>
 		<button type="submit" th:formaction="@{/offer/list}">Refresh</button>
 		<a th:href="@{/main/}">Back</a> <!--  dorobic role, jak niezalogowany to do landing -->
 	<table>
 		<tr>
-			<th><a th:href="@{/offer/list/viewAll/id}">ID</a></th>
-			<th><a th:href="@{/offer/list/viewAll/title}">Title</a></th>
-			<th><a th:href="@{/offer/list/viewAll/dateOfCreation}">Added</a></th>
-			<th><a th:href="@{/offer/list/viewAll/price}">Price</a></th>
-			<th><a th:href="@{/offer/list/viewAll/author}">Author</a></th>
-			<th>Picture</th>
-			<th>Options</th>
+			<th><button id="textButton" type="submit" th:formaction="@{/offer/list/viewAll/id}">ID</button></th>
+			<th><button id="textButton" type="submit" th:formaction="@{/offer/list/viewAll/title}">Title</button></th>
+			<th><button id="textButton" type="submit" th:formaction="@{/offer/list/viewAll/dateOfCreation}">Added</button></th>
+			<th><button id="textButton" type="submit" th:formaction="@{/offer/list/viewAll/price}">Price</button></th>
+			<th><span id="textNoButton">Author</span></th>
+			<th><span id="textNoButton">Picture</span></th>
+			<th><span id="textNoButton">Options</span></th>
 		</tr>
 		<tr th:each="offer : ${offers}">
 			<td th:text="${offer.key.id}"></td>
 			<td th:text="${offer.key.title}"></td>
-			<td th:text="${offer.key.dateOfCreation}"></td>
+			<td th:text="${#strings.substring(offer.key.dateOfCreation,0,10)}"></td>
 			<td th:text="${offer.key.price}"></td>
 			<td th:text="${offer.key.user.username}"></td>
 			<td><img th:if="${offer.value}" th:src="@{'/img/offer-images/'+${offer.key.user.id}+'/'+${offer.key.id}+'/'+${offer.value}}" alt="Missing image" width="80" height="80"></td>
-			<td><a th:href="@{'/offer/list/'+${offer.key.title}}">See offer</a></td>
+			<td><a th:href="@{'/offer/list/pickedoffer/'+${offer.key.id}}">See offer</a></td>
 		</tr>
 	</table><br>
 	
