@@ -15,7 +15,14 @@
 </head>
 <body>
 	<h3 th:text="${offer.title}"></h3>
-	<span th:text="'Added: '+${date}+' by: '"></span><a th:href="@{'/user/viewprofile/picked/'+${offerOwner.id}}" th:text="${offerOwner.username}"></a>
+	<span th:if="${failedToFollow}==true">
+		<p> Already subscribed! </p>
+	</span>
+	<span th:text="'Added: '+${date}+' by: '"></span><a th:href="@{'/user/viewprofile/picked/'+${offerOwner.id}}" th:text="${offerOwner.username}"></a><br>
+	<span th:if="${isSubbed}==false">
+		<a th:href="@{'/offer/follow/'+${offer.id}}">Add to follow</a>
+	</span>
+
 	<p th:text="'Price: '+${offer.price}+' USD'"></p>
 	<p th:text="${offer.description}"></p>
 	<div>

@@ -33,7 +33,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class User {
 	
 	@Id
@@ -67,6 +66,11 @@ public class User {
 			   orphanRemoval = true)
 	private List<Offer> offers;
 	
+	@OneToMany(mappedBy="user",
+			   cascade = {CascadeType.MERGE, CascadeType.REMOVE},
+			   orphanRemoval = true)
+	private List<Subscription> subs;
+	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", enabled=" + enabled + "]";
@@ -85,6 +89,11 @@ public class User {
 		if(offers==null) offers = new ArrayList<>();
 		offers.add(offer);
 		offer.connectUser(this);
+	}
+	
+	public void addSub(Subscription subscription) {
+		if(subs==null) subs = new ArrayList<>();
+		subs.add(subscription);
 	}
 
 	@Override

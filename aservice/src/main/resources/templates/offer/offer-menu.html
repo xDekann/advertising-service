@@ -52,16 +52,14 @@
 			<th><button id="textButton" type="submit" th:formaction="@{/offer/list/viewAll/price}">Price</button></th>
 			<th><span id="textNoButton">Author</span></th>
 			<th><span id="textNoButton">Picture</span></th>
-			<th><span id="textNoButton">Options</span></th>
 		</tr>
 		<tr th:each="offer : ${offers}">
 			<td th:text="${offer.key.id}"></td>
-			<td th:text="${offer.key.title}"></td>
+			<td><a th:href="@{'/offer/list/pickedoffer/'+${offer.key.id}+'/false'}" th:text="${offer.key.title}"></a></td>
 			<td th:text="${#strings.substring(offer.key.dateOfCreation,0,10)}"></td>
-			<td th:text="${offer.key.price}"></td>
+			<td th:text="${offer.key.price}+'$'"></td>
 			<td th:text="${offer.key.user.username}"></td>
 			<td><img th:if="${offer.value}" th:src="@{'/img/offer-images/'+${offer.key.user.id}+'/'+${offer.key.id}+'/'+${offer.value}}" alt="Missing image" width="80" height="80"></td>
-			<td><a th:href="@{'/offer/list/pickedoffer/'+${offer.key.id}}">See offer</a></td>
 		</tr>
 	</table><br>
 	

@@ -6,6 +6,21 @@ import com.aservice.entity.Offer;
 import com.aservice.entity.User;
 
 public class OfferUtil {
+	
+	public enum OfferConst{
+		ROWS_PER_PAGE(4);
+
+		private final int value;
+		
+		private OfferConst(int value) {
+			this.value=value;
+		}
+		
+		public int getValue() {
+			return value;
+		}
+	}
+	
 	public static boolean checkIfFilterValid(String filter) {
 		if(filter==null) return false;
 		if(filter.isEmpty()) return false;

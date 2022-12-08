@@ -63,11 +63,13 @@ public class LoginController {
 		user.setEnabled(true);
 		user.setPassword(passwdEncoder.encode(user.getPassword()));
 		user.setResetCode(passwdEncoder.encode(user.getResetCode()));
+
 		user.addAuthority(authorityDAO.getAuthorityByName("ROLE_USER"));
 		userDetails.setLastLogin(new Timestamp(System.currentTimeMillis()));
 		user.connectUserDetails(userDetails);
 		userDetails.connectUser(user);
 		userDAO.addUser(user);
+		
 		
 		System.out.println("Proces rejestracji zakonczony");
 		
