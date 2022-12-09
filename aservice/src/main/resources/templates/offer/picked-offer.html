@@ -18,18 +18,24 @@
 	<span th:if="${failedToFollow}==true">
 		<p> Already subscribed! </p>
 	</span>
-	<span th:text="'Added: '+${date}+' by: '"></span><a th:href="@{'/user/viewprofile/picked/'+${offerOwner.id}}" th:text="${offerOwner.username}"></a><br>
-	<span th:if="${isSubbed}==false">
-		<a th:href="@{'/offer/follow/'+${offer.id}}">Add to follow</a>
+	<span th:text="'Added: '+${date}+' by: '"></span><a th:href="@{'/user/viewprofile/picked/'+${offer.user.id}}" th:text="${offer.user.username}"></a><br>
+	<span th:if="${offer.user.id}!=${currentUser.id}">
+		<a th:if="${isSubbed}==false" th:href="@{'/offer/follow/'+${offer.id}}">Add to follow</a>
+		<a th:if="${isSubbed}==true" th:href="@{'/offer/unfollow/'+${offer.id}}">Unfollow</a>
 	</span>
 
 	<p th:text="'Price: '+${offer.price}+' USD'"></p>
 	<p th:text="${offer.description}"></p>
 	<div>
 		<span th:each="offerImage : ${offerImages}">
-		<img th:src="@{'/img/offer-images/'+${offerOwner.id}+'/'+${offer.id}+'/'+${offerImage}}" alt="Missing image" width="160" height="160">
+		<img th:src="@{'/img/offer-images/'+${offer.user.id}+'/'+${offer.id}+'/'+${offerImage}}" alt="Missing image" width="160" height="160">
 		</span>
 	</div>
-	<a th:href="@{/offer/list}">Back to the list</a>
+	<span th:if="${backTwice}==true">
+		<a onclick="history.go(-2)">Back to the list</a>
+	</span>
+	<span th:if="${backTwice}==false">
+		<a onclick="history.go(-1)">Back to the list</a>
+	</span>
 </body>
 </html>

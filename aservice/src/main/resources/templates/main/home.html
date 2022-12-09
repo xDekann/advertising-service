@@ -12,8 +12,8 @@
 
 	<p>Welcome, <span th:text="${givenName}"></span></p><br>
 	<a th:href="@{/user/panel}">Show user panel</a>
-	<a th:href="@{/main/creation/offer/form}">Create your offer</a><br>
-	<a th:href="@{/offer/list}">View offers</a>
+	<a th:href="@{/main/creation/offer/form/0/0}">Create your offer</a><br>
+	<a th:href="@{'/offer/list/'+${false}+'/'+${false}}">View offers</a>
 	
 
 	<form th:action="@{/logout}" method="POST">

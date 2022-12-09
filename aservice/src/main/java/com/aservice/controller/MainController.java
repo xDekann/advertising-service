@@ -13,9 +13,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,10 +53,15 @@ public class MainController {
 		return "main/home";
 	}
 	
-	@GetMapping("/creation/offer/form")
-	public String createOfferForm(Model model) {
+	@GetMapping("/creation/offer/form/{offerId}/{userId}")
+	public String createOfferForm(@PathVariable("offerId") int offerId,
+								  @PathVariable("userId") int userId, Model model) {
 		
 		Offer offer = new Offer();
+		// reference update for modify purpose
+		if(userId==userDAO.getUserByUsername(UserUtil.getLoggedUserName()).getId()) {
+			offer = offerDAO.getOfferById(offerId);
+		}
 		model.addAttribute("offer", offer);
 		
 		return "main/offer-form";
@@ -72,13 +79,25 @@ public class MainController {
 		String username = userInfo.getName();
 		User dbUser = userDAO.getUserByUsername(username);
 		dbUser.addOffer(offer);
+		offer.setSubs(offerDAO.getAllSubsOfOffer(offer.getId()));
 		offerDAO.addOffer(offer);
 
-		// saving image on server
+		// saving images on server
 		if(!images[0].getOriginalFilename().isEmpty()) {
 			StringBuilder dirPath = new StringBuilder("src/main/resources/static/img/offer-images/"+dbUser.getId());
 			new File(dirPath.toString()).mkdirs();
 			dirPath.append("/"+offer.getId());
+			
+			// delete offer dir if exists (modify offer purposes)
+			Path offerDirPath = Path.of(dirPath.toString());
+			if(Files.exists(offerDirPath)) {
+				try {
+					FileSystemUtils.deleteRecursively(offerDirPath);
+				} catch (IOException ioException) {
+					ioException.printStackTrace();
+				}
+			}
+			
 			new File(dirPath.toString()).mkdirs();
 			for(MultipartFile image : images) {
 				Path filePath = Paths.get(dirPath.toString(), image.getOriginalFilename());

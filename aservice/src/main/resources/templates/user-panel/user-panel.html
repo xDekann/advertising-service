@@ -13,8 +13,8 @@
 	<a th:href="@{/user/modify/form}">Modify account</a><br>
 	<a th:href="@{/user/delete/form}">Delete account</a><br>
 	<a th:href="@{/user/password/form}">Change your password</a><br>
-	<a th:href="@{/main/}">View your offers</a><br><!-- TO DO -->
-	<a th:href="@{/main/}">View subscribed offers</a><br><!-- TO DO -->
+	<a th:href="@{'/offer/list/'+${false}+'/'+${true}}">View your offers</a><br>
+	<a th:href="@{'/offer/list/'+${true}+'/'+${false}}">View subscribed offers</a><br>
 	<a th:href="@{/main/}">Back</a> 
 
 </body>
