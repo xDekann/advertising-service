@@ -32,13 +32,15 @@ import com.aservice.util.OfferListModifier;
 import com.aservice.util.OfferUtil;
 import com.aservice.util.UserUtil;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 
 @Controller
 @RequestMapping("/offer")
 public class OfferController {
 	
 	@Autowired
-	private OfferDao offerDAO;
+	private OfferDao offerDao;
 	@Autowired
 	private UserDao userDao;
 	@Autowired
@@ -92,11 +94,11 @@ public class OfferController {
 
 		int currentLoggedUserId = userDao.getUserByUsername(UserUtil.getLoggedUserName()).getId();
 		List<Offer> dbOffers = null;
-		dbOffers = offerDAO.getPagedOffers(listModifier, true, currentLoggedUserId);
+		dbOffers = offerDao.getPagedOffers(listModifier, true, currentLoggedUserId);
 		
 		// checking if there is a next page
 		listModifier.setStartingRow(listModifier.getStartingRow()+listModifier.getLimit());
-		if(offerDAO.getPagedOffers(listModifier, true, currentLoggedUserId)!=null)
+		if(offerDao.getPagedOffers(listModifier, true, currentLoggedUserId)!=null)
 			listModifier.setIsNext(true);
 		else 
 			listModifier.setIsNext(false);
@@ -129,7 +131,7 @@ public class OfferController {
 								  @PathVariable("followFail") boolean followFail,
 								  @PathVariable("backToListTracker") boolean backTwice, Model model) {
 		
-		Offer offer = offerDAO.getOfferById(offerId);
+		Offer offer = offerDao.getOfferById(offerId);
 		
 		// in case offer got deleted and user did not make a refresh
 		if(offer==null) return "redirect:/main/";
@@ -147,7 +149,7 @@ public class OfferController {
 		model.addAttribute("date", formattedDate);
 	
 		boolean isSubbed=false;
-		if(offerDAO.getSubbedOffer(userDao.getUserByUsername(UserUtil.getLoggedUserName()).getId(), offerId)!=null)
+		if(offerDao.getSubbedOffer(userDao.getUserByUsername(UserUtil.getLoggedUserName()).getId(), offerId)!=null)
 			isSubbed = true;
 
 		model.addAttribute("isSubbed", isSubbed); // wykorzystaj do unfollow
@@ -160,17 +162,17 @@ public class OfferController {
 	@GetMapping("/follow/{id}")
 	public String addOfferToSubList(@PathVariable("id") int offerId, RedirectAttributes redirection){
 		
-		Offer pickedOffer = offerDAO.getOfferById(offerId);
+		Offer pickedOffer = offerDao.getOfferById(offerId);
 		User currentUser = userDao.getUserByUsername(UserUtil.getLoggedUserName());
 		
-		if(offerDAO.getSubbedOffer(currentUser.getId(), offerId)!=null) {
+		if(offerDao.getSubbedOffer(currentUser.getId(), offerId)!=null) {
 			return "redirect:/offer/list/pickedoffer/"+offerId+"/true/true";
 		}
 		
 		Subscription newSub = new Subscription(new Date(System.currentTimeMillis()), pickedOffer, currentUser);
 		pickedOffer.addSub(newSub);
 		currentUser.addSub(newSub);
-		offerDAO.addSub(newSub);
+		offerDao.addSub(newSub);
 		
 		return "redirect:/offer/list/pickedoffer/"+offerId+"/false/true";
 	}
@@ -178,11 +180,11 @@ public class OfferController {
 	@GetMapping("/unfollow/{id}")
 	public String removeOfferFromSubList(@PathVariable("id") int offerId) {
 		
-		Offer pickedOffer = offerDAO.getOfferById(offerId);
+		Offer pickedOffer = offerDao.getOfferById(offerId);
 		User currentUser = userDao.getUserByUsername(UserUtil.getLoggedUserName());
 		
-		Subscription dbSub = offerDAO.getSubbedOffer(currentUser.getId(), offerId);
-		offerDAO.deleteSub(dbSub);
+		Subscription dbSub = offerDao.getSubbedOffer(currentUser.getId(), offerId);
+		offerDao.deleteSub(dbSub);
 		
 		return "main/home";
 		
@@ -218,8 +220,8 @@ public class OfferController {
 		if(!passwdEncoder.matches(passwdC, currentLoggedUser.getPassword()))
 			return "redirect:/offer/delete/form/"+ids.getOfferId()+"/"+ids.getOwnerId()+"/fail";
 		
-		Offer offerToDelete = offerDAO.getOfferById(ids.getOfferId());
-		offerDAO.deleteOffer(offerToDelete);
+		Offer offerToDelete = offerDao.getOfferById(ids.getOfferId());
+		offerDao.deleteOffer(offerToDelete);
 
 		StringBuilder dirPath = new StringBuilder("src/main/resources/static/img/offer-images/"
 												  +currentLoggedUser.getId()
@@ -235,5 +237,33 @@ public class OfferController {
 		}
 		
 		return "redirect:/main/";
+	}
+	
+	@GetMapping("/disable/{offerId}/{offerOwnerId}")
+	public String disableOffer(@PathVariable("offerId") int offerId,
+							   @PathVariable("offerOwnerId") int ownerId){
+		if(ownerId!=userDao.getUserByUsername(UserUtil.getLoggedUserName()).getId())
+			return "redirect:/main/";
+		
+		Offer dbOffer = offerDao.getOfferById(offerId);
+		dbOffer.setActive(false);
+		offerDao.addOffer(dbOffer);
+
+		return "redirect:/main/";
+		
+	}
+	
+	@GetMapping("/enable/{offerId}/{offerOwnerId}")
+	public String enableOffer(@PathVariable("offerId") int offerId,
+							   @PathVariable("offerOwnerId") int ownerId){
+		if(ownerId!=userDao.getUserByUsername(UserUtil.getLoggedUserName()).getId())
+			return "redirect:/main/";
+		
+		Offer dbOffer = offerDao.getOfferById(offerId);
+		dbOffer.setActive(true);
+		offerDao.addOffer(dbOffer);
+
+		return "redirect:/main/";
+		
 	}
 }

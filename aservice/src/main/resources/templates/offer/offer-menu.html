@@ -66,7 +66,9 @@
 			<span th:if="${offer.key.user.id}==${loggedUserId}">
 				<td>
 					<a th:href="@{'/main/creation/offer/form/'+${offer.key.id}+'/'+${loggedUserId}}">Modify Offer/</a>
-					<a th:href="@{'/offer/delete/form/'+${offer.key.id}+'/'+${offer.key.user.id}+'/success'}">Delete Offer</a>
+					<a th:href="@{'/offer/delete/form/'+${offer.key.id}+'/'+${offer.key.user.id}+'/success'}">Delete Offer/</a>
+					<a th:if="${offer.key.isActive}==true" th:href="'/offer/disable/'+${offer.key.id}+'/'+${offer.key.user.id}">Disable</a>
+					<a th:if="${offer.key.isActive}==false" th:href="'/offer/enable/'+${offer.key.id}+'/'+${offer.key.user.id}">Enable</a>
 				</td>
 			</span>
 		</tr>
