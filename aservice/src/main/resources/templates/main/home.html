@@ -14,6 +14,9 @@
 	<a th:href="@{/main/creation/offer/form/0/0}">Create your offer</a><br>
 	<a th:href="@{'/offer/list/'+${false}+'/'+${false}}">View offers</a>
 	
+	<span th:if="${upload}=='fail'">
+		<p> Offer upload has failed, exceeded server assigned image size limit </p>
+	</span>
 
 	<form th:action="@{/logout}" method="POST">
 		<input type="submit" value="Logout">

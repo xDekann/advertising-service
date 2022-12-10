@@ -18,9 +18,13 @@
 		<input type="hidden" th:field="*{id}">
 		<input type="hidden" th:field="*{email}">
 		<input type="hidden" th:field="*{lastLogin}">
+		<span th:errors="*{name}"></span><br>
 		Name:<input type="text" th:field="*{name}"><br>
+		<span th:errors="*{surname}"></span><br>
 		Surname:<input type="text" th:field="*{surname}"><br>
+		<span th:errors="*{city}"></span><br>
 		City:<input type="text" th:field="*{city}"><br>
+		<span th:errors="*{phoneNumber}"></span><br>
 		Phone number:<input type="text" th:field="*{phoneNumber}"><br>
 		Password to confirm:<input type="password" th:name="passwdC"><br>
 		<button type="submit">Submit</button>

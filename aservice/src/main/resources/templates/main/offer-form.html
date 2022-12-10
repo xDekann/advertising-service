@@ -12,8 +12,12 @@
 	</div>
 	<form th:action="@{/main/creation/offer/creation}" th:object="${offer}" method="POST" enctype="multipart/form-data">
 		<input type="hidden" th:field="*{id}">
+		<!--  <input type="hidden" th:name="userId" th:value="${userId}"> -->
+		<span th:errors="*{title}"></span><br>
 		Title:<input type="text" th:field="*{title}"><br>
-		Price:<input type="number" th:field="*{price}" step="0.01"><br>
+		<span th:errors="*{price}"></span><br>
+		Price:<input type="text" th:field="*{price}"><br> <!-- step="0.01" -->
+		<span th:errors="*{description}"></span><br>
 		Description:<br><textarea rows="10" cols="100" th:field="*{description}" placeholder="Best offer ever..."></textarea><br>
 		Provide images (Max 10MB):<br><input type="file" th:name="imageParam" accept="image/*" multiple/>
 		<button type="submit">Submit</button>

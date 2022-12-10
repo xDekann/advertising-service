@@ -22,6 +22,8 @@ import jakarta.persistence.OneToMany;
 
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -40,13 +42,22 @@ public class User {
 	private int id;
 	@Column(name="username")
 	@NonNull
+	@NotEmpty(message="Username must not be empty!")
+	@Size(min = 3, message="Must be at least 3 characters length!")
+	@Size(max = 45, message="Must be at most 45 characters length!")
 	private String username;
 	@Column(name="password")
 	@NonNull
+	@NotEmpty(message="Password field must not be empty!")
+	@Size(min = 4, message="Must be at least 4 characters length!")
+	@Size(max = 70, message="Must be at most 30 characters length!")
 	private String password;
 	@Column(name="enabled")
 	private boolean enabled;
 	@Column(name="reset_code")
+	@NotEmpty(message="Reset code field must not be empty!")
+	@Size(min = 4, message="Must be at least 4 characters length!")
+	@Size(max = 70, message="Must be at most 30 characters length!")
 	private String resetCode;
 	
 	@ManyToMany(fetch = FetchType.LAZY)

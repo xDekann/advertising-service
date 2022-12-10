@@ -16,6 +16,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -39,14 +45,24 @@ public class Offer {
 	private Timestamp dateOfCreation;
 	@Column(name="description")
 	@NonNull
+	@NotEmpty(message="Cannot be empty!")
+	@Size(min = 20, message="Must be at least 20 characters length, please provide other users some information!")
+	@Size(max = 1000, message="Limit of 1000 characters has been reached!")
 	private String description;
 	@Column(name="is_active")
 	private boolean isActive;
 	@Column(name="title")
 	@NonNull
+	@NotEmpty(message="Cannot be empty!")
+	@Size(min = 3, message="Must be at least 3 characters length!")
+	@Size(max = 45, message="Must be no more than 45 characters length!")
 	private String title;
 	@Column(name="price")
-	private double price;
+	@Digits(integer=6, fraction=2, message="Provide a correct price")
+	@NotNull(message="Provide a value")
+	@DecimalMin(value="1.00", message = "Price must be at least 1$")
+	@DecimalMax(value="100000.00", message = "Price must be no more than 100 000$")
+	private Double price;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="user_fk")

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,8 @@ import com.aservice.dao.AuthorityDao;
 import com.aservice.dao.UserDao;
 import com.aservice.entity.User;
 import com.aservice.entity.UserDetails;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/login")
@@ -54,8 +57,12 @@ public class LoginController {
 	}
 	
 	@PostMapping("/registerForm/creation")
-	public String createUser(@ModelAttribute("user") User user,
-			@ModelAttribute("userDetails") UserDetails userDetails) {
+	public String createUser(@Valid @ModelAttribute("user") User user, BindingResult bindUser,
+			@Valid @ModelAttribute("userDetails") UserDetails userDetails, BindingResult bindUserDetails) {
+		
+		if(bindUser.hasErrors() || bindUserDetails.hasErrors()) {
+			return "login-and-register/register";
+		}
 		
 		user.setEnabled(true);
 		user.setPassword(passwdEncoder.encode(user.getPassword()));

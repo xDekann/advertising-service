@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileSystemUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,6 +31,8 @@ import com.aservice.dao.UserDao;
 import com.aservice.entity.Offer;
 import com.aservice.entity.User;
 import com.aservice.util.UserUtil;
+
+import jakarta.validation.Valid;
 
 
 @Controller
@@ -69,8 +72,12 @@ public class MainController {
 	}
 	
 	@PostMapping("/creation/offer/creation")
-	public String createOffer(@ModelAttribute("offer") Offer offer,
+	public String createOffer(@Valid @ModelAttribute("offer") Offer offer,
+			BindingResult bindingResult, 
 			@RequestParam(value="imageParam", required = false) MultipartFile[] images) {
+		
+		if(bindingResult.hasErrors())
+			return "main/offer-form";
 		
 		// adding offer to the database
 		offer.setDateOfCreation(new Timestamp(System.currentTimeMillis()));
@@ -83,20 +90,21 @@ public class MainController {
 		offerDao.addOffer(offer);
 
 		// saving images on server
+		StringBuilder dirPath = new StringBuilder("src/main/resources/static/img/offer-images/"+dbUser.getId());
+		
+		// delete offer dir if exists (modify offer purposes)
+		Path offerDirPath = Path.of(dirPath.toString());
+		if(Files.exists(offerDirPath)) {
+			try {
+				FileSystemUtils.deleteRecursively(offerDirPath);
+			} catch (IOException ioException) {
+				ioException.printStackTrace();
+			}
+		}
+		
 		if(!images[0].getOriginalFilename().isEmpty()) {
-			StringBuilder dirPath = new StringBuilder("src/main/resources/static/img/offer-images/"+dbUser.getId());
 			new File(dirPath.toString()).mkdirs();
 			dirPath.append("/"+offer.getId());
-			
-			// delete offer dir if exists (modify offer purposes)
-			Path offerDirPath = Path.of(dirPath.toString());
-			if(Files.exists(offerDirPath)) {
-				try {
-					FileSystemUtils.deleteRecursively(offerDirPath);
-				} catch (IOException ioException) {
-					ioException.printStackTrace();
-				}
-			}
 			
 			new File(dirPath.toString()).mkdirs();
 			for(MultipartFile image : images) {
@@ -117,6 +125,6 @@ public class MainController {
 		
 		redirection.addFlashAttribute("upload", "fail");
 		
-		return "redirect:/main/creation/offer/form";
+		return "redirect:/main/";
 	}
 }
