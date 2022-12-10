@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.aservice.entity.Authority;
 import com.aservice.entity.User;
 
+@SuppressWarnings("serial")
 public class AdvertUserDetails implements UserDetails {
 
 	private User user;

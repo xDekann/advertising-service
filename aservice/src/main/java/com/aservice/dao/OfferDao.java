@@ -3,22 +3,16 @@ package com.aservice.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.provider.HibernateUtils;
 import org.springframework.stereotype.Repository;
 
 import com.aservice.entity.Offer;
 import com.aservice.entity.Subscription;
 import com.aservice.util.OfferListModifier;
-import com.aservice.util.UserUtil;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 
 @Repository
@@ -32,17 +26,24 @@ public class OfferDao {
 		Offer dbOffer = entityManager.merge(offer);
 		offer.setId(dbOffer.getId()); 
 	}
+	
+	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<Offer> getAllOffers(){
+		
 		List<Offer> dbOffers = null;
+		
 		try {
 			Query query = entityManager.createQuery("select o from Offer o left join fetch o.user", Offer.class);
 			dbOffers = (ArrayList<Offer>) query.getResultList();
 		}catch(NoResultException noResultException) {
 			noResultException.printStackTrace();
 		}
+		
 		return dbOffers;
 	}
+	
+	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<Offer> getPagedOffers(OfferListModifier modifier, boolean active, int loggedUserId){
 		
@@ -62,7 +63,6 @@ public class OfferDao {
 		}
 		
 		// main references initialization
-		//System.out.print(isFilterNull+"\n"+"\n"+filter+"\n"+orderAttr);
 		List<Offer> dbOffers = null;
 		Query query = null;
 		String queryText=null;
@@ -86,12 +86,10 @@ public class OfferDao {
 			// if filter and sort choosen
 			if(!isFilterNull && !filter.isEmpty()) {
 				query = entityManager.createQuery(queryText+" and o.title like "+"'%"+filter+"%'"+" order by o."+orderAttr+" ASC", Offer.class);
-				System.out.println("WAR1");
 			}
 			// if only sort chosen (if nothing is chosen, the sort is id by default)
 			else if(isFilterNull || filter.isEmpty()) {
 				query = entityManager.createQuery(queryText+" order by o."+orderAttr+" ASC", Offer.class);
-				System.out.println("WAR2");
 			}
 			
 			if(!wantOwn) query.setParameter("active", active);
@@ -111,12 +109,14 @@ public class OfferDao {
 		}catch(Exception exception) {
 			exception.printStackTrace();
 		}
+		
 		return dbOffers;
 	}
 	
 	@Transactional
 	public Offer getOfferById(int id) {
 		Offer offer = null;
+		
 		try {
 			Query query = entityManager.createQuery("from Offer o left join fetch o.user left join fetch o.subs where o.id=:givenid", Offer.class);
 			query.setParameter("givenid", id);
@@ -124,6 +124,7 @@ public class OfferDao {
 		}catch (NoResultException noResultException) {
 			noResultException.printStackTrace();
 		}
+		
 		return offer;
 	}
 	
@@ -135,15 +136,11 @@ public class OfferDao {
 	
 	@Transactional
 	public Subscription getSubbedOffer(int userId, int offerId) {
+		
 		Subscription dbSub = null;
+		
 		try {
 			Query query = 
-					/*
-					entityManager.createQuery("from Subscription s "
-											+ "join fetch s.offer o "
-											+ "join fetch s.user u "
-											+ "where u.id=:userId and o.id=:offerId", Subscription.class);
-					*/
 					entityManager.createQuery("from Subscription s "
 											  + "where s.user.id=:userId and s.offer.id=:offerId", Subscription.class);
 			query.setParameter("userId", userId);
@@ -154,12 +151,15 @@ public class OfferDao {
 		}catch(Exception exception) {
 			exception.printStackTrace();
 		}
+		
 		return dbSub;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<Subscription> getAllSubsOfOffer(int offerId){
 		List<Subscription> dbSubs = null;
+		
 		try {
 			Query query = entityManager.createQuery("from Subscription s "
 													+"where s.offer.id=:offerId", Subscription.class);
@@ -171,6 +171,7 @@ public class OfferDao {
 		}catch(Exception exception) {
 			exception.printStackTrace();
 		}
+		
 		return dbSubs;
 	}
 	

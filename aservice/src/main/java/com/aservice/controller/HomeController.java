@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController {
-	@GetMapping("/") // jak ktos wpisze samo localhost, to od razu odsyla do metody w LoginControllerze
+	@GetMapping("/")
 	public String showStartingPage() {
 		return "redirect:/login/start";
 	}

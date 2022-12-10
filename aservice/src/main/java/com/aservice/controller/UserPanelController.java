@@ -1,8 +1,6 @@
 package com.aservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,38 +43,40 @@ public class UserPanelController {
 		User userToUpdate = userDao.getUserByUsername(UserUtil.getLoggedUserName());
 		if(!passwd.equals(passwdC)
 				|| !passwdEncoder.matches(passwdO, userToUpdate.getPassword())) {
-			System.out.println("Failed to change password!");
 			model.addAttribute("credentials","fail");
 		}else {
 			model.addAttribute("credentials","success");
 			userToUpdate.setPassword(passwdEncoder.encode(passwdC));
 			userDao.addUser(userToUpdate);
-			System.out.println("Password change success!");
 		}
 		
 		return "user-panel/password-change-form";
 	}
 	@GetMapping("/modify/form")
 	public String modifyForm(Model model) {
+		
 		User userToUpdate = userDao.getUserByUsername(UserUtil.getLoggedUserName());
+		
 		model.addAttribute("userDetails",userToUpdate.getUserDetails());
+		
 		return "user-panel/modify-account";
 	}
 	
 	@PostMapping("/modify")
 	public String modifyAccount(@ModelAttribute("userDetails") UserDetails userD,
 								@RequestParam("passwdC") String passwordC, Model model) {
+		
 		User userToUpdate = userDao.getUserByUsername(UserUtil.getLoggedUserName());
+		
 		if(!passwdEncoder.matches(passwordC, userToUpdate.getPassword())) {
 			model.addAttribute("credentials","fail");
 			model.addAttribute("userDetails",userToUpdate.getUserDetails());
-			System.out.println("Failed to modify!");
 			return "user-panel/modify-account";
 		}else {
 			userToUpdate.connectUserDetails(userD);
 			userDao.addUser(userToUpdate);
-			System.out.println("Succeeded to update!");
 		}
+		
 		return "redirect:/user/panel";
 	}
 	
@@ -88,33 +88,29 @@ public class UserPanelController {
 	@PostMapping("/delete")
 	public String deleteAccount(@RequestParam("passwd") String password,
 								@RequestParam("code") String code, Model model) {
+		
 		User userToDelete = userDao.getUserByUsername(UserUtil.getLoggedUserName());
-		System.out.println(password+" "+code+" "+userToDelete.getPassword()+" "+userToDelete.getResetCode());
+		
 		if(!passwdEncoder.matches(password, userToDelete.getPassword())
 				|| !passwdEncoder.matches(code, userToDelete.getResetCode())) {
-			System.out.println("Failed to delete user!");
 			model.addAttribute("credentials","fail");
 			return "user-panel/delete-account";
-		}else {
+		}else
 			userDao.deleteUser(userToDelete);
-			return "redirect:/logout";
-		}
+
+		return "redirect:/logout";
 	}
 	
 	@GetMapping("/viewprofile/picked/{userId}")
 	public String viewUserPickedProfile(@PathVariable("userId") int userId, Model model) {
 		
-		System.out.println("IN PROFILE ID: "+userId);
-		
 		User pickedUser = userDao.getUserById(userId);
 		String lastLogin = UserUtil.getDateToMin(pickedUser, pickedUser.getUserDetails().getLastLogin());
-		
 		
 		model.addAttribute("pickedUser", pickedUser);
 		model.addAttribute("pickedUserD", pickedUser.getUserDetails());
 		model.addAttribute("lastLogin", lastLogin);
 		
 		return "user-panel/user-picked-profile";
-		
 	}
 }

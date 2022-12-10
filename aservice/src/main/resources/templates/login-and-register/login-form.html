@@ -1,7 +1,6 @@
 <!DOCTYPE HTML>
 <HTML lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -9,7 +8,7 @@
 </head>
 <body>
 	<h3>Login page</h3>
-	<form th:action="@{/authenticateUser}" method="POST"> <!--  po submicie formularza probuje przejsc do /authenticateUser -->    
+	<form th:action="@{/authenticateUser}" method="POST">   
 		<label for="username">Username</label>
 		<input type="text" placeholder="Username" name="username" th:required="required" id="username"><br>
 		<label for="password">Password</label>

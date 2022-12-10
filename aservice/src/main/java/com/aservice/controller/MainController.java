@@ -37,18 +37,18 @@ import com.aservice.util.UserUtil;
 public class MainController {
 	
 	@Autowired
-	private UserDao userDAO;
+	private UserDao userDao;
 	@Autowired
-	private OfferDao offerDAO;
+	private OfferDao offerDao;
 	
 
-	@GetMapping("/") // po udanym zalogowaniu sie wchodzimy do tej metody (zdefiniowane w securityconfig)
+	@GetMapping("/")
 	public String loggedIn(Model model) {
 		
-		User userToUpdate = userDAO.getUserByUsername(UserUtil.getLoggedUserName());
+		User userToUpdate = userDao.getUserByUsername(UserUtil.getLoggedUserName());
 		model.addAttribute("givenName", UserUtil.getLoggedUserName());
 		userToUpdate.getUserDetails().setLastLogin(new Timestamp(System.currentTimeMillis()));
-		userDAO.addUser(userToUpdate);
+		userDao.addUser(userToUpdate);
 		
 		return "main/home";
 	}
@@ -58,9 +58,10 @@ public class MainController {
 								  @PathVariable("userId") int userId, Model model) {
 		
 		Offer offer = new Offer();
+		
 		// reference update for modify purpose
-		if(userId==userDAO.getUserByUsername(UserUtil.getLoggedUserName()).getId()) {
-			offer = offerDAO.getOfferById(offerId);
+		if(userId==userDao.getUserByUsername(UserUtil.getLoggedUserName()).getId()) {
+			offer = offerDao.getOfferById(offerId);
 		}
 		model.addAttribute("offer", offer);
 		
@@ -71,16 +72,15 @@ public class MainController {
 	public String createOffer(@ModelAttribute("offer") Offer offer,
 			@RequestParam(value="imageParam", required = false) MultipartFile[] images) {
 		
-		
 		// adding offer to the database
 		offer.setDateOfCreation(new Timestamp(System.currentTimeMillis()));
 		offer.setActive(true);
 		Authentication userInfo = SecurityContextHolder.getContext().getAuthentication();
 		String username = userInfo.getName();
-		User dbUser = userDAO.getUserByUsername(username);
+		User dbUser = userDao.getUserByUsername(username);
 		dbUser.addOffer(offer);
-		offer.setSubs(offerDAO.getAllSubsOfOffer(offer.getId()));
-		offerDAO.addOffer(offer);
+		offer.setSubs(offerDao.getAllSubsOfOffer(offer.getId()));
+		offerDao.addOffer(offer);
 
 		// saving images on server
 		if(!images[0].getOriginalFilename().isEmpty()) {
@@ -114,7 +114,9 @@ public class MainController {
 
 	@ExceptionHandler(MaxUploadSizeExceededException.class)
 	public String maxUploadExceptionHandler(RedirectAttributes redirection) {
+		
 		redirection.addFlashAttribute("upload", "fail");
+		
 		return "redirect:/main/creation/offer/form";
 	}
 }

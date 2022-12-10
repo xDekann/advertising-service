@@ -23,6 +23,7 @@ public class AuthorityDao {
 	@Transactional
 	public Authority getAuthorityByName(String authorityName) {
 		Authority authority = null;
+		
 		try {
 			Query query = entityManager.createQuery("FROM Authority a LEFT JOIN FETCH a.users where a.authorityName=:n",Authority.class);
 			query.setParameter("n", authorityName);
@@ -30,6 +31,7 @@ public class AuthorityDao {
 		}catch(NoResultException noResultException) {
 			noResultException.printStackTrace();
 		}
+		
 		return authority;
 	}
 }

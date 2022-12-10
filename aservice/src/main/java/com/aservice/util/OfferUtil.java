@@ -3,7 +3,6 @@ package com.aservice.util;
 import java.sql.Timestamp;
 
 import com.aservice.entity.Offer;
-import com.aservice.entity.User;
 
 public class OfferUtil {
 	

@@ -17,6 +17,7 @@ public class AdvertUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
 		User user = userDAO.getUserByUsername(username);
+		
 		if(user == null) {
 			throw new UsernameNotFoundException("User has not been found! - Spring security");
 		}

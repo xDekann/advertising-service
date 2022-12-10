@@ -32,9 +32,6 @@ import com.aservice.util.OfferListModifier;
 import com.aservice.util.OfferUtil;
 import com.aservice.util.UserUtil;
 
-import jakarta.servlet.http.HttpServletRequest;
-
-
 @Controller
 @RequestMapping("/offer")
 public class OfferController {
@@ -49,9 +46,11 @@ public class OfferController {
 	@GetMapping("/list/{subbed}/{ownOffers}")
 	public String listMenuSubbed(@PathVariable("subbed") boolean subbed,
 								@PathVariable("ownOffers") boolean ownOffers, Model model) {
+		
 		OfferListModifier listModifier = new OfferListModifier(subbed, ownOffers);
-		System.out.println(listModifier.getWantSubbedList());
+		
 		model.addAttribute("listModifier",listModifier);
+		
 		return "offer/offer-menu";
 	}
 	
@@ -180,14 +179,12 @@ public class OfferController {
 	@GetMapping("/unfollow/{id}")
 	public String removeOfferFromSubList(@PathVariable("id") int offerId) {
 		
-		Offer pickedOffer = offerDao.getOfferById(offerId);
 		User currentUser = userDao.getUserByUsername(UserUtil.getLoggedUserName());
 		
 		Subscription dbSub = offerDao.getSubbedOffer(currentUser.getId(), offerId);
 		offerDao.deleteSub(dbSub);
 		
 		return "main/home";
-		
 	}
 	
 	@GetMapping("/delete/form/{offerId}/{offerOwnerId}/{failedCredentials}")
@@ -198,11 +195,6 @@ public class OfferController {
 		// in case of unauthorized deletion attempt
 		if(ownerId!=userDao.getUserByUsername(UserUtil.getLoggedUserName()).getId())
 			return "redirect:/main/";
-		
-		/*
-		Offer offerToDelete = offerDAO.getOfferById(offerId);
-		offerDAO.deleteOffer(offerToDelete);
-		*/
 		
 		OfferDeletionIdsKeeper ids = new OfferDeletionIdsKeeper(offerId, ownerId);
 		
@@ -242,6 +234,7 @@ public class OfferController {
 	@GetMapping("/disable/{offerId}/{offerOwnerId}")
 	public String disableOffer(@PathVariable("offerId") int offerId,
 							   @PathVariable("offerOwnerId") int ownerId){
+		
 		if(ownerId!=userDao.getUserByUsername(UserUtil.getLoggedUserName()).getId())
 			return "redirect:/main/";
 		
@@ -250,12 +243,12 @@ public class OfferController {
 		offerDao.addOffer(dbOffer);
 
 		return "redirect:/main/";
-		
 	}
 	
 	@GetMapping("/enable/{offerId}/{offerOwnerId}")
 	public String enableOffer(@PathVariable("offerId") int offerId,
 							   @PathVariable("offerOwnerId") int ownerId){
+		
 		if(ownerId!=userDao.getUserByUsername(UserUtil.getLoggedUserName()).getId())
 			return "redirect:/main/";
 		
@@ -264,6 +257,5 @@ public class OfferController {
 		offerDao.addOffer(dbOffer);
 
 		return "redirect:/main/";
-		
 	}
 }

@@ -1,14 +1,9 @@
 package com.aservice.util;
 
-import java.util.Comparator;
 
-import com.aservice.entity.Offer;
 import com.aservice.util.OfferUtil.OfferConst;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Setter
@@ -43,6 +38,7 @@ public class OfferListModifier {
 	public void setShowClicked() {
 		isShowClicked=true;
 	}
+	
 	// Thymeleaf getters/setters
 	public boolean getIsShowClicked() {
 		return isShowClicked;

@@ -16,7 +16,6 @@ import com.aservice.dao.AuthorityDao;
 import com.aservice.dao.UserDao;
 import com.aservice.entity.User;
 import com.aservice.entity.UserDetails;
-import com.aservice.util.UserUtil;
 
 @Controller
 @RequestMapping("/login")
@@ -25,9 +24,9 @@ public class LoginController {
 	@Autowired
 	private PasswordEncoder passwdEncoder;
 	@Autowired
-	private AuthorityDao authorityDAO;
+	private AuthorityDao authorityDao;
 	@Autowired
-	private UserDao userDAO;
+	private UserDao userDao;
 	
 	@GetMapping("/start")
 	public String showStartingPage() {
@@ -58,20 +57,15 @@ public class LoginController {
 	public String createUser(@ModelAttribute("user") User user,
 			@ModelAttribute("userDetails") UserDetails userDetails) {
 		
-		System.out.println("Proces rejestracji");
-		
 		user.setEnabled(true);
 		user.setPassword(passwdEncoder.encode(user.getPassword()));
 		user.setResetCode(passwdEncoder.encode(user.getResetCode()));
 
-		user.addAuthority(authorityDAO.getAuthorityByName("ROLE_USER"));
+		user.addAuthority(authorityDao.getAuthorityByName("ROLE_USER"));
 		userDetails.setLastLogin(new Timestamp(System.currentTimeMillis()));
 		user.connectUserDetails(userDetails);
 		userDetails.connectUser(user);
-		userDAO.addUser(user);
-		
-		
-		System.out.println("Proces rejestracji zakonczony");
+		userDao.addUser(user);
 		
 		return "redirect:/login/start";
 	}
@@ -86,17 +80,17 @@ public class LoginController {
 								@RequestParam("code") String code,
 								@RequestParam("passwd") String password, Model model) 
 	{
-		System.out.println(username+code+password);
-		User userToUpdate = userDAO.getUserByUsername(username);
+		User userToUpdate = userDao.getUserByUsername(username);
+		
 		if(!passwdEncoder.matches(code, userToUpdate.getResetCode()) 
 				|| userToUpdate==null) {
 			model.addAttribute("credentials", "fail");
 		}else {
 			userToUpdate.setPassword(passwdEncoder.encode(password));
-			userDAO.addUser(userToUpdate);
+			userDao.addUser(userToUpdate);
 			model.addAttribute("credentials", "success");
-			System.out.println("Reset successful");
 		}
+		
 		return "login-and-register/password-form";
 	}
 }
