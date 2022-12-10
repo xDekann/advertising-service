@@ -50,14 +50,14 @@ public class User {
 	@NonNull
 	@NotEmpty(message="Password field must not be empty!")
 	@Size(min = 4, message="Must be at least 4 characters length!")
-	@Size(max = 70, message="Must be at most 30 characters length!")
+	@Size(max = 70, message="Must be at most 70 characters length!")
 	private String password;
 	@Column(name="enabled")
 	private boolean enabled;
 	@Column(name="reset_code")
 	@NotEmpty(message="Reset code field must not be empty!")
 	@Size(min = 4, message="Must be at least 4 characters length!")
-	@Size(max = 70, message="Must be at most 30 characters length!")
+	@Size(max = 70, message="Must be at most 70 characters length!")
 	private String resetCode;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
