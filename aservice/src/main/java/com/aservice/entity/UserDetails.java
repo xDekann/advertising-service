@@ -52,7 +52,7 @@ public class UserDetails {
 	@Column(name="city")
 	@NonNull
 	@NotEmpty(message="City must not be empty!")
-	@Size(min = 3, message="Must be at least 1 characters length!")
+	@Size(min = 3, message="Must be at least 3 characters length!")
 	@Size(max = 45, message="Must be at most 45 characters length!")
 	private String city;
 	@Column(name="phone_number")
