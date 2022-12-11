@@ -58,9 +58,15 @@ public class LoginController {
 	
 	@PostMapping("/registerForm/creation")
 	public String createUser(@Valid @ModelAttribute("user") User user, BindingResult bindUser,
-			@Valid @ModelAttribute("userDetails") UserDetails userDetails, BindingResult bindUserDetails) {
+			@Valid @ModelAttribute("userDetails") UserDetails userDetails, BindingResult bindUserDetails, Model model) {
 		
 		if(bindUser.hasErrors() || bindUserDetails.hasErrors()) {
+			return "login-and-register/register";
+		}
+		
+		if(userDao.getUserByEmail(userDetails.getEmail())!=null 
+				|| userDao.getUserByUsername(user.getUsername())!=null) {
+			model.addAttribute("userExists", "exists");
 			return "login-and-register/register";
 		}
 		

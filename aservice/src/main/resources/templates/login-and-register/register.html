@@ -9,6 +9,7 @@
 <body>
 	<h3>Register</h3>
 	<form th:action="@{/login/registerForm/creation}" th:object="${user}" method="POST">
+		<span th:if="${userExists}=='exists'">User with given username or email exists</span>
 		<span th:errors="*{username}"></span><br>
 		Username:<input type="text" th:field="*{username}"><br>
 		<span th:errors="*{password}"></span><br>

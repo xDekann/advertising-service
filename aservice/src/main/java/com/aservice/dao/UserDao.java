@@ -64,4 +64,19 @@ public class UserDao {
 			exception.printStackTrace();
 		}
 	}
+	
+	@Transactional
+	public User getUserByEmail(String email) {
+		User user = null;
+		
+		try {
+			Query query = entityManager.createQuery("select u from User u left join fetch u.roles left join fetch u.userDetails d where d.email=:userEmail",User.class);
+			query.setParameter("userEmail", email);
+			user = (User) query.getSingleResult();
+		}catch(NoResultException noResultException) {
+			noResultException.printStackTrace();
+		}
+		
+		return user;
+	}
 }
