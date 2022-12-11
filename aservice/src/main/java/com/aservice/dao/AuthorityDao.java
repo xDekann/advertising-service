@@ -12,8 +12,8 @@ import jakarta.transaction.Transactional;
 
 @Repository
 public class AuthorityDao {
-	private EntityManager entityManager;
 	
+	private EntityManager entityManager;
 
 	@Autowired
 	public AuthorityDao(EntityManager entityManager) {

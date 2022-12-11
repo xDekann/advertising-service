@@ -7,8 +7,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -93,17 +95,17 @@ public class MainController {
 		StringBuilder dirPath = new StringBuilder("src/main/resources/static/img/offer-images/"+dbUser.getId());
 		
 		// delete offer dir if exists (modify offer purposes)
-		Path offerDirPath = Path.of(dirPath.toString());
+		Path offerDirPath = Path.of(dirPath.toString()+"/"+offer.getId());
 		if(Files.exists(offerDirPath)) {
 			try {
-				FileSystemUtils.deleteRecursively(offerDirPath);
+				FileUtils.deleteDirectory(new File(offerDirPath.toString()));
 			} catch (IOException ioException) {
 				ioException.printStackTrace();
 			}
 		}
 		
 		if(!images[0].getOriginalFilename().isEmpty()) {
-			new File(dirPath.toString()).mkdirs();
+			new File(dirPath.toString()).mkdir();
 			dirPath.append("/"+offer.getId());
 			
 			new File(dirPath.toString()).mkdirs();

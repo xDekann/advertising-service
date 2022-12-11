@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +89,7 @@ public class OfferController {
 				listModifier.setComparingMethod(task);
 				break;
 			}
-			return "redirect:/offer/list";
+			return "redirect:/main/";
 		}
 
 		int currentLoggedUserId = userDao.getUserByUsername(UserUtil.getLoggedUserName()).getId();
@@ -103,9 +104,8 @@ public class OfferController {
 			listModifier.setIsNext(false);
 		listModifier.setStartingRow(listModifier.getStartingRow()-listModifier.getLimit());
 		
-		
 		// only one image per offer supported, read that image and sort map by offer id
-		if(dbOffers==null) return "redirect:/offer/list";
+		if(dbOffers==null) dbOffers = new ArrayList<>();
 		Map<Offer,String> offers = new LinkedHashMap<>();
 		dbOffers.forEach(offer->{
 			File directory = new File("src/main/resources/static/img/offer-images/"

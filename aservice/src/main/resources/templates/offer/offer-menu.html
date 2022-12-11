@@ -44,13 +44,13 @@
 		<button th:if="${listModifier.isShowClicked}==false" type="submit">Show</button>
 		
 		<button type="submit" th:formaction="@{'/offer/list/'+${listModifier.wantSubbedList}+'/'+${listModifier.wantOwnOffers}}">Refresh</button>
-		<a th:href="@{/main/}">Back to main panel</a> <!--  dorobic role, jak niezalogowany to do landing -->
+		<a th:href="@{/main/}">Back to main panel</a>
 	<table>
 		<tr>
-			<th><button id="textButton" type="submit" th:formaction="@{/offer/list/viewAll/id}">ID</button></th>
-			<th><button id="textButton" type="submit" th:formaction="@{/offer/list/viewAll/title}">Title</button></th>
-			<th><button id="textButton" type="submit" th:formaction="@{/offer/list/viewAll/dateOfCreation}">Added</button></th>
-			<th><button id="textButton" type="submit" th:formaction="@{/offer/list/viewAll/price}">Price</button></th>
+			<th><button id="textButton" type="submit" th:formaction="@{/offer/list/view/id}">ID</button></th>
+			<th><button id="textButton" type="submit" th:formaction="@{/offer/list/view/title}">Title</button></th>
+			<th><button id="textButton" type="submit" th:formaction="@{/offer/list/view/dateOfCreation}">Added</button></th>
+			<th><button id="textButton" type="submit" th:formaction="@{/offer/list/view/price}">Price</button></th>
 			<th><span id="textNoButton">Author</span></th>
 			<th><span id="textNoButton">Picture</span></th>
 			<th></th>
