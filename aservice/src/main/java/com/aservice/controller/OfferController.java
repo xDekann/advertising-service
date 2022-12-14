@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileSystemUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,12 +27,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.aservice.dao.OfferDao;
 import com.aservice.dao.UserDao;
 import com.aservice.entity.Offer;
+import com.aservice.entity.OfferReport;
 import com.aservice.entity.Subscription;
 import com.aservice.entity.User;
 import com.aservice.util.OfferDeletionIdsKeeper;
 import com.aservice.util.OfferListModifier;
 import com.aservice.util.OfferUtil;
 import com.aservice.util.UserUtil;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/offer")
@@ -257,5 +261,39 @@ public class OfferController {
 		offerDao.addOffer(dbOffer);
 
 		return "redirect:/main/";
+	}
+	
+	@GetMapping("/report/{id}")
+	public String reportOffer(@PathVariable("id") int offerId, Model model) {
+		if(offerDao.getOfferReportsAmount(offerId)>=OfferUtil.OfferConst.OFFER_REPORT_LIMIT.getValue()) {
+			model.addAttribute("info", "reportLimit");
+			return "main/home";
+		}
+		
+		OfferReport newReport = new OfferReport();
+		model.addAttribute("report", newReport);
+		model.addAttribute("offerId", offerId);
+		
+		return "offer/report-offer";
+	}
+	
+	@PostMapping("report/submit")
+	public String reportSubmit(@RequestParam("offerId") int offerId,
+							   @Valid @ModelAttribute("report") OfferReport offerReport,
+							   BindingResult bindReport, Model model) {
+		if(bindReport.hasErrors()) {
+			model.addAttribute("offerId", offerId);
+			return "offer/report-offer";
+		}
+		
+		Offer offerToReport = offerDao.getOfferById(offerId);
+		offerToReport.addReport(offerReport);
+		offerReport.setOffer(offerToReport);
+		offerDao.addOffer(offerToReport);
+		
+		model.addAttribute("info", "reportSuccess");
+		
+		return "main/home";
+		
 	}
 }

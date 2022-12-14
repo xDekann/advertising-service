@@ -123,10 +123,12 @@ public class MainController {
 	}
 
 	@ExceptionHandler(MaxUploadSizeExceededException.class)
-	public String maxUploadExceptionHandler(RedirectAttributes redirection) {
+	public String maxUploadExceptionHandler(Model model) {
 		
-		redirection.addFlashAttribute("upload", "fail");
+		model.addAttribute("info", "uploadFail");
+		//redirection.addFlashAttribute("upload", "fail");
 		
-		return "redirect:/main/";
+		//return "redirect:/main/";
+		return "main/home";
 	}
 }

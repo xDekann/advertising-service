@@ -192,4 +192,21 @@ public class OfferDao {
 			exception.printStackTrace();
 		}
 	}
+	
+	@Transactional
+	public long getOfferReportsAmount(int offerId) {
+		long reportAmount = 0;
+		
+		try {
+			Query query = entityManager.createQuery("select count(*) from OfferReport ort where ort.offer.id=:offerId");
+			query.setParameter("offerId", offerId);
+			reportAmount = (Long) query.getSingleResult();
+		}catch (NoResultException noResultException) {
+			noResultException.printStackTrace();
+		}catch (Exception exception) {
+			exception.printStackTrace();
+		}
+		
+		return reportAmount;
+	}
 }

@@ -73,6 +73,11 @@ public class Offer {
 			   orphanRemoval = true)
 	private List<Subscription> subs;
 	
+	@OneToMany(mappedBy="offer",
+			   cascade = {CascadeType.MERGE, CascadeType.REMOVE},
+			   orphanRemoval = true)
+	private List<OfferReport> reports;
+	
 	public void connectUser(User user) {
 		this.user=user;
 	}
@@ -80,6 +85,11 @@ public class Offer {
 	public void addSub(Subscription subscription) {
 		if(subs==null) subs = new ArrayList<>();
 		subs.add(subscription);
+	}
+	
+	public void addReport(OfferReport report) {
+		if(reports==null) reports = new ArrayList<>();
+		reports.add(report);
 	}
 
 	@Override

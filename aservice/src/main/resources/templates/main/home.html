@@ -20,13 +20,18 @@
 	
 	<div class="list-group align-items-center">
 		<a th:href="@{/user/panel}" class="list-group-item list-group-item-action gap-3 py-3 w-25">Show user panel</a>
-		<a th:href="@{/main/creation/offer/form/0/0}" class="list-group-item list-group-item-action gap-3 py-3 w-25 mt-2">Create your offer</a>
-		<a th:href="@{'/offer/list/'+${false}+'/'+${false}}" class="list-group-item list-group-item-action gap-3 py-3 w-25 mt-2">View offers</a>
+		<a th:href="@{/main/creation/offer/form/0/0}" class="list-group-item list-group-item-action gap-3 py-3 w-25 mt-2 border-top">Create your offer</a>
+		<a th:href="@{'/offer/list/'+${false}+'/'+${false}}" class="list-group-item list-group-item-action gap-3 py-3 w-25 mt-2 border-top">View offers</a>
 	</div>
-	<span th:if="${upload}=='fail'">
+	<span th:if="${info}=='uploadFail'">
 		<p class="displayFont"> Offer upload has failed, exceeded server assigned image size limit </p>
 	</span>
-
+	<span th:if="${info}=='reportLimit'">
+		<p class="displayFont"> The offer has already received multiple reports - limit exceeded</p>
+	</span>
+		<span th:if="${info}=='reportSuccess'">
+		<p class="displayFont"> Offer has been successfully reported</p>
+	</span>
 	<form th:action="@{/logout}" method="POST">
 		<input type="submit" class="w-25 btn btn-lg btn-primary mt-3" value="Logout">
 	</form>

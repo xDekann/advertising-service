@@ -7,7 +7,8 @@ import com.aservice.entity.Offer;
 public class OfferUtil {
 	
 	public enum OfferConst{
-		ROWS_PER_PAGE(4);
+		ROWS_PER_PAGE(4),
+		OFFER_REPORT_LIMIT(2);
 
 		private final int value;
 		
