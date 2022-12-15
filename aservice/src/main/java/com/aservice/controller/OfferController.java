@@ -30,9 +30,11 @@ import com.aservice.entity.Offer;
 import com.aservice.entity.OfferReport;
 import com.aservice.entity.Subscription;
 import com.aservice.entity.User;
+import com.aservice.util.ListModifier;
 import com.aservice.util.OfferDeletionIdsKeeper;
 import com.aservice.util.OfferListModifier;
 import com.aservice.util.OfferUtil;
+import com.aservice.util.SharedUtil;
 import com.aservice.util.UserUtil;
 
 import jakarta.validation.Valid;
@@ -52,7 +54,7 @@ public class OfferController {
 	public String listMenuSubbed(@PathVariable("subbed") boolean subbed,
 								@PathVariable("ownOffers") boolean ownOffers, Model model) {
 		
-		OfferListModifier listModifier = new OfferListModifier(subbed, ownOffers);
+		ListModifier listModifier = new OfferListModifier(subbed, ownOffers);
 		
 		model.addAttribute("listModifier",listModifier);
 		
@@ -65,7 +67,7 @@ public class OfferController {
 								Model model) {
 		
 		// if thymeleaf parses object with comma at the beginning
-		if(OfferUtil.checkIfFilterValid(listModifier.getFilter()) && listModifier.getFilter().startsWith(",")) {
+		if(SharedUtil.checkIfFilterValid(listModifier.getFilter()) && listModifier.getFilter().startsWith(",")) {
 			listModifier.setFilter(listModifier.getFilter().substring(1));
 		}
 		

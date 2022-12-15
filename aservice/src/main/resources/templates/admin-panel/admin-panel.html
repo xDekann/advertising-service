@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Admin panel</title>
+</head>
+<body>
+	<p>Admin panel</p>
+
+	<a th:href="@{/login/registerForm}">Create new user</a><br>
+	<a th:href="@{/admin/showusers}">User list</a><br>
+
+	<a th:href="@{/main/}">Back</a> 
+
+</body>
+</html>

@@ -167,7 +167,6 @@ public class OfferDao {
 			dbSubs = query.getResultList();
 		}catch (NoResultException noResultException) {
 			noResultException.printStackTrace();
-			return null;
 		}catch(Exception exception) {
 			exception.printStackTrace();
 		}

@@ -1,5 +1,9 @@
 package com.aservice.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -33,5 +37,21 @@ public class AuthorityDao {
 		}
 		
 		return authority;
+	}
+	
+	@Transactional
+	public List<Authority> getAllAuthorities(){
+		List<Authority> auths = null;
+		
+		try {
+			Query query = entityManager.createQuery("FROM Authority a", Authority.class);
+			auths = query.getResultList();
+		}catch(NoResultException noResultException) {
+			noResultException.printStackTrace();
+		}catch (Exception exception) {
+			exception.printStackTrace();
+		}
+		
+		return auths;
 	}
 }

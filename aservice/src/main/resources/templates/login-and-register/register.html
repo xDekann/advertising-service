@@ -84,7 +84,18 @@
 							<input type="text" th:field="*{phoneNumber}" class="form-control" id="phonenumber" placeholder="Phone Number" required="">
 							<div th:errors="*{phoneNumber}"/>
 						</div>
-
+						
+						<div th:object="${auths}" sec:authorize="hasRole('ROLE_ADMIN')">
+							<span class="form-check form-check-inline ml-2 mb-2" th:each="auth : ${auths}">
+								<div th:if="${auth.authorityName} == 'ROLE_ADMIN'">
+									<input class="form-check-input" type="checkbox" th:name="auths" th:text="Admin" th:value="${auth.authorityName}">
+								</div>
+								<div th:if="${auth.authorityName} == 'ROLE_USER'">
+									<input class="form-check-input" type="checkbox" th:name="auths" th:text="User" th:value="${auth.authorityName}">
+								</div>
+							</span>
+						</div>
+						
 					</div>
 
 					<hr class="my-4">

@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  	<style>
+        #textButton{
+            background:none; 
+            border:none;
+            font-size:12px;
+            font-family: helvetica;
+            text-decoration: underline;
+  			cursor: pointer;
+        }
+        
+        #textNoButton{
+        	font-size: 12px;
+        	text-decoration: none;
+        	font-weight: normal;
+        	font-family: helvetica;
+        }
+    </style>
+
+	<title>User list</title>
+</head>
+<body>
+	<span th:if="${info}=='deleted'">Successfully deleted user</span>
+	<span th:if="${info}=='edited'">Successfully edited user</span>
+	<form th:action="@{/admin/list/view/show}" th:object="${listModifier}" method="GET">
+		<input type="hidden" th:field="*{isShowClicked}">
+		<input type="hidden" th:field="*{isNext}">
+		<input type="hidden" th:field="*{previousPage}">
+		<input type="hidden" th:field="*{currentPage}">
+		<input type="hidden" th:field="*{filter}">
+		<input type="hidden" th:field="*{startingRow}">
+		<input type="hidden" th:field="*{comparingMethod}">
+		
+		<span th:if="${listModifier.filter}==null">
+		Username: <input type="text" th:field="*{filter}"><br>
+		</span>
+		
+		<button th:if="${listModifier.isShowClicked}==false" type="submit">Show</button>
+		
+		<button type="submit" th:formaction="@{/admin/showusers}">Refresh</button>
+		<a th:href="@{/admin/panel}">Back to admin panel</a>
+	<table>
+		<tr>
+			<th><button id="textButton" type="submit" th:formaction="@{/admin/list/view/id}">ID</button></th>
+			<th><button id="textButton" type="submit" th:formaction="@{/admin/list/view/username}">Username</button></th>
+			<th><span id="textNoButton">Roles</span></th>
+			<th></th>
+		</tr>
+		<tr th:each="user : ${users}">
+			<td th:text="${user.id}"></td>
+			<td th:text="${user.username}"></td>
+			<td> 
+				<span th:each="role : ${user.roles}">
+					<span th:text="${#strings.toLowerCase(#strings.substring(role.authorityName,5,role.authorityName.length()))}+' '"></span>
+				</span>
+			</td>
+			<td>
+				<a th:href="@{'/admin/user/delete/form/'+${user.id}}">Delete account/</a>
+				<a th:href="@{'/admin/user/editpasswd/form/'+${user.id}}">Change password/</a>
+			</td>
+		</tr>
+	</table><br>
+	
+	<span th:if="${listModifier.isShowClicked}">
+		<button th:if="${listModifier.previousPage}>0" type="submit" th:formaction="@{/admin/list/view/left}">&larr;</button>
+		
+		<span th:text="${'Page: '+listModifier.currentPage}"></span>
+		
+		<button th:if="${listModifier.isNext}" type="submit" th:formaction="@{/admin/list/view/right}">&rarr;</button>
+	</span>
+	</form>
+	
+</body>
+</html>

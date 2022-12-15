@@ -22,6 +22,7 @@
 		<a th:href="@{/user/panel}" class="list-group-item list-group-item-action gap-3 py-3 w-25">Show user panel</a>
 		<a th:href="@{/main/creation/offer/form/0/0}" class="list-group-item list-group-item-action gap-3 py-3 w-25 mt-2 border-top">Create your offer</a>
 		<a th:href="@{'/offer/list/'+${false}+'/'+${false}}" class="list-group-item list-group-item-action gap-3 py-3 w-25 mt-2 border-top">View offers</a>
+		<a th:href="@{/admin/panel}" sec:authorize="hasRole('ROLE_ADMIN')" class="list-group-item list-group-item-danger gap-3 py-3 w-25 mt-2 border-top">Admin panel</a>
 	</div>
 	<span th:if="${info}=='uploadFail'">
 		<p class="displayFont"> Offer upload has failed, exceeded server assigned image size limit </p>

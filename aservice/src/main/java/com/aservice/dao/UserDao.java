@@ -1,9 +1,15 @@
 package com.aservice.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.aservice.entity.Offer;
 import com.aservice.entity.User;
+import com.aservice.util.OfferListModifier;
+import com.aservice.util.UserListModifier;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -25,7 +31,7 @@ public class UserDao {
 		User user = null;
 		
 		try {
-			Query query = entityManager.createQuery("select u from User u left join fetch u.roles left join fetch u.userDetails where u.username=:u",User.class);
+			Query query = entityManager.createQuery("select u from User u left join fetch u.roles left join fetch u.userDetails left join fetch u.offers where u.username=:u",User.class);
 			query.setParameter("u", username);
 			user = (User) query.getSingleResult();
 		}catch(NoResultException noResultException) {
@@ -78,5 +84,54 @@ public class UserDao {
 		}
 		
 		return user;
+	}
+	
+	@Transactional
+	public List<User> getPagedUsers(UserListModifier modifier){
+		
+		String filter = modifier.getFilter();
+		String orderAttr = modifier.getComparingMethod();
+		int startingRow = modifier.getStartingRow();
+		int amountOfRows = modifier.getLimit();
+		
+		// filter check 
+		boolean isFilterNull=false;
+		try {
+			filter.isEmpty();
+		}catch(NullPointerException nullPointerException) {
+			isFilterNull=true;
+		}
+		
+		// main references initialization
+		List<User> dbUsers = null;
+		Query query = null;
+		String queryText=null;
+		
+		try {
+			queryText = "select u from User u left join fetch u.roles left join fetch u.userDetails";
+			// if filter and sort choosen
+			if(!isFilterNull && !filter.isEmpty()) {
+				query = entityManager.createQuery(queryText+" where u.username like "+"'%"+filter+"%'"+" order by u."+orderAttr+" ASC", User.class);
+			}
+			// if only sort chosen (if nothing is chosen, the sort is id by default)
+			else if(isFilterNull || filter.isEmpty()) {
+				query = entityManager.createQuery(queryText+" order by u."+orderAttr+" ASC", User.class);
+			}
+			
+			if(query!=null) {
+				query.setFirstResult(startingRow);
+				query.setMaxResults(amountOfRows);
+				dbUsers = (ArrayList<User>) query.getResultList();
+				if(dbUsers.isEmpty()) throw new NoResultException();
+			}
+			
+		}catch(NoResultException noResultException) {
+			noResultException.printStackTrace();
+			return null;
+		}catch(Exception exception) {
+			exception.printStackTrace();
+		}
+		
+		return dbUsers;
 	}
 }
