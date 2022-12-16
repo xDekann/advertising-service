@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.aservice.entity.Offer;
+import com.aservice.entity.OfferReport;
 import com.aservice.entity.Subscription;
+import com.aservice.entity.User;
 import com.aservice.util.OfferListModifier;
+import com.aservice.util.OfferReportsModifier;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -207,5 +210,82 @@ public class OfferDao {
 		}
 		
 		return reportAmount;
+	}
+	
+	@Transactional
+	public List<OfferReport> getOfferReports(int offerId){
+		
+		List<OfferReport> reportList = null;
+		
+		try {
+			Query query = entityManager.createQuery("select ort from OfferReport ort where ort.offer.id=:offerId");
+			query.setParameter("offerId", offerId);
+			reportList = query.getResultList();
+		}catch (NoResultException noResultException) {
+			noResultException.printStackTrace();
+		}catch (Exception exception) {
+			exception.printStackTrace();
+		}
+		
+		return reportList;
+	}
+	
+	@Transactional
+	public List<OfferReport> getPagedReportedOffers(OfferReportsModifier modifier){
+
+		String orderAttr = modifier.getComparingMethod();
+		int startingRow = modifier.getStartingRow();
+		int amountOfRows = modifier.getLimit();
+		
+		// main references initialization
+		List<OfferReport> dbReports = null;
+		Query query = null;
+		String queryText=null;
+		
+		try {
+			queryText = "select ort from OfferReport ort join fetch ort.offer";
+			
+			query = entityManager.createQuery(queryText+" order by ort."+orderAttr+" ASC", OfferReport.class);
+			
+			if(query!=null) {
+				query.setFirstResult(startingRow);
+				query.setMaxResults(amountOfRows);
+				dbReports = (ArrayList<OfferReport>) query.getResultList();
+				if(dbReports.isEmpty()) throw new NoResultException();
+			}
+			
+		}catch(NoResultException noResultException) {
+			noResultException.printStackTrace();
+			return null;
+		}catch(Exception exception) {
+			exception.printStackTrace();
+		}
+		
+		return dbReports;
+	}
+	
+	@Transactional
+	public OfferReport getOfferReportById(int reportId) {
+		OfferReport offerReport = null;
+		try {
+			Query query = entityManager.createQuery("select ort from OfferReport ort join fetch ort.offer where ort.id=:reportId", OfferReport.class);
+			query.setParameter("reportId", reportId);
+			offerReport = (OfferReport) query.getSingleResult();
+		}catch(NoResultException noResultException) {
+			noResultException.printStackTrace();
+		}catch (Exception exception) {
+			exception.printStackTrace();
+		}
+		
+		return offerReport;
+	}
+	
+	@Transactional
+	public void deleteReport(OfferReport report) {
+		try {
+			entityManager.remove(report);
+		}catch (Exception exception) {
+			exception.printStackTrace();
+		}
 	}
 }

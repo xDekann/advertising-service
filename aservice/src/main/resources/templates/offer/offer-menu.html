@@ -54,6 +54,7 @@
 			<th><span id="textNoButton">Author</span></th>
 			<th><span id="textNoButton">Picture</span></th>
 			<th></th>
+			<th></th>
 		</tr>
 		<tr th:each="offer : ${offers}">
 			<td th:text="${offer.key.id}"></td>
@@ -68,6 +69,12 @@
 					<a th:href="@{'/offer/delete/form/'+${offer.key.id}+'/'+${offer.key.user.id}+'/success'}">Delete Offer/</a>
 					<a th:if="${offer.key.isActive}==true" th:href="'/offer/disable/'+${offer.key.id}+'/'+${offer.key.user.id}">Disable</a>
 					<a th:if="${offer.key.isActive}==false" th:href="'/offer/enable/'+${offer.key.id}+'/'+${offer.key.user.id}">Enable</a>
+				</td>
+			</span>
+			<span sec:authorize="hasRole('ROLE_ADMIN')">
+				<td>
+					<a th:href="@{'/admin/offer/modify/form/'+${offer.key.id}}">Admin modify/</a>
+					<a th:href="@{'/admin/offer/delete/form/'+${offer.key.id}}">Admin Delete</a>
 				</td>
 			</span>
 		</tr>

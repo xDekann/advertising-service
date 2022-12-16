@@ -23,6 +23,13 @@
 		<a th:if="${isSubbed}==true" th:href="@{'/offer/unfollow/'+${offer.id}}">Unfollow</a>
 		<a th:href="@{'/offer/report/'+${offer.id}}">Report offer</a>
 	</span>
+	<span sec:authorize="hasRole('ROLE_ADMIN')">
+		<br><span>Admin offer management panel</span><br>
+		<a th:href="@{'/admin/offer/modify/form/'+${offer.id}}">Admin modify/</a>
+		<a th:href="@{'/admin/offer/delete/form/'+${offer.id}}">Admin Delete</a>
+		<a th:href="@{/admin/showreports/offers}">See report list</a>
+	</span>
+
 
 	<p th:text="'Price: '+${offer.price}+' USD'"></p>
 	<p th:text="${offer.description}"></p>

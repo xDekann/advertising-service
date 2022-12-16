@@ -1,0 +1,14 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Offer report description</title>
+</head>
+<body>
+	<a th:href="@{/admin/showreports/offers}">Back to list</a>
+	<h3 th:text="'For offer: '+${offerTitle}"></h3>
+	<p th:text="${description}"></p>
+</body>
+</html>

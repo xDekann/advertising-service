@@ -212,7 +212,8 @@ public class OfferController {
 	
 	@PostMapping("/delete")
 	public String deleteOffer(@RequestParam("passwd") String passwdC,
-							  @ModelAttribute("offerAndOwnerIds") OfferDeletionIdsKeeper ids, Model model) {
+							  @ModelAttribute("offerAndOwnerIds") OfferDeletionIdsKeeper ids, Model model,
+							  RedirectAttributes redirectAttributes) {
 		
 		User currentLoggedUser = userDao.getUserByUsername(UserUtil.getLoggedUserName());
 		if(!passwdEncoder.matches(passwdC, currentLoggedUser.getPassword()))
@@ -234,6 +235,8 @@ public class OfferController {
 			}
 		}
 		
+		
+		redirectAttributes.addFlashAttribute("info", "deleteOfferSuccess");
 		return "redirect:/main/";
 	}
 	

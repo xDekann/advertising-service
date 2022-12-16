@@ -13,6 +13,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileSystemUtils;
@@ -64,8 +65,8 @@ public class MainController {
 		
 		Offer offer = new Offer();
 		
-		// reference update for modify purpose
-		if(userId==userDao.getUserByUsername(UserUtil.getLoggedUserName()).getId()) {
+		// reference update for modify purpose (allows admin to mod any offer)
+		if(userId==userDao.getUserByUsername(UserUtil.getLoggedUserName()).getId()){
 			offer = offerDao.getOfferById(offerId);
 		}
 		model.addAttribute("offer", offer);
@@ -84,11 +85,10 @@ public class MainController {
 		// adding offer to the database
 		offer.setDateOfCreation(new Timestamp(System.currentTimeMillis()));
 		offer.setActive(true);
-		Authentication userInfo = SecurityContextHolder.getContext().getAuthentication();
-		String username = userInfo.getName();
-		User dbUser = userDao.getUserByUsername(username);
+		User dbUser = userDao.getUserByUsername(UserUtil.getLoggedUserName());
 		dbUser.addOffer(offer);
 		offer.setSubs(offerDao.getAllSubsOfOffer(offer.getId()));
+		offer.setReports(offerDao.getOfferReports(offer.getId()));
 		offerDao.addOffer(offer);
 
 		// saving images on server

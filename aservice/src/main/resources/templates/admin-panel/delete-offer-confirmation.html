@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Offer deletion</title>
+</head>
+<body>
+	<div th:if="${credentials == 'fail'}">
+		<p>Invalid credentials</p>
+	</div>
+	<h3 th:text="'Deleting offer: '+${offerTitle}"></h3>
+	<form th:action="@{/admin/offer/delete}" method="POST"> 
+		<input type="hidden" th:name="offerId" th:value="${offerId}">
+		Password: <input type="password" th:name="passwd">
+		<button type="submit">Confirm</button>
+	</form>
+	<a th:href="@{/main/}">Back to main</a>
+</body>
+</html>

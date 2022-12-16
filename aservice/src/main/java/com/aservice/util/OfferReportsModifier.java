@@ -9,8 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
-public class UserListModifier extends ListModifier{
-	
+public class OfferReportsModifier extends ListModifier {
+
 	private final int limit = OfferConst.ROWS_PER_PAGE.getValue();
-	private String filter=null;
 }

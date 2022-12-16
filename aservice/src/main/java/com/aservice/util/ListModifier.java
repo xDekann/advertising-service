@@ -14,7 +14,6 @@ public abstract class ListModifier {
 	private int currentPage=1;
 	private boolean isShowClicked=false;
 	private boolean isNext=true;
-	private String filter=null;
 	private String comparingMethod = "id";
 	
 	public void increment() {

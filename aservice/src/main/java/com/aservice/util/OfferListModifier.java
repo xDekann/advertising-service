@@ -12,6 +12,7 @@ public class OfferListModifier extends ListModifier {
 	
 	private boolean wantSubbedList;
 	private boolean wantOwnOffers;
+	private String filter=null;
 	private final int limit = OfferConst.ROWS_PER_PAGE.getValue();
 	
 	public OfferListModifier(boolean wantSubbedList, boolean wantOwnOffers) {

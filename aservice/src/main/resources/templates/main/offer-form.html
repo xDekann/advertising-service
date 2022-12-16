@@ -45,7 +45,8 @@
 		</div>
 		
 
-		<button class="w-25 btn btn-primary btn-lg mt-2" type="submit">Submit</button>
+		<button sec:authorize="!hasRole('ROLE_ADMIN')" class="w-25 btn btn-primary btn-lg mt-2" type="submit">Submit</button>
+		<button sec:authorize="hasRole('ROLE_ADMIN')" th:formaction="@{'/admin/offer/modify/'+${offer.user.id}}" class="w-25 btn btn-primary btn-lg mt-2" type="submit">Submit</button>
 	</form>
 	<a th:href="@{/main/}" class="w-25 btn btn-primary btn-lg mt-2">Back</a> 
 	</div>
