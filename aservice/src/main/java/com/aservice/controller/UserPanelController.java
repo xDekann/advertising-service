@@ -13,9 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.aservice.dao.UserDao;
+import com.aservice.entity.Offer;
+import com.aservice.entity.OfferReport;
 import com.aservice.entity.User;
 import com.aservice.entity.UserDetails;
+import com.aservice.entity.UserReport;
+import com.aservice.util.OfferUtil;
 import com.aservice.util.UserUtil;
+import com.aservice.util.UserUtil.UserConst;
 
 import jakarta.validation.Valid;
 
@@ -110,13 +115,49 @@ public class UserPanelController {
 	@GetMapping("/viewprofile/picked/{userId}")
 	public String viewUserPickedProfile(@PathVariable("userId") int userId, Model model) {
 		
-		User pickedUser = userDao.getUserById(userId);
-		String lastLogin = UserUtil.getDateToMin(pickedUser, pickedUser.getUserDetails().getLastLogin());
+		User pickedUser = userDao.getUserByIdWithParam(userId, "offers");
+		User currentLoggedUser = userDao.getUserByUsername(UserUtil.getLoggedUserName());
 		
 		model.addAttribute("pickedUser", pickedUser);
-		model.addAttribute("pickedUserD", pickedUser.getUserDetails());
-		model.addAttribute("lastLogin", lastLogin);
+		model.addAttribute("currentUser", currentLoggedUser);
 		
 		return "user-panel/user-picked-profile";
+	}
+	
+	@GetMapping("/report/{id}")
+	public String reportOffer(@PathVariable("id") int userId, Model model) {
+		
+		if(userDao.getUserReportsAmount(userId)>=UserConst.USER_REPORT_LIMIT.getValue()) {
+			model.addAttribute("info", "reportUserLimit");
+			return "main/home";
+		}
+		
+		UserReport newReport = new UserReport();
+		model.addAttribute("report", newReport);
+		model.addAttribute("userId", userId);
+		
+		return "user-panel/report-user";
+	}
+	
+	@PostMapping("report/submit")
+	public String reportSubmit(@RequestParam("userId") int userId,
+							   @Valid @ModelAttribute("report") UserReport userReport,
+							   BindingResult bindReport, Model model) {
+		
+		if(bindReport.hasErrors()) {
+			model.addAttribute("userId", userId);
+			return "user-panel/report-user";
+		}
+		
+		User userToReport = userDao.getUserByIdWithParam(userId, "reports");
+		userReport.setReportingUserId(userDao.getUserByUsername(UserUtil.getLoggedUserName()).getId());
+		userToReport.addReport(userReport);
+		userReport.setUser(userToReport);
+		userDao.addUser(userToReport);
+
+		model.addAttribute("info", "reportUserSuccess");
+		
+		return "main/home";
+		
 	}
 }

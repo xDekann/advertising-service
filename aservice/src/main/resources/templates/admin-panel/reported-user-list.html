@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  	<style>
+        #textButton{
+            background:none; 
+            border:none;
+            font-size:12px;
+            font-family: helvetica;
+             text-decoration: underline;
+  			cursor: pointer;
+        }
+        
+        #textNoButton{
+        	font-size: 12px;
+        	text-decoration: none;
+        	font-weight: normal;
+        	font-family: helvetica;
+        }
+    </style>
+
+	<title>Reports</title>
+</head>
+<body>
+	<form th:action="@{/admin/list/view/reportedUsers/show}" th:object="${listModifier}" method="GET">
+		<input type="hidden" th:field="*{isShowClicked}">
+		<input type="hidden" th:field="*{isNext}">
+		<input type="hidden" th:field="*{previousPage}">
+		<input type="hidden" th:field="*{currentPage}">
+		
+		<input type="hidden" th:field="*{startingRow}">
+		<input type="hidden" th:field="*{comparingMethod}">
+		
+		<button th:if="${listModifier.isShowClicked}==false" type="submit">Show</button>
+		
+		<button type="submit" th:formaction="@{/admin/showreports/users}">Refresh</button>
+		<a th:href="@{/admin/panel}">Back to admin panel</a>
+	<table>
+		<tr>
+			<th><span id="textNoButton">ID</span></th>
+			<th><span id="textNoButton">Reported user's name</span></th>
+			<th><span id="textNoButton">Options</span></th>
+		</tr>
+		<tr th:each="report : ${reports}">
+			<td th:text="${report.id}"></td>
+			<td><a th:text="${report.user.username}"></a></td>
+			<td>
+				<a th:href="@{'/admin/reportedUser/description/'+${report.id}}">Report description</a>
+				<a th:href="@{'/admin/reportedUser/cancelReport/'+${report.id}}">Delete report</a>
+				<a th:href="@{'/admin/user/delete/form/'+${report.user.id}}">Delete user</a>
+			</td>
+		</tr>
+	</table><br>
+	
+	<span th:if="${listModifier.isShowClicked}">
+		<button th:if="${listModifier.previousPage}>0" type="submit" th:formaction="@{/admin/list/view/reportedUsers/left}">&larr;</button>
+		
+		<span th:text="${'Page: '+listModifier.currentPage}"></span>
+		
+		<button th:if="${listModifier.isNext}" type="submit" th:formaction="@{/admin/list/view/reportedUsers/right}">&rarr;</button>
+	</span>
+	</form>
+	
+</body>
+</html>

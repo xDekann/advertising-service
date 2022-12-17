@@ -30,12 +30,12 @@ import com.aservice.entity.Offer;
 import com.aservice.entity.OfferReport;
 import com.aservice.entity.Subscription;
 import com.aservice.entity.User;
-import com.aservice.util.ListModifier;
 import com.aservice.util.OfferDeletionIdsKeeper;
-import com.aservice.util.OfferListModifier;
 import com.aservice.util.OfferUtil;
 import com.aservice.util.SharedUtil;
 import com.aservice.util.UserUtil;
+import com.aservice.util.modifiers.OfferModifier;
+import com.aservice.util.modifiers.OfferListModifier;
 
 import jakarta.validation.Valid;
 
@@ -54,7 +54,7 @@ public class OfferController {
 	public String listMenuSubbed(@PathVariable("subbed") boolean subbed,
 								@PathVariable("ownOffers") boolean ownOffers, Model model) {
 		
-		ListModifier listModifier = new OfferListModifier(subbed, ownOffers);
+		OfferModifier listModifier = new OfferListModifier(subbed, ownOffers);
 		
 		model.addAttribute("listModifier",listModifier);
 		
@@ -270,6 +270,7 @@ public class OfferController {
 	
 	@GetMapping("/report/{id}")
 	public String reportOffer(@PathVariable("id") int offerId, Model model) {
+		
 		if(offerDao.getOfferReportsAmount(offerId)>=OfferUtil.OfferConst.OFFER_REPORT_LIMIT.getValue()) {
 			model.addAttribute("info", "reportLimit");
 			return "main/home";
@@ -286,6 +287,7 @@ public class OfferController {
 	public String reportSubmit(@RequestParam("offerId") int offerId,
 							   @Valid @ModelAttribute("report") OfferReport offerReport,
 							   BindingResult bindReport, Model model) {
+		
 		if(bindReport.hasErrors()) {
 			model.addAttribute("offerId", offerId);
 			return "offer/report-offer";

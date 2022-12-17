@@ -28,13 +28,16 @@ import com.aservice.dao.UserDao;
 import com.aservice.entity.Offer;
 import com.aservice.entity.OfferReport;
 import com.aservice.entity.User;
-import com.aservice.util.ListModifier;
-import com.aservice.util.OfferListModifier;
-import com.aservice.util.OfferReportsModifier;
+import com.aservice.entity.UserReport;
 import com.aservice.util.SharedUtil;
-import com.aservice.util.UserListModifier;
 import com.aservice.util.UserUtil;
 import com.aservice.util.UserUtil.UserConst;
+import com.aservice.util.modifiers.Modifier;
+import com.aservice.util.modifiers.OfferListModifier;
+import com.aservice.util.modifiers.OfferModifier;
+import com.aservice.util.modifiers.OfferReportsModifier;
+import com.aservice.util.modifiers.UserListModifier;
+import com.aservice.util.modifiers.UserReportsModifier;
 
 import jakarta.validation.Valid;
 
@@ -57,7 +60,7 @@ public class AdminController {
 	@GetMapping("/showusers")
 	public String showUsers(Model model) {
 		
-		ListModifier listModifier = new UserListModifier();
+		Modifier listModifier = new UserListModifier();
 		
 		model.addAttribute("listModifier", listModifier);
 		
@@ -122,7 +125,7 @@ public class AdminController {
 	@GetMapping("/user/delete/form/{userId}")
 	public String deleteUserForm(@PathVariable("userId") int userId,Model model) {
 		
-		User userToDelete = userDao.getUserById(userId);
+		User userToDelete = userDao.getUserByIdWithParam(userId, "offers");
 		
 		model.addAttribute("username", userToDelete.getUsername());
 		model.addAttribute("userToDelId", userId);
@@ -136,7 +139,7 @@ public class AdminController {
 							 RedirectAttributes redirectAttributes) {
 		User currentUser = userDao.getUserByUsername(UserUtil.getLoggedUserName());
 		if(!passwordEncoder.matches(passwd, currentUser.getPassword())) {
-			User userToDelete = userDao.getUserById(userToDelId);
+			User userToDelete = userDao.getUserByIdWithParam(userToDelId, "offers");
 			
 			model.addAttribute("username", userToDelete.getUsername());
 			model.addAttribute("userToDelId", userToDelId);
@@ -145,16 +148,16 @@ public class AdminController {
 			return "admin-panel/delete-user-confirmation";
 		}
 		
-		userDao.deleteUser(userDao.getUserById(userToDelId));
+		userDao.deleteUser(userDao.getUserByIdWithParam(userToDelId, "offers"));
 		redirectAttributes.addFlashAttribute("info", "deleted");
 		
-		return "redirect:/admin/showusers";
+		return "redirect:/admin/panel";
 	}
 	
 	@GetMapping("/user/editpasswd/form/{userId}")
 	public String editPasswdUserForm(@PathVariable("userId") int userId,Model model) {
 		
-		User userToEdit = userDao.getUserById(userId);
+		User userToEdit = userDao.getUserByIdWithParam(userId, "offers");
 		
 		model.addAttribute("username", userToEdit.getUsername());
 		model.addAttribute("userToEditId", userId);
@@ -170,7 +173,7 @@ public class AdminController {
 		
 		if(!passwd.equals(passwdC) || passwd.length()<UserConst.PASSWD_LOW_BOUND.getValue() 
 				|| passwd.length()>UserConst.PASSWD_UP_BOUND.getValue()) {
-			User userToEdit = userDao.getUserById(userToEditId);
+			User userToEdit = userDao.getUserByIdWithParam(userToEditId, "offers");
 			
 			model.addAttribute("username", userToEdit.getUsername());
 			model.addAttribute("userToEditId", userToEditId);
@@ -179,7 +182,7 @@ public class AdminController {
 			return "admin-panel/edit-user-password";
 		}
 		
-		User userToEdit = userDao.getUserById(userToEditId);
+		User userToEdit = userDao.getUserByIdWithParam(userToEditId, "offers");
 		userToEdit.setPassword(passwordEncoder.encode(passwd));
 		userDao.addUser(userToEdit);
 		
@@ -204,7 +207,7 @@ public class AdminController {
 		
 		if(offerResult.hasErrors())
 			return "main/offer-form";
-		User offerOwner = userDao.getUserById(offerOwnerId);
+		User offerOwner = userDao.getUserByIdWithParam(offerOwnerId, "offers");
 		// adding offer to the database
 		offer.setDateOfCreation(new Timestamp(System.currentTimeMillis()));
 		offer.setActive(true);
@@ -268,7 +271,7 @@ public class AdminController {
 	@GetMapping("/showreports/offers")
 	public String showReportedOffers(Model model) {
 		
-		ListModifier listModifier = new OfferReportsModifier();
+		Modifier listModifier = new OfferReportsModifier();
 		
 		model.addAttribute("listModifier", listModifier);
 	
@@ -339,5 +342,81 @@ public class AdminController {
 		offerDao.deleteReport(report);
 		
 		return "redirect:/admin/showreports/offers";
+	}
+	
+	@GetMapping("/showreports/users")
+	public String showReportedUsers(Model model) {
+		
+		Modifier listModifier = new UserReportsModifier();
+		
+		model.addAttribute("listModifier", listModifier);
+	
+		return "admin-panel/reported-user-list";
+	}
+	
+	@GetMapping("/list/view/reportedUsers/{task}")
+	public String viewReportedUsers(@PathVariable("task") String task,
+									@ModelAttribute UserReportsModifier listModifier,
+									Model model) {
+		// user button click
+		switch (task) {
+		case "show": {
+			listModifier.setShowClicked();
+			break;
+		}
+		case "left": {
+			if(listModifier.getPreviousPage()<=0) return "redirect:/admin/showreports/users";
+			listModifier.setStartingRow(listModifier.getStartingRow()-listModifier.getLimit());
+			listModifier.decrement();
+			break;
+		}
+		case "right":{
+			if(!listModifier.getIsNext()) return "redirect:/admin/showreports/users";
+			listModifier.setStartingRow(listModifier.getStartingRow()+listModifier.getLimit());
+			listModifier.increment();
+			break;
+		}
+		default:{
+			if(task.equals("id"))
+				listModifier.setComparingMethod(task);
+			}
+			break;
+		}
+		
+		List<UserReport> dbReports = null;
+		dbReports = userDao.getPagedReportedUsers(listModifier);
+		listModifier.setStartingRow(listModifier.getStartingRow()+listModifier.getLimit());
+		if(userDao.getPagedReportedUsers(listModifier)!=null) {
+			listModifier.setIsNext(true);
+		}
+		else 
+			listModifier.setIsNext(false);
+		listModifier.setStartingRow(listModifier.getStartingRow()-listModifier.getLimit());
+		
+		if(dbReports==null) dbReports = new ArrayList<>();
+		
+		model.addAttribute("reports",dbReports);
+		model.addAttribute("listModifier",listModifier);
+		
+		return "admin-panel/reported-user-list";
+	}
+	
+	@GetMapping("/reportedUser/description/{userReportId}")
+	public String seeUserReportDescription(@PathVariable("userReportId") int userReportId, Model model) {
+		
+		UserReport userReport = userDao.getUserReportById(userReportId);
+		
+		model.addAttribute("description", userReport.getDescription());
+		model.addAttribute("username", userReport.getUser().getUsername());
+		
+		return "admin-panel/see-user-report-description";
+	}
+	
+	@GetMapping("/reportedUser/cancelReport/{userReportId}")
+	public String cancelUserReport(@PathVariable("userReportId") int userReportId) {
+		UserReport userReport = userDao.getUserReportById(userReportId);
+		userDao.deleteUserReport(userReport);
+		
+		return "redirect:/admin/showreports/users";
 	}
 }

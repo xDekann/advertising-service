@@ -10,8 +10,10 @@ import com.aservice.entity.Offer;
 import com.aservice.entity.OfferReport;
 import com.aservice.entity.Subscription;
 import com.aservice.entity.User;
-import com.aservice.util.OfferListModifier;
-import com.aservice.util.OfferReportsModifier;
+import com.aservice.util.modifiers.Modifier;
+import com.aservice.util.modifiers.OfferListModifier;
+import com.aservice.util.modifiers.OfferModifier;
+import com.aservice.util.modifiers.OfferReportsModifier;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -48,7 +50,7 @@ public class OfferDao {
 	
 	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<Offer> getPagedOffers(OfferListModifier modifier, boolean active, int loggedUserId){
+	public List<Offer> getPagedOffers(OfferModifier modifier, boolean active, int loggedUserId){
 		
 		String filter = modifier.getFilter();
 		String orderAttr = modifier.getComparingMethod();
@@ -231,7 +233,7 @@ public class OfferDao {
 	}
 	
 	@Transactional
-	public List<OfferReport> getPagedReportedOffers(OfferReportsModifier modifier){
+	public List<OfferReport> getPagedReportedOffers(Modifier modifier){
 
 		String orderAttr = modifier.getComparingMethod();
 		int startingRow = modifier.getStartingRow();

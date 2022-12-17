@@ -1,5 +1,7 @@
-package com.aservice.util;
+package com.aservice.util.modifiers;
 
+
+import org.springframework.stereotype.Component;
 
 import com.aservice.util.OfferUtil.OfferConst;
 
@@ -8,22 +10,13 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class OfferListModifier extends ListModifier {
+public class OfferListModifier extends OfferModifier {
 	
-	private boolean wantSubbedList;
-	private boolean wantOwnOffers;
-	private String filter=null;
+	// rows to change
 	private final int limit = OfferConst.ROWS_PER_PAGE.getValue();
 	
 	public OfferListModifier(boolean wantSubbedList, boolean wantOwnOffers) {
 		this.wantSubbedList=wantSubbedList;
 		this.wantOwnOffers=wantOwnOffers;
-	}
-	
-	public boolean getWantSubbedList() {
-		return wantSubbedList;
-	}
-	public boolean getWantOwnOffers() {
-		return wantOwnOffers;
 	}
 }

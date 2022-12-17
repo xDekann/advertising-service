@@ -81,6 +81,12 @@ public class User {
 			   orphanRemoval = true)
 	private List<Subscription> subs;
 	
+	
+	@OneToMany(mappedBy = "user",
+			  cascade = {CascadeType.MERGE, CascadeType.REMOVE},
+			  orphanRemoval = true)
+	private List<UserReport> reports;
+	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", enabled=" + enabled + "]";
@@ -106,6 +112,11 @@ public class User {
 		subs.add(subscription);
 	}
 
+	public void addReport(UserReport report) {
+		if(reports==null) reports = new ArrayList<>();
+		reports.add(report);
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, resetCode, username);
