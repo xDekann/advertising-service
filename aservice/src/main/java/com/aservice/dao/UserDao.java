@@ -69,6 +69,22 @@ public class UserDao {
 	}
 	
 	@Transactional
+	public User getUserById(int id) {
+		User user = null;
+		
+		try {
+			Query query = entityManager.createQuery("select u from User u left join fetch u.roles left join fetch u.userDetails"
+													+ " where u.id=:userId", User.class);
+			query.setParameter("userId", id);
+			user = (User) query.getSingleResult();
+		}catch(NoResultException noResultException) {
+			noResultException.printStackTrace();
+		}
+		
+		return user;
+	}
+	
+	@Transactional
 	public void deleteUser(User user) {
 		try {
 			entityManager.remove(user);

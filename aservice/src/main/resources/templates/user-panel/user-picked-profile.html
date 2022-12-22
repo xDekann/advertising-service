@@ -9,6 +9,7 @@
 <body>
 
 	<a th:if="${currentUser.id}!=${pickedUser.id}" th:href="@{'/user/report/'+${pickedUser.id}}">Report user</a>
+	<a th:if="${currentUser.id}!=${pickedUser.id}" th:href="@{'/message/create/'+${pickedUser.id}}">Message user</a>
 	<h3 th:text="${pickedUser.username}"></h3>
 	<p th:text="'From: '+${pickedUser.userDetails.city}"></p>
 	<p th:text="'Last login: '+${#strings.substring(pickedUser.userDetails.lastLogin,0,16)}"></p>

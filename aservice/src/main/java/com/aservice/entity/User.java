@@ -71,7 +71,7 @@ public class User {
 			cascade = CascadeType.ALL)
 	private UserDetails userDetails;
 	
-	@OneToMany(mappedBy="user",
+	@OneToMany(mappedBy = "user",
 			   cascade = {CascadeType.MERGE, CascadeType.REMOVE},
 			   orphanRemoval = true)
 	private List<Offer> offers;
@@ -86,6 +86,11 @@ public class User {
 			  cascade = {CascadeType.MERGE, CascadeType.REMOVE},
 			  orphanRemoval = true)
 	private List<UserReport> reports;
+	
+	@OneToMany(mappedBy = "user",
+			  cascade = {CascadeType.MERGE, CascadeType.REMOVE},
+			  orphanRemoval = true)
+	private List<Message> messages;
 	
 	@Override
 	public String toString() {
@@ -115,6 +120,11 @@ public class User {
 	public void addReport(UserReport report) {
 		if(reports==null) reports = new ArrayList<>();
 		reports.add(report);
+	}
+	
+	public void addMessage(Message message) {
+		if(messages==null) messages= new ArrayList<>();
+		messages.add(message);
 	}
 	
 	@Override

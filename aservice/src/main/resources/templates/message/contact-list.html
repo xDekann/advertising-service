@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+  	<style>
+        #textButton{
+            background:none; 
+            border:none;
+            font-size:12px;
+            font-family: helvetica;
+            text-decoration: underline;
+  			cursor: pointer;
+        }
+        
+        #textNoButton{
+        	font-size: 12px;
+        	text-decoration: none;
+        	font-weight: normal;
+        	font-family: helvetica;
+        }
+    </style>
+    
+	<title>Contact list</title>
+</head>
+<body>
+
+	<form th:action="@{/message/list/contacts}" th:object="${listModifier}" method="GET">
+		<input type="hidden" th:field="*{isShowClicked}">
+		<input type="hidden" th:field="*{isNext}">
+		<input type="hidden" th:field="*{previousPage}">
+		<input type="hidden" th:field="*{currentPage}">
+		<input type="hidden" th:field="*{filter}">
+		<input type="hidden" th:field="*{startingRow}">
+		<input type="hidden" th:field="*{comparingMethod}">
+
+		<button type="submit" >Refresh</button>
+		
+		<a th:href="@{/user/panel}">Back to user panel</a>
+	<table>
+		<tr>
+			<th><span id="textButton">ID</span></th>
+			<th><span id="textButton">Username</span></th>
+			<th><span id="textButton">Last message from user</span></th>
+			<th><span id="textButton">Date</span></th>
+			<th></th>
+		</tr>
+		<tr th:each="contact : ${contacts}">
+			<td th:text="${contact.id}"></td>
+			<td th:text="${contact.username}"></td>
+			<span th:if="${contact.messages.size()}>0">
+				<span th:if="${#strings.length(contact.messages[0].messageContent)}<=31">
+					<td th:text="${contact.messages[0].messageContent}"></td>
+				</span>
+				
+				<span th:if="${#strings.length(contact.messages[0].messageContent)}>=31">
+					<td th:text="${#strings.substring(contact.messages[0].messageContent,0,30)+'...'}"></td>
+				</span>
+				
+				<td th:text="${#strings.substring(contact.messages[0].messageDate,0,16)}"></td>
+			</span>
+			<span th:if="${contact.messages.size()}<=0">
+				<td>---</td>
+				<td>---</td>
+			</span>
+			<td><a th:href="@{'/message/create/'+${contact.id}}">Message</td>
+		</tr>
+	</table><br>
+	
+	<span th:if="${listModifier.isShowClicked}">
+		<button th:if="${listModifier.previousPage}>0" type="submit" th:formaction="@{/message/list/contacts/left}">&larr;</button>
+		
+		<span th:text="${'Page: '+listModifier.currentPage}"></span>
+		
+		<button th:if="${listModifier.isNext}" type="submit" th:formaction="@{/message/list/contacts/right}">&rarr;</button>
+	</span>
+	</form>
+	
+</body>
+</html>

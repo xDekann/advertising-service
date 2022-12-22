@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<HTML lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Message form</title>
+</head>
+<body>
+
+	<a th:href="@{/main/}">Back to main</a> 
+	
+	<form th:action="@{'/message/create/'+${message.receiverId}}" method="POST" th:object="${listModifier}">
+		<input type="hidden" th:field="*{isShowClicked}">
+		<input type="hidden" th:field="*{isNext}">
+		<input type="hidden" th:field="*{previousPage}">
+		<input type="hidden" th:field="*{currentPage}">
+		<input type="hidden" th:field="*{filter}">
+		<input type="hidden" th:field="*{startingRow}">
+		<input type="hidden" th:field="*{comparingMethod}">
+		<input type="hidden" th:field="*{isShowClicked}">
+		
+		<button type="submit">Refresh</button>
+		
+		<table>
+			<tr>
+				<th><span id="textNoButton">Me</span></th>
+				<th><span id="textNoButton">Another user</span></th>
+			</tr>
+			<tr th:each="message : ${messageMap}">
+				<td><span th:if="${message.value}==true" th:utext="${#strings.substring(message.key.messageDate,0,16) + '</br>' + message.key.messageContent}"></span></td>
+				<td><span th:if="${message.value}==false" th:utext="${#strings.substring(message.key.messageDate,0,16) + '</br>' + message.key.messageContent}"></span></td>
+			</tr>
+		</table><br>
+	
+		<span th:if="${listModifier.isShowClicked}">
+			<button th:if="${listModifier.previousPage}>0" type="submit" th:formaction="@{/message/create/list/left}">&larr;</button>
+			
+			<span th:text="${'Page: '+listModifier.currentPage}"></span>
+			
+			<button th:if="${listModifier.isNext}" type="submit" th:formaction="@{/message/create/list/right}">&rarr;</button>
+		</span>
+		
+		<div th:object="${message}">
+			<input type="hidden" th:field="*{receiverId}">	
+			Message:<br><textarea rows="10" cols="100" th:field="*{messageContent}" placeholder="Hi, I have a question about/want to buy..."></textarea><br>
+			<button type="submit" th:formaction="@{/message/send}">Send message</button>
+		</div>
+		
+	</form>
+	
+</body>
+</html>

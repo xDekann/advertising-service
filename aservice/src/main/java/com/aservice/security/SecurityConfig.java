@@ -44,6 +44,7 @@ public class SecurityConfig {
 								   			 .requestMatchers("/main/").hasAnyRole("ADMIN","USER")
 								   			 //.requestMatchers("/panel/**").hasAnyRole("ADMIN","USER")
 								   			 .requestMatchers("/admin/**").hasRole("ADMIN")
+								   			 .requestMatchers("/message/**").hasAnyRole("ADMIN","USER")
 											 .requestMatchers("/offer/**").hasAnyRole("ADMIN","USER").anyRequest().authenticated())
 				.formLogin(configurer->configurer.loginPage("/login/showLoginPage")
 						 .loginProcessingUrl("/authenticateUser")
