@@ -28,6 +28,7 @@ import com.aservice.util.SharedUtil;
 import com.aservice.util.UserUtil;
 import com.aservice.util.modifiers.MessagesModifier;
 import com.aservice.util.modifiers.Modifier;
+import com.aservice.util.modifiers.UserContactsModifier;
 import com.aservice.util.modifiers.UserListModifier;
 
 @Controller
@@ -147,7 +148,7 @@ public class MessageController {
 	@GetMapping("/list/contacts")
 	public String listContacts(RedirectAttributes redirectAttributes) {
 		
-		Modifier listModifier = new UserListModifier();
+		Modifier listModifier = new UserContactsModifier();
 		
 		redirectAttributes.addFlashAttribute("listModifier", listModifier);
 		
@@ -156,13 +157,15 @@ public class MessageController {
 	
 	@GetMapping("/list/contacts/{task}")
 	public String viewAllContacts(@PathVariable("task") String task,
-								  @ModelAttribute UserListModifier listModifier,
+								  @ModelAttribute UserContactsModifier listModifier,
 								  Model model) {
 		
 		// if thymeleaf parses object with comma at the beginning
 		if(SharedUtil.checkIfFilterValid(listModifier.getFilter()) && listModifier.getFilter().startsWith(",")) {
 			listModifier.setFilter(listModifier.getFilter().substring(1));
 		}
+		
+		System.out.println("LIMIT!"+listModifier.getLimit());
 		
 		// user button click
 		switch (task) {

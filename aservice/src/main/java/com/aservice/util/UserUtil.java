@@ -12,7 +12,9 @@ public class UserUtil {
 	public enum UserConst{
 		PASSWD_LOW_BOUND(4),
 		PASSWD_UP_BOUND(70),
-		USER_REPORT_LIMIT(2);
+		USER_REPORT_LIMIT(2),
+		USER_ROWS_PER_PAGE(5),
+		USER_CONTACTS_PER_PAGE(4);
 		
 		private final int value;
 		

@@ -48,7 +48,7 @@
 		</tr>
 		<tr th:each="contact : ${contacts}">
 			<td th:text="${contact.id}"></td>
-			<td th:text="${contact.username}"></td>
+			<td><a th:href="@{'/user/viewprofile/picked/'+${contact.id}}" th:text="${contact.username}"></a></td>
 			<span th:if="${contact.messages.size()}>0">
 				<span th:if="${#strings.length(contact.messages[0].messageContent)}<=31">
 					<td th:text="${contact.messages[0].messageContent}"></td>
