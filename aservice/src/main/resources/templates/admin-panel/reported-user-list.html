@@ -34,8 +34,6 @@
 		<input type="hidden" th:field="*{startingRow}">
 		<input type="hidden" th:field="*{comparingMethod}">
 		
-		<button th:if="${listModifier.isShowClicked}==false" type="submit">Show</button>
-		
 		<button type="submit" th:formaction="@{/admin/showreports/users}">Refresh</button>
 		<a th:href="@{/admin/panel}">Back to admin panel</a>
 	<table>

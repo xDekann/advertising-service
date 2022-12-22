@@ -269,13 +269,13 @@ public class AdminController {
 	}
 	
 	@GetMapping("/showreports/offers")
-	public String showReportedOffers(Model model) {
+	public String showReportedOffers(RedirectAttributes redirectAttributes) {
 		
 		Modifier listModifier = new OfferReportsModifier();
 		
-		model.addAttribute("listModifier", listModifier);
+		redirectAttributes.addFlashAttribute("listModifier", listModifier);
 	
-		return "admin-panel/reported-offer-list";
+		return "redirect:/admin/list/view/reportedOffers/show";
 	}
 	
 	@GetMapping("/list/view/reportedOffers/{task}")
@@ -345,13 +345,13 @@ public class AdminController {
 	}
 	
 	@GetMapping("/showreports/users")
-	public String showReportedUsers(Model model) {
+	public String showReportedUsers(RedirectAttributes redirectAttributes) {
 		
 		Modifier listModifier = new UserReportsModifier();
 		
-		model.addAttribute("listModifier", listModifier);
+		redirectAttributes.addFlashAttribute("listModifier", listModifier);
 	
-		return "admin-panel/reported-user-list";
+		return "redirect:/admin/list/view/reportedUsers/show";
 	}
 	
 	@GetMapping("/list/view/reportedUsers/{task}")
