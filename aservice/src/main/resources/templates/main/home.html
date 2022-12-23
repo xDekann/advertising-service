@@ -32,6 +32,8 @@
 	<p th:if="${info}=='deleteOfferSuccess'" class="displayFont"> Offer has been successfully deleted</p>
 	<p th:if="${info}=='messageSuccess'" class="displayFont"> Successfully sent message!</p>
 	<p th:if="${info}=='messageFail'" class="displayFont"> Failed to send the message!</p>
+	<p th:if="${info}=='youHaveBlocked'" class="displayFont"> You have blocked the user you are trying to message. Make sure to unblock him first!</p>
+	<p th:if="${info}=='youAreBlocked'" class="displayFont"> You have been blocked by the user you are trying to message!</p>
 	
 	<form th:action="@{/logout}" method="POST">
 		<input type="submit" class="w-25 btn btn-lg btn-primary mt-3" value="Logout">

@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.aservice.dao.MessageDao;
 import com.aservice.dao.OfferDao;
 import com.aservice.dao.UserDao;
+import com.aservice.entity.Block;
 import com.aservice.entity.Message;
 import com.aservice.entity.Offer;
 import com.aservice.entity.User;
@@ -46,9 +47,22 @@ public class MessageController {
 	public String createMessage(@PathVariable("receiverId") int receiverId,
 								RedirectAttributes redirectAttributes) {
 		
-		if(userDao.getUserByUsername(UserUtil.getLoggedUserName()).getId()
-				== receiverId) {
+		User currentUser = userDao.getUserByUsername(UserUtil.getLoggedUserName());	
+		
+		if(currentUser.getId()== receiverId) {
 			redirectAttributes.addFlashAttribute("info", "messageFail");
+			return "redirect:/main/";
+		}
+		
+		// if current user has blocked target user
+		if(messageDao.getBlock(currentUser.getId(), receiverId)!=null) {
+			redirectAttributes.addFlashAttribute("info", "youHaveBlocked");
+			return "redirect:/main/";
+		}
+		
+		// if target user has blocked current user
+		if(messageDao.getBlock(receiverId, currentUser.getId())!=null) {
+			redirectAttributes.addFlashAttribute("info", "youAreBlocked");
 			return "redirect:/main/";
 		}
 		
@@ -115,7 +129,6 @@ public class MessageController {
 		Map<Message,Boolean> messageMap = new LinkedHashMap<>();
 		
 		dbMessages.forEach(messageFromList->{
-			System.out.println("MESSAGE: "+messageFromList.getMessageContent());
 			if(messageFromList.getUser().getId()==currentUser.getId())
 				messageMap.put(messageFromList,true);
 			else
@@ -206,5 +219,35 @@ public class MessageController {
 		model.addAttribute("listModifier", listModifier);
 		
 		return "message/contact-list";
+	}
+	
+	@GetMapping("/block/{userToBlockId}")
+	public String blockUser(@PathVariable("userToBlockId") int userToBlockId) {
+		
+		User currentUser = userDao.getUserByUsername(UserUtil.getLoggedUserName());
+		
+		if(userToBlockId==currentUser.getId())
+			return "redirect:/user/viewprofile/picked/"+userToBlockId;
+		
+		Block block = new Block();
+		block.setUser(currentUser);
+		block.setBlockedUserId(userToBlockId);
+		messageDao.addBlock(block);
+		
+		return "redirect:/user/viewprofile/picked/"+userToBlockId;
+	}
+	
+	@GetMapping("/unblock/{userToUnblockId}")
+	public String unblockUser(@PathVariable("userToUnblockId") int userToUnblockId) {
+		
+		User currentUser = userDao.getUserByUsername(UserUtil.getLoggedUserName());
+		
+		if(userToUnblockId==currentUser.getId())
+			return "redirect:/user/viewprofile/picked/"+userToUnblockId;
+
+		Block blockToDelete = messageDao.getBlock(currentUser.getId(), userToUnblockId);
+		messageDao.deleteBlock(blockToDelete);
+		
+		return "redirect:/user/viewprofile/picked/"+userToUnblockId;
 	}
 }

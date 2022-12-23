@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.aservice.dao.MessageDao;
 import com.aservice.dao.UserDao;
 import com.aservice.entity.Offer;
 import com.aservice.entity.OfferReport;
@@ -32,6 +33,8 @@ public class UserPanelController {
 	private PasswordEncoder passwdEncoder;
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private MessageDao messageDao;
 
 	@GetMapping("/panel")
 	public String getPanel(Model model) {
@@ -117,9 +120,14 @@ public class UserPanelController {
 		
 		User pickedUser = userDao.getUserByIdWithParam(userId, "offers");
 		User currentLoggedUser = userDao.getUserByUsername(UserUtil.getLoggedUserName());
+		boolean isBlocked=false;
+		
+		if(messageDao.getBlock(currentLoggedUser.getId(), userId)!=null)
+			isBlocked=true;
 		
 		model.addAttribute("pickedUser", pickedUser);
 		model.addAttribute("currentUser", currentLoggedUser);
+		model.addAttribute("isBlocked", isBlocked);
 		
 		return "user-panel/user-picked-profile";
 	}

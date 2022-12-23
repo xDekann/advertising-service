@@ -10,10 +10,12 @@
 
 	<a th:if="${currentUser.id}!=${pickedUser.id}" th:href="@{'/user/report/'+${pickedUser.id}}">Report user</a>
 	<a th:if="${currentUser.id}!=${pickedUser.id}" th:href="@{'/message/create/'+${pickedUser.id}}">Message user</a>
+	<a th:if="${isBlocked}==false and ${currentUser.id}!=${pickedUser.id}" th:href="@{'/message/block/'+${pickedUser.id}}">Block user</a>
+	<a th:if="${isBlocked}==true and ${currentUser.id}!=${pickedUser.id}" th:href="@{'/message/unblock/'+${pickedUser.id}}">Unblock user</a>
 	<h3 th:text="${pickedUser.username}"></h3>
 	<p th:text="'From: '+${pickedUser.userDetails.city}"></p>
 	<p th:text="'Last login: '+${#strings.substring(pickedUser.userDetails.lastLogin,0,16)}"></p>
 
-	<a onclick="history.go(-1)">Back</a>
+	<a th:href="@{/main/}">Back to main menu</a>
 </body>
 </html>

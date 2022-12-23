@@ -92,6 +92,11 @@ public class User {
 			  orphanRemoval = true)
 	private List<Message> messages;
 	
+	@OneToMany(mappedBy = "user",
+			  cascade = {CascadeType.MERGE, CascadeType.REMOVE},
+			  orphanRemoval = true)
+	private List<Block> blocks;
+	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", enabled=" + enabled + "]";
@@ -125,6 +130,11 @@ public class User {
 	public void addMessage(Message message) {
 		if(messages==null) messages= new ArrayList<>();
 		messages.add(message);
+	}
+	
+	public void addBlock(Block block) {
+		if(blocks==null) blocks = new ArrayList<>();
+		blocks.add(block);
 	}
 	
 	@Override

@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.aservice.entity.Block;
 import com.aservice.entity.Message;
 import com.aservice.entity.OfferReport;
 import com.aservice.entity.User;
@@ -69,7 +70,6 @@ public class MessageDao {
 		}
 		
 		return dbContacts;
-		
 	}
 	
 	@Transactional
@@ -110,7 +110,43 @@ public class MessageDao {
 		}
 		
 		return dbMessages;
+	}
+	
+	@Transactional
+	public Block getBlock(int currentUserId, int opposingUserId) {
 		
+		Block block = null;
+		
+		try {
+			Query query = entityManager.createQuery("select b from Block b left join fetch b.user where b.user.id=:currentUserId "
+					+ "and b.blockedUserId=:opposingUserId", Block.class);
+			query.setParameter("currentUserId", currentUserId);
+			query.setParameter("opposingUserId", opposingUserId);
+			
+			block = (Block) query.getSingleResult();
+		}catch(NoResultException noResultException) {
+			noResultException.printStackTrace();
+			return null;
+		}catch(Exception exception) {
+			exception.printStackTrace();
+		}
+		
+		return block;
+	}
+	
+	@Transactional
+	public void addBlock(Block block) {
+		Block dbBlock = entityManager.merge(block);
+		block.setId(dbBlock.getId());
+	}
+	
+	@Transactional
+	public void deleteBlock(Block block) {
+		try {
+			entityManager.remove(block);
+		}catch (Exception exception) {
+			exception.printStackTrace();
+		}
 	}
 	
 }

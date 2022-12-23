@@ -170,9 +170,9 @@ public class OfferController {
 		Offer pickedOffer = offerDao.getOfferById(offerId);
 		User currentUser = userDao.getUserByUsername(UserUtil.getLoggedUserName());
 		
-		if(offerDao.getSubbedOffer(currentUser.getId(), offerId)!=null) {
+		if(offerDao.getSubbedOffer(currentUser.getId(), offerId)!=null)
 			return "redirect:/offer/list/pickedoffer/"+offerId+"/true/true";
-		}
+		
 		
 		Subscription newSub = new Subscription(new Date(System.currentTimeMillis()), pickedOffer, currentUser);
 		pickedOffer.addSub(newSub);
