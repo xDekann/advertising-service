@@ -14,12 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.aservice.dao.MessageDao;
 import com.aservice.dao.UserDao;
-import com.aservice.entity.Offer;
-import com.aservice.entity.OfferReport;
 import com.aservice.entity.User;
 import com.aservice.entity.UserDetails;
 import com.aservice.entity.UserReport;
-import com.aservice.util.OfferUtil;
 import com.aservice.util.UserUtil;
 import com.aservice.util.UserUtil.UserConst;
 
@@ -165,7 +162,6 @@ public class UserPanelController {
 
 		model.addAttribute("info", "reportUserSuccess");
 		
-		return "main/home";
-		
+		return "main/home";	
 	}
 }

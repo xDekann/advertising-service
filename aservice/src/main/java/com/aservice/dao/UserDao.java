@@ -3,16 +3,14 @@ package com.aservice.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.aservice.entity.Offer;
-import com.aservice.entity.OfferReport;
 import com.aservice.entity.User;
 import com.aservice.entity.UserReport;
 import com.aservice.util.modifiers.Modifier;
-import com.aservice.util.modifiers.OfferListModifier;
-import com.aservice.util.modifiers.UserListModifier;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -23,6 +21,8 @@ import jakarta.transaction.Transactional;
 public class UserDao {
 
 	private EntityManager entityManager;
+	
+	private Logger logger = LoggerFactory.getLogger(UserDao.class);
 	
 	@Autowired
 	public UserDao(EntityManager entityManager) {
@@ -39,7 +39,7 @@ public class UserDao {
 			query.setParameter("u", username);
 			user = (User) query.getSingleResult();
 		}catch(NoResultException noResultException) {
-			noResultException.printStackTrace();
+			logger.info("No result exception in getUserByUsername(String username)");
 		}
 		
 		return user;
@@ -62,7 +62,7 @@ public class UserDao {
 			query.setParameter("userId", id);
 			user = (User) query.getSingleResult();
 		}catch(NoResultException noResultException) {
-			noResultException.printStackTrace();
+			logger.info("No result exception in getUserByIdWithParam(int id, String param)");
 		}
 		
 		return user;
@@ -78,7 +78,7 @@ public class UserDao {
 			query.setParameter("userId", id);
 			user = (User) query.getSingleResult();
 		}catch(NoResultException noResultException) {
-			noResultException.printStackTrace();
+			logger.info("No result exception in getUserById(int id)");
 		}
 		
 		return user;
@@ -102,12 +102,13 @@ public class UserDao {
 			query.setParameter("userEmail", email);
 			user = (User) query.getSingleResult();
 		}catch(NoResultException noResultException) {
-			noResultException.printStackTrace();
+			logger.info("No result exception in getUserByEmail(String email)");
 		}
 		
 		return user;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<User> getPagedUsers(Modifier modifier){
 		
@@ -148,10 +149,10 @@ public class UserDao {
 			}
 			
 		}catch(NoResultException noResultException) {
-			noResultException.printStackTrace();
+			logger.info("No result exception in getPagedUsers(Modifier modifier)");
 			return null;
 		}catch(Exception exception) {
-			exception.printStackTrace();
+			logger.error("Exception in getPagedUsers(Modifier modifier)");
 		}
 		
 		return dbUsers;
@@ -166,14 +167,15 @@ public class UserDao {
 			query.setParameter("userId", userId);
 			reportAmount = (Long) query.getSingleResult();
 		}catch(NoResultException noResultException) {
-			noResultException.printStackTrace();
+			logger.info("No result exception in getUserReportsAmount(int userId)");
 		}catch (Exception exception) {
-			exception.printStackTrace();
+			logger.error("Exception in getUserReportsAmount(int userId)");
 		}
 		
 		return reportAmount;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<UserReport> getPagedReportedUsers(Modifier modifier){
 		
@@ -198,10 +200,10 @@ public class UserDao {
 			}
 			
 		}catch(NoResultException noResultException) {
-			noResultException.printStackTrace();
+			logger.info("No result exception in getPagedReportedUsers(Modifier modifier)");
 			return null;
 		}catch(Exception exception) {
-			exception.printStackTrace();
+			logger.error("Exception in getPagedReportedUsers(Modifier modifier)");
 		}
 		
 		return dbReports;
@@ -217,9 +219,9 @@ public class UserDao {
 			query.setParameter("reportId", reportId);
 			userReport = (UserReport) query.getSingleResult();	
 		}catch (NoResultException noResultException) {
-			noResultException.printStackTrace();
+			logger.info("No result exception in getUserReportById(int reportId)");
 		}catch (Exception exception) {
-			exception.printStackTrace();
+			logger.error("Exception in getUserReportById(int reportId)");
 		}
 		
 		return userReport;

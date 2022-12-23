@@ -1,9 +1,9 @@
 package com.aservice.dao;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +18,8 @@ import jakarta.transaction.Transactional;
 public class AuthorityDao {
 	
 	private EntityManager entityManager;
+	
+	private Logger logger = LoggerFactory.getLogger(AuthorityDao.class);
 
 	@Autowired
 	public AuthorityDao(EntityManager entityManager) {
@@ -33,12 +35,13 @@ public class AuthorityDao {
 			query.setParameter("n", authorityName);
 			authority = (Authority) query.getSingleResult();
 		}catch(NoResultException noResultException) {
-			noResultException.printStackTrace();
+			logger.info("No result exception in getAuthorityByName(String authorityName)");
 		}
 		
 		return authority;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<Authority> getAllAuthorities(){
 		List<Authority> auths = null;
@@ -47,9 +50,9 @@ public class AuthorityDao {
 			Query query = entityManager.createQuery("FROM Authority a", Authority.class);
 			auths = query.getResultList();
 		}catch(NoResultException noResultException) {
-			noResultException.printStackTrace();
+			logger.info("No result exception in getAllAuthorities()");
 		}catch (Exception exception) {
-			exception.printStackTrace();
+			logger.error("Exception caught in getAllAuthorities()");
 		}
 		
 		return auths;

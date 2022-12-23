@@ -25,12 +25,13 @@
 <body class="bg-light">
 	<div id="margin" class="ml-5">
 	<h3 class="display-1 text-center ">Offer report</h3>
-	<form th:action="@{/offer/report/submit}" th:object="${report}" method="POST" enctype="multipart/form-data" novalidate>
+	<form th:action="@{/offer/report/submit}" th:object="${report}" method="POST">
 		<input type="hidden" th:value="${offerId}" th:name="offerId">
 		
 		<span th:errors="*{description}"></span><br>
 		Description:<br><textarea rows="10" cols="100" th:field="*{description}" class="form-control"></textarea><br>
 	
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<button class="w-25 btn btn-primary btn-lg mt-2 d-flex justify-content-center" type="submit" id="marginCenter">Submit</button>
 	</form>
 	<a th:href="@{/main/}" class="w-25 btn btn-primary btn-lg mt-2 text-center" id="marginCenter">Back to main</a>

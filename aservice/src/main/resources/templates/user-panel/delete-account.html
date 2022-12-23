@@ -14,6 +14,8 @@
 	<form th:action="@{/user/delete}" method="POST">  
 		Password: <input type="password" th:name="passwd">
 		Code: <input type="password" th:name="code">
+		
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<button type="submit">Confirm</button>
 	</form>
 	<a th:href="@{/user/panel}">Back</a>

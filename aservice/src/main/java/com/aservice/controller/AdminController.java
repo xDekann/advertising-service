@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,8 +31,6 @@ import com.aservice.util.SharedUtil;
 import com.aservice.util.UserUtil;
 import com.aservice.util.UserUtil.UserConst;
 import com.aservice.util.modifiers.Modifier;
-import com.aservice.util.modifiers.OfferListModifier;
-import com.aservice.util.modifiers.OfferModifier;
 import com.aservice.util.modifiers.OfferReportsModifier;
 import com.aservice.util.modifiers.UserListModifier;
 import com.aservice.util.modifiers.UserReportsModifier;
@@ -137,6 +133,7 @@ public class AdminController {
 	public String deleteUser(@RequestParam("passwd") String passwd,
 							 @RequestParam("userToDelId") int userToDelId, Model model,
 							 RedirectAttributes redirectAttributes) {
+		
 		User currentUser = userDao.getUserByUsername(UserUtil.getLoggedUserName());
 		if(!passwordEncoder.matches(passwd, currentUser.getPassword())) {
 			User userToDelete = userDao.getUserByIdWithParam(userToDelId, "offers");
@@ -208,7 +205,7 @@ public class AdminController {
 		if(offerResult.hasErrors())
 			return "main/offer-form";
 		User offerOwner = userDao.getUserByIdWithParam(offerOwnerId, "offers");
-		// adding offer to the database
+		
 		offer.setDateOfCreation(new Timestamp(System.currentTimeMillis()));
 		offer.setActive(true);
 		offerOwner.addOffer(offer);
@@ -294,7 +291,7 @@ public class AdminController {
 			listModifier.decrement();
 			break;
 		}
-		case "right":{
+		case "right": {
 			if(!listModifier.getIsNext()) return "redirect:/admin/showreports/offers";
 			listModifier.setStartingRow(listModifier.getStartingRow()+listModifier.getLimit());
 			listModifier.increment();

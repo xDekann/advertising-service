@@ -1,6 +1,5 @@
 package com.aservice.util.modifiers;
 
-import com.aservice.util.OfferUtil.OfferConst;
 
 import lombok.Getter;
 import lombok.Setter;

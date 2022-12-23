@@ -1,8 +1,6 @@
 package com.aservice.util.modifiers;
 
 
-import org.springframework.stereotype.Component;
-
 import com.aservice.util.OfferUtil.OfferConst;
 
 import lombok.Getter;

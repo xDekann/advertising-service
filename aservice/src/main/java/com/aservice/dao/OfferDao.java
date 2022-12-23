@@ -3,17 +3,16 @@ package com.aservice.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.aservice.entity.Offer;
 import com.aservice.entity.OfferReport;
 import com.aservice.entity.Subscription;
-import com.aservice.entity.User;
 import com.aservice.util.modifiers.Modifier;
-import com.aservice.util.modifiers.OfferListModifier;
 import com.aservice.util.modifiers.OfferModifier;
-import com.aservice.util.modifiers.OfferReportsModifier;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -25,6 +24,8 @@ public class OfferDao {
 	
 	@Autowired
 	private EntityManager entityManager;
+	
+	private Logger logger = LoggerFactory.getLogger(OfferDao.class);
 
 	@Transactional
 	public void addOffer(Offer offer) {
@@ -42,7 +43,7 @@ public class OfferDao {
 			Query query = entityManager.createQuery("select o from Offer o left join fetch o.user", Offer.class);
 			dbOffers = (ArrayList<Offer>) query.getResultList();
 		}catch(NoResultException noResultException) {
-			noResultException.printStackTrace();
+			logger.info("No result exception in getAllOffers()");
 		}
 		
 		return dbOffers;
@@ -109,10 +110,10 @@ public class OfferDao {
 			}
 			
 		}catch(NoResultException noResultException) {
-			noResultException.printStackTrace();
+			logger.info("No result exception in getPagedOffers(OfferModifier modifier, boolean active, int loggedUserId)");
 			return null;
 		}catch(Exception exception) {
-			exception.printStackTrace();
+			logger.error("Exception in getPagedOffers(OfferModifier modifier, boolean active, int loggedUserId)");
 		}
 		
 		return dbOffers;
@@ -127,7 +128,7 @@ public class OfferDao {
 			query.setParameter("givenid", id);
 			offer = (Offer) query.getSingleResult();
 		}catch (NoResultException noResultException) {
-			noResultException.printStackTrace();
+			logger.info("No result exception in getOfferById(int id)");
 		}
 		
 		return offer;
@@ -152,9 +153,9 @@ public class OfferDao {
 			query.setParameter("offerId", offerId);
 			dbSub = (Subscription) query.getSingleResult();
 		}catch (NoResultException noResultException) {
-			noResultException.printStackTrace();
+			logger.info("No result exception in getSubbedOffer(int userId, int offerId)");
 		}catch(Exception exception) {
-			exception.printStackTrace();
+			logger.error("Exception in getSubbedOffer(int userId, int offerId)");
 		}
 		
 		return dbSub;
@@ -171,9 +172,9 @@ public class OfferDao {
 			query.setParameter("offerId", offerId);
 			dbSubs = query.getResultList();
 		}catch (NoResultException noResultException) {
-			noResultException.printStackTrace();
+			logger.info("No result exception in getAllSubsOfOffer(int offerId)");
 		}catch(Exception exception) {
-			exception.printStackTrace();
+			logger.error("Exception in getAllSubsOfOffer(int offerId)");
 		}
 		
 		return dbSubs;
@@ -206,14 +207,15 @@ public class OfferDao {
 			query.setParameter("offerId", offerId);
 			reportAmount = (Long) query.getSingleResult();
 		}catch (NoResultException noResultException) {
-			noResultException.printStackTrace();
+			logger.info("No result exception in getOfferReportsAmount(int offerId)");
 		}catch (Exception exception) {
-			exception.printStackTrace();
+			logger.error("Exception in getOfferReportsAmount(int offerId)");
 		}
 		
 		return reportAmount;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<OfferReport> getOfferReports(int offerId){
 		
@@ -224,14 +226,15 @@ public class OfferDao {
 			query.setParameter("offerId", offerId);
 			reportList = query.getResultList();
 		}catch (NoResultException noResultException) {
-			noResultException.printStackTrace();
+			logger.info("No result exception in getOfferReports(int offerId)");
 		}catch (Exception exception) {
-			exception.printStackTrace();
+			logger.info("Exception in getOfferReports(int offerId)");
 		}
 		
 		return reportList;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Transactional
 	public List<OfferReport> getPagedReportedOffers(Modifier modifier){
 
@@ -257,10 +260,10 @@ public class OfferDao {
 			}
 			
 		}catch(NoResultException noResultException) {
-			noResultException.printStackTrace();
+			logger.info("No result exception in getPagedReportedOffers(Modifier modifier)");
 			return null;
 		}catch(Exception exception) {
-			exception.printStackTrace();
+			logger.error("Exception in getPagedReportedOffers(Modifier modifier)");
 		}
 		
 		return dbReports;
@@ -274,9 +277,9 @@ public class OfferDao {
 			query.setParameter("reportId", reportId);
 			offerReport = (OfferReport) query.getSingleResult();
 		}catch(NoResultException noResultException) {
-			noResultException.printStackTrace();
+			logger.info("No result exception in getOfferReportById(int reportId)");
 		}catch (Exception exception) {
-			exception.printStackTrace();
+			logger.info("Exception in getOfferReportById(int reportId)");
 		}
 		
 		return offerReport;

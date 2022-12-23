@@ -157,7 +157,7 @@ public class OfferController {
 		if(offerDao.getSubbedOffer(userDao.getUserByUsername(UserUtil.getLoggedUserName()).getId(), offerId)!=null)
 			isSubbed = true;
 
-		model.addAttribute("isSubbed", isSubbed); // wykorzystaj do unfollow
+		model.addAttribute("isSubbed", isSubbed);
 		model.addAttribute("failedToFollow", followFail);
 		model.addAttribute("backTwice", backTwice);
 
@@ -223,7 +223,7 @@ public class OfferController {
 		offerDao.deleteOffer(offerToDelete);
 
 		StringBuilder dirPath = new StringBuilder("src/main/resources/static/img/offer-images/"
-												  +currentLoggedUser.getId()
+												  + currentLoggedUser.getId()
 												  +"/"+offerToDelete.getId());
 		
 		Path offerDirPath = Path.of(dirPath.toString());
@@ -234,7 +234,6 @@ public class OfferController {
 				ioException.printStackTrace();
 			}
 		}
-		
 		
 		redirectAttributes.addFlashAttribute("info", "deleteOfferSuccess");
 		return "redirect:/main/";

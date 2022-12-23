@@ -15,6 +15,8 @@
 		<input type="hidden" th:field="*{offerId}">
 		<input type="hidden" th:field="*{ownerId}">
 		Password: <input type="password" th:name="passwd">
+		
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<button type="submit">Confirm</button>
 	</form>
 	<a th:href="@{/main/}">Back to main site</a>

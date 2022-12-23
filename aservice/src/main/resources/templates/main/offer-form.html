@@ -44,7 +44,7 @@
 			<input type="file" class="form-control form-control-sm" th:name="imageParam" id="fileInput" accept="image/*" multiple/><br>
 		</div>
 		
-
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<button sec:authorize="!hasRole('ROLE_ADMIN')" class="w-25 btn btn-primary btn-lg mt-2" type="submit">Submit</button>
 		<button sec:authorize="hasRole('ROLE_ADMIN')" th:formaction="@{'/admin/offer/modify/'+${offer.user.id}}" class="w-25 btn btn-primary btn-lg mt-2" type="submit">Submit</button>
 	</form>

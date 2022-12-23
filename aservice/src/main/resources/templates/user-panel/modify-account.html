@@ -27,6 +27,8 @@
 		<span th:errors="*{phoneNumber}"></span><br>
 		Phone number:<input type="text" th:field="*{phoneNumber}"><br>
 		Password to confirm:<input type="password" th:name="passwdC"><br>
+		
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<button type="submit">Submit</button>
 	</form>
 	<a th:href="@{/user/panel}">Back</a>

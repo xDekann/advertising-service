@@ -100,6 +100,7 @@
 
 					<hr class="my-4">
 
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 					<button class="w-50 btn btn-primary btn-lg" type="submit">Sign In</button><br><br>
 				</form>
 				<a th:href="@{/}" class="w-50 btn btn-primary btn-lg text-white text-decoration-none">Go Back</a>

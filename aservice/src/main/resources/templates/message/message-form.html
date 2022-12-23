@@ -47,6 +47,7 @@
 			<button type="submit" th:formaction="@{/message/send}">Send message</button>
 		</div>
 		
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	</form>
 	
 </body>

@@ -42,7 +42,6 @@ public class SecurityConfig {
 								   			 .requestMatchers("/login/**").permitAll()
 								   			 .requestMatchers("/main/creation/**").hasAnyRole("USER")
 								   			 .requestMatchers("/main/").hasAnyRole("ADMIN","USER")
-								   			 //.requestMatchers("/panel/**").hasAnyRole("ADMIN","USER")
 								   			 .requestMatchers("/admin/**").hasRole("ADMIN")
 								   			 .requestMatchers("/message/**").hasAnyRole("ADMIN","USER")
 											 .requestMatchers("/offer/**").hasAnyRole("ADMIN","USER").anyRequest().authenticated())
@@ -53,7 +52,6 @@ public class SecurityConfig {
 				.logout(configurer -> configurer.permitAll()
 						 .logoutSuccessUrl("/login/showLoginPage?logout"))
 				.exceptionHandling(configurer->configurer.accessDeniedPage("/login/access-denied"))
-				.csrf().disable() // TO DO ENABLE
 				.build();
 	}
 	

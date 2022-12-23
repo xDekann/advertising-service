@@ -1,6 +1,5 @@
 package com.aservice.controller;
 
-import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -19,25 +18,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.aservice.dao.MessageDao;
-import com.aservice.dao.OfferDao;
 import com.aservice.dao.UserDao;
 import com.aservice.entity.Block;
 import com.aservice.entity.Message;
-import com.aservice.entity.Offer;
 import com.aservice.entity.User;
 import com.aservice.util.SharedUtil;
 import com.aservice.util.UserUtil;
 import com.aservice.util.modifiers.MessagesModifier;
 import com.aservice.util.modifiers.Modifier;
 import com.aservice.util.modifiers.UserContactsModifier;
-import com.aservice.util.modifiers.UserListModifier;
 
 @Controller
 @RequestMapping("/message")
 public class MessageController {
 
-	@Autowired
-	private OfferDao offerDao;
 	@Autowired
 	private UserDao userDao;
 	@Autowired

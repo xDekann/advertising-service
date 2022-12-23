@@ -36,6 +36,8 @@
 	<p th:if="${info}=='youAreBlocked'" class="displayFont"> You have been blocked by the user you are trying to message!</p>
 	
 	<form th:action="@{/logout}" method="POST">
+		
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<input type="submit" class="w-25 btn btn-lg btn-primary mt-3" value="Logout">
 	</form>
 </body>

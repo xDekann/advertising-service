@@ -1,9 +1,7 @@
 package com.aservice.entity;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

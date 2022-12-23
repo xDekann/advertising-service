@@ -1,7 +1,6 @@
 package com.aservice.util.modifiers;
 
 import com.aservice.util.MessageUtil.MessageConst;
-import com.aservice.util.OfferUtil.OfferConst;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

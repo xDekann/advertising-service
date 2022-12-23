@@ -9,14 +9,8 @@ import java.sql.Timestamp;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileSystemUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.aservice.dao.OfferDao;
 import com.aservice.dao.UserDao;
@@ -65,7 +58,6 @@ public class MainController {
 		
 		Offer offer = new Offer();
 		
-		// reference update for modify purpose (allows admin to mod any offer)
 		if(userId==userDao.getUserByUsername(UserUtil.getLoggedUserName()).getId()){
 			offer = offerDao.getOfferById(offerId);
 		}
@@ -126,9 +118,7 @@ public class MainController {
 	public String maxUploadExceptionHandler(Model model) {
 		
 		model.addAttribute("info", "uploadFail");
-		//redirection.addFlashAttribute("upload", "fail");
-		
-		//return "redirect:/main/";
+
 		return "main/home";
 	}
 }

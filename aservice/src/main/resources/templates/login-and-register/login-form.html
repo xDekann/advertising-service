@@ -34,6 +34,8 @@
 				<div th:if="${param.logout!=null}" class="displayfont mt-3">
 				<i>You have successfully logged out!</i>
 			</div>
+			
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			<input class="w-75 btn btn-lg btn-primary mt-3" type="submit" value="Login"/>  
 		</form>
 		<br>
