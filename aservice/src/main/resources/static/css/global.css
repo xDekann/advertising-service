@@ -1,0 +1,32 @@
+.displayfont{
+    font-size: calc(0.750rem + 0.5vw);
+    font-weight: 300;
+    line-height: 1.2;
+}
+#textButton{
+	background:none; 
+	border:none;
+	font-size:12px;
+	font-family: helvetica;
+	text-decoration: underline;
+	cursor: pointer;
+}        
+#textNoButton{
+	font-size: 12px;
+	text-decoration: none;
+	font-weight: normal;
+	font-family: helvetica;
+}
+#marginL{
+	margin-left:20px;
+}
+#imagesCenter{
+	display: inline-block;
+}
+#margin{
+	margin-left:20px;
+	margin-right:20px;
+}
+#marginCenter{
+    margin-left:38%;
+}
