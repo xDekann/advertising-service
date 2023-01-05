@@ -13,5 +13,6 @@ public class MessagesModifier extends Modifier {
 
 	// rows to change
 	private final int limit = MessageConst.ROWS_PER_PAGE.getValue();
+	private int receiverId;
 	
 }

@@ -67,6 +67,7 @@ public class MessageController {
 		message.setReceiverId(receiverId);
 		
 		Modifier listModifier = new MessagesModifier();
+		((MessagesModifier) listModifier).setReceiverId(receiverId);
 		
 		redirectAttributes.addFlashAttribute("message", message);
 		redirectAttributes.addFlashAttribute("listModifier", listModifier);
@@ -107,16 +108,17 @@ public class MessageController {
 			return "redirect:/main/";
 		}
 		
-		System.out.println("RECEIVER ID :"+message.getReceiverId());
+		if(listModifier.getReceiverId()==0) return "redirect:/message/list/contacts";
 		
 		User currentUser = userDao.getUserByUsername(UserUtil.getLoggedUserName());
 		List<Message> dbMessages = null;
+
 		dbMessages = messageDao.getMessagesWithUser(listModifier,currentUser.getId(),
-				message.getReceiverId());
+		listModifier.getReceiverId());
 		
 		listModifier.setStartingRow(listModifier.getStartingRow()+listModifier.getLimit());
 		if(messageDao.getMessagesWithUser(listModifier,currentUser.getId(),
-				message.getReceiverId())!=null) 
+				listModifier.getReceiverId())!=null) 
 			listModifier.setIsNext(true);
 		else
 			listModifier.setIsNext(false);
@@ -132,10 +134,12 @@ public class MessageController {
 				messageMap.put(messageFromList,false);
 		});
 		
+		String receiverName = userDao.getUserById(listModifier.getReceiverId()).getUsername();
 		
 		model.addAttribute("message", message);
 		model.addAttribute("messageMap", messageMap);
 		model.addAttribute("listModifier", listModifier);
+		model.addAttribute("receiverName", receiverName);
 		
 		return "message/message-form";
 	}

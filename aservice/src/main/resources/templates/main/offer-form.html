@@ -13,35 +13,38 @@
 </head>
 <body class="bg-light">
 	<div id="marginL" class="ml-5">
-	<h3 class="display-1 text-center ">Offer creation site</h3>
-	<form th:action="@{/main/creation/offer/creation} + '?' + ${_csrf.parameterName} + '=' + ${_csrf.token}" th:object="${offer}" method="POST" enctype="multipart/form-data" novalidate>
-		<input type="hidden" th:field="*{id}">
+		<h3 class="display-1 text-center ">Offer creation site</h3>
+		<form th:action="@{/main/creation/offer/creation} + '?' + ${_csrf.parameterName} + '=' + ${_csrf.token}" th:object="${offer}" method="POST" enctype="multipart/form-data" novalidate>
+			<input type="hidden" th:field="*{id}">
+				
+			<span th:errors="*{title}"></span><br>
+			<label for="title" class="form-label">Title:</label>
+			<div class="col-2">
+				<input type="text" class="form-control" th:field="*{title}" id="title"><br>
+			</div>
 			
-		<span th:errors="*{title}"></span><br>
-		<label for="title" class="form-label">Title:</label>
-		<div class="col-2">
-			<input type="text" class="form-control" th:field="*{title}" id="title"><br>
+			<span th:errors="*{price}"></span><br>
+			<label for="price" class="form-label">Price:</label>
+			<div class="col-2">
+				<input type="number" class="form-control" th:field="*{price}" id="price" step="0.01"><br>
+			</div>
+			
+			<span th:errors="*{description}"></span><br>
+			Description:<br><textarea rows="10" cols="100" th:field="*{description}" class="form-control" placeholder="Best offer ever..."></textarea><br>
+			
+			<div class="w-25">
+				<label class="form-label" for="fileInput">(Max 10MB)</label>
+				<input type="file" class="form-control form-control-sm" th:name="imageParam" id="fileInput" accept="image/*" multiple/><br>
+			</div>
+			
+			<div class="text-center">
+				<button sec:authorize="!hasRole('ROLE_ADMIN')" class="w-25 btn btn-primary btn-lg mt-2" type="submit">Submit</button>
+				<button sec:authorize="hasRole('ROLE_ADMIN')" th:formaction="@{'/admin/offer/modify/'+${offer.user.id}}" class="w-25 btn btn-primary btn-lg mt-2" type="submit">Submit</button>
+			</div>
+		</form>
+		<div class="text-center">
+			<a th:href="@{/main/}" class="w-25 btn btn-primary btn-lg mt-2">Back</a> 
 		</div>
-		
-		<span th:errors="*{price}"></span><br>
-		<label for="price" class="form-label">Price:</label>
-		<div class="col-2">
-			<input type="number" class="form-control" th:field="*{price}" id="price" step="0.01"><br>
-		</div>
-		
-		<span th:errors="*{description}"></span><br>
-		Description:<br><textarea rows="10" cols="100" th:field="*{description}" class="form-control" placeholder="Best offer ever..."></textarea><br>
-		
-		<div class="w-25">
-			<label class="form-label" for="fileInput">(Max 10MB)</label>
-			<input type="file" class="form-control form-control-sm" th:name="imageParam" id="fileInput" accept="image/*" multiple/><br>
-		</div>
-		
-		
-		<button sec:authorize="!hasRole('ROLE_ADMIN')" class="w-25 btn btn-primary btn-lg mt-2" type="submit">Submit</button>
-		<button sec:authorize="hasRole('ROLE_ADMIN')" th:formaction="@{'/admin/offer/modify/'+${offer.user.id}}" class="w-25 btn btn-primary btn-lg mt-2" type="submit">Submit</button>
-	</form>
-	<a th:href="@{/main/}" class="w-25 btn btn-primary btn-lg mt-2">Back</a> 
 	</div>
 </body>
 </html>

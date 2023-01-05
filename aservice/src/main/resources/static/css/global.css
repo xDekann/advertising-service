@@ -54,3 +54,11 @@
 	color: #ffffff;
 	background-color:#0275d8;
 }
+#messageTdWidthLeft{
+	width:50%;
+	text-align:left;
+}
+#messageTdWidthRight{
+	width:50%;
+	text-align:right;
+}
