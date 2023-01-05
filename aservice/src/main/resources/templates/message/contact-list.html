@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <link rel="stylesheet" href="/css/global.css">
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="/css/global.css">
 	<title>Contact list</title>
 </head>
-<body>
+<body class="bg-light">
 
 	<form th:action="@{/message/list/contacts}" th:object="${listModifier}" method="GET">
 		<input type="hidden" th:field="*{isShowClicked}">
@@ -19,46 +19,53 @@
 		<input type="hidden" th:field="*{startingRow}">
 		<input type="hidden" th:field="*{comparingMethod}">
 
-		<button type="submit" >Refresh</button>
-		
-		<a th:href="@{/user/panel}">Back to user panel</a>
-	<table>
-		<tr>
-			<th><span id="textButton">ID</span></th>
-			<th><span id="textButton">Username</span></th>
-			<th><span id="textButton">Last message from user</span></th>
-			<th><span id="textButton">Date</span></th>
-			<th></th>
-		</tr>
-		<tr th:each="contact : ${contacts}">
-			<td th:text="${contact.id}"></td>
-			<td><a th:href="@{'/user/viewprofile/picked/'+${contact.id}}" th:text="${contact.username}"></a></td>
-			<span th:if="${contact.messages.size()}>0">
-				<span th:if="${#strings.length(contact.messages[0].messageContent)}<=31">
-					<td th:text="${contact.messages[0].messageContent}"></td>
+		<div class="text-center m-auto w-25 mt-2">
+			<a th:href="@{/user/panel}" class="btn btn-primary mt-2">Back to panel</a>
+			<button type="submit" class="btn btn-primary mt-2 w-25">Refresh</button>
+		</div>
+	<table class="table table-striped w-75 m-auto mt-2 text-center">
+		<thead>
+			<tr>
+				<th><span class="btn-link text-decoration-none text-dark">ID</span></th>
+				<th><span class="btn-link text-decoration-none text-dark">Username</span></th>
+				<th><span class="btn-link text-decoration-none text-dark">Last message from user</span></th>
+				<th><span class="btn-link text-decoration-none text-dark">Date</span></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="contact : ${contacts}">
+				<td th:text="${contact.id}" id="boldText"></td>
+				<td id="tableLink"><a class="text-decoration-none"  th:href="@{'/user/viewprofile/picked/'+${contact.id}}" th:text="${contact.username}"></a></td>
+				<span th:if="${contact.messages.size()}>0">
+					<span th:if="${#strings.length(contact.messages[0].messageContent)}<=31">
+						<td th:text="${contact.messages[0].messageContent}"></td>
+					</span>
+					
+					<span th:if="${#strings.length(contact.messages[0].messageContent)}>=31">
+						<td th:text="${#strings.substring(contact.messages[0].messageContent,0,30)+'...'}"></td>
+					</span>
+					
+					<td th:text="${#strings.substring(contact.messages[0].messageDate,0,16)}"></td>
 				</span>
-				
-				<span th:if="${#strings.length(contact.messages[0].messageContent)}>=31">
-					<td th:text="${#strings.substring(contact.messages[0].messageContent,0,30)+'...'}"></td>
+				<span th:if="${contact.messages.size()}<=0">
+					<td>---</td>
+					<td>---</td>
 				</span>
-				
-				<td th:text="${#strings.substring(contact.messages[0].messageDate,0,16)}"></td>
-			</span>
-			<span th:if="${contact.messages.size()}<=0">
-				<td>---</td>
-				<td>---</td>
-			</span>
-			<td><a th:href="@{'/message/create/'+${contact.id}}">Message</td>
-		</tr>
+				<td><a th:href="@{'/message/create/'+${contact.id}}" class="btn btn-primary">Message</td>
+			</tr>
+		</tbody>
 	</table><br>
 	
-	<span th:if="${listModifier.isShowClicked}">
-		<button th:if="${listModifier.previousPage}>0" type="submit" th:formaction="@{/message/list/contacts/left}">&larr;</button>
+	<div class="text-center">
+		<span th:if="${listModifier.isShowClicked}">
+			<button th:if="${listModifier.previousPage}>0" type="submit" th:formaction="@{/message/list/contacts/left}" class="btn btn-primary">&larr;</button>
 		
-		<span th:text="${'Page: '+listModifier.currentPage}"></span>
+			<span th:text="${'Page: '+listModifier.currentPage}"></span>
 		
-		<button th:if="${listModifier.isNext}" type="submit" th:formaction="@{/message/list/contacts/right}">&rarr;</button>
-	</span>
+			<button th:if="${listModifier.isNext}" type="submit" th:formaction="@{/message/list/contacts/right}" class="btn btn-primary">&rarr;</button>
+		</span>
+	</div>
 	</form>
 	
 </body>

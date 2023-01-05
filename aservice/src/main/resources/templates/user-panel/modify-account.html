@@ -3,34 +3,49 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="/css/global.css">
 	<title>Modify account</title>
 </head>
-<body>
-	<p>Modify account</p>
-	<div th:if="${credentials == 'fail'}">
-		<p>Invalid credentials</p>
-	</div>
-	<div th:if="${credentials == 'success'}">
-		<p>Modification succeeded</p>
-	</div>
-	<form th:action="@{/user/modify}" th:object="${userDetails}" method="POST">
+<body class="bg-light">
+	<h3 class="display-6 p-3 text-center">Modify account</h3>
+	<form th:action="@{/user/modify}" th:object="${userDetails}" method="POST" class="m-auto w-25">
 		<input type="hidden" th:field="*{id}">
 		<input type="hidden" th:field="*{email}">
 		<input type="hidden" th:field="*{lastLogin}">
-		<span th:errors="*{name}"></span><br>
-		Name:<input type="text" th:field="*{name}"><br>
-		<span th:errors="*{surname}"></span><br>
-		Surname:<input type="text" th:field="*{surname}"><br>
-		<span th:errors="*{city}"></span><br>
-		City:<input type="text" th:field="*{city}"><br>
-		<span th:errors="*{phoneNumber}"></span><br>
-		Phone number:<input type="text" th:field="*{phoneNumber}"><br>
-		Password to confirm:<input type="password" th:name="passwdC"><br>
 		
+		<span th:errors="*{name}"></span><br>
+		<label for="name" class="form-label">Name:</label>
+		<input type="text" th:field="*{name}" class="form-control" id="name">
+		
+		<span th:errors="*{surname}"></span><br>
+		<label for="surname" class="form-label">Surname:</label>
+		<input type="text" th:field="*{surname}" class="form-control" id="surname">
+		
+		<span th:errors="*{city}"></span><br>
+		<label for="city" class="form-label">City:</label>
+		<input type="text" th:field="*{city}" class="form-control" id="city">
+		
+		<span th:errors="*{phoneNumber}"></span><br>
+		<label for="phoneNumber" class="form-label">Phone number:</label>
+		<input type="text" th:field="*{phoneNumber}" class="form-control" id="phoneNumber">
+		
+		<label for="passwdC" class="form-label mt-4">Password to confirm:</label>
+		<input type="password" th:name="passwdC" class="form-control" id="passwdC">
+		
+		<button type="submit" class="btn btn-primary mt-4" id="ConfirmButtonWidth100">Submit</button>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-		<button type="submit">Submit</button>
 	</form>
-	<a th:href="@{/user/panel}">Back</a>
+	
+	<div class="text-center">
+		<a th:href="@{/user/panel}" class="btn btn-primary mt-2 w-25">Back</a>
+	</div>
+	<div th:if="${credentials == 'fail'}" class="displayfont text-center mt-2">
+		<p>Invalid credentials</p>
+	</div>
+	<div th:if="${credentials == 'success'}" class="displayfont text-center mt-2">
+		<p>Modification succeeded</p>
+	</div>
 </body>
 </html>

@@ -8,10 +8,10 @@
 	<title>Home</title>
 </head>
 <body class="text-center bg-light">
-	<h3 class="display-3">Landing site</h3>
+	<h3 class="display-3 mt-2">Landing site</h3>
 	
 	<div class="list-group align-items-center" sec:authorize="!hasAnyRole('ROLE_ADMIN','ROLE_USER')">
-		<a th:href="@{/login/showLoginPage}" class="list-group-item list-group-item-action gap-3 py-3 w-25 ">Login</a>
+		<a th:href="@{/login/showLoginPage}" class="list-group-item list-group-item-action gap-3 py-3 w-25 mt-2">Login</a>
 		<a th:href="@{/login/registerForm}" class="list-group-item list-group-item-action gap-3 py-3 w-25 mt-2">Sign up</a>
 	</div>
 	<div class="list-group align-items-center">

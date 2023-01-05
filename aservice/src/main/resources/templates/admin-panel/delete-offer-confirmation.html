@@ -9,9 +9,7 @@
 	<title>Offer deletion</title>
 </head>
 <body class="bg-light">
-
 	<h3 th:text="'Deleting offer: '+${offerTitle}" class="display-6 p-3 text-center"></h3>
-	
 	<form th:action="@{/admin/offer/delete}" method="POST" class="m-auto w-25"> 
 		<input type="hidden" th:name="offerId" th:value="${offerId}">
 		

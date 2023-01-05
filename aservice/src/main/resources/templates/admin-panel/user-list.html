@@ -25,16 +25,16 @@
 		</div>
 		
 		<div class="text-left m-auto w-25 mt-2">
-			<a th:href="@{/admin/panel}" class="btn btn-primary mt-2">Back to admin panel</a>
+			<a th:href="@{/admin/panel}" class="btn btn-primary mt-2">Back to panel</a>
 			<button th:if="${listModifier.isShowClicked}==false" type="submit" class="btn btn-primary mt-2 w-25">Show</button>
 			<button type="submit" th:formaction="@{/admin/showusers}" class="btn btn-primary mt-2 w-25">Refresh</button>
 		</div>	
 	<table class="table table-striped w-75 m-auto mt-2 text-center">
 		<thead>
 			<tr>
-				<th><button class="btn btn-link text-decoration-none text-dark" id="textButton" type="submit" th:formaction="@{/admin/list/view/id}"><b>ID</b></button></th>
-				<th><button class="btn btn-link text-decoration-none text-dark" id="textButton" type="submit" th:formaction="@{/admin/list/view/username}"><b>Username</b></button></th>
-				<th><span class="btn-link text-decoration-none text-dark" id="textNoButton"><b>Roles</b></span></th>
+				<th><button class="btn btn-link text-decoration-none text-dark" type="submit" th:formaction="@{/admin/list/view/id}"><b>ID</b></button></th>
+				<th><button class="btn btn-link text-decoration-none text-dark" type="submit" th:formaction="@{/admin/list/view/username}"><b>Username</b></button></th>
+				<th><span class="btn btn-link text-decoration-none text-dark"><b>Roles</b></span></th>
 				<th></th>
 			</tr>
 		</thead>
@@ -48,8 +48,8 @@
 					</span>
 				</td>
 				<td>
-					<a th:href="@{'/admin/user/delete/form/'+${user.id}}" class="btn btn-danger">Delete account/</a>
-					<a th:href="@{'/admin/user/editpasswd/form/'+${user.id}}" class="btn btn-primary">Change password/</a>
+					<a th:href="@{'/admin/user/delete/form/'+${user.id}}" class="btn btn-danger">Delete account</a>
+					<a th:href="@{'/admin/user/editpasswd/form/'+${user.id}}" class="btn btn-primary">Change password</a>
 				</td>
 			</tr>
 		</tbody>

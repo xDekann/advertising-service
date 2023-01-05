@@ -20,15 +20,15 @@
 		<input type="hidden" th:field="*{comparingMethod}">
 		
 		<div class="text-center m-auto w-25 mt-2">
-			<a th:href="@{/admin/panel}" class="btn btn-primary mt-2 w-50" id>Back to admin panel</a>
+			<a th:href="@{/admin/panel}" class="btn btn-primary mt-2 w-50">Back to panel</a>
 			<button type="submit" class="btn btn-primary mt-2 w-25" th:formaction="@{/admin/showreports/offers}">Refresh</button>
 		</div>
 	<table class="table table-striped w-75 m-auto mt-2 text-center">
 		<thead>
 			<tr>
-				<th><span class="btn-link text-decoration-none text-dark"><b>ID</b></span></th>
-				<th><span class="btn-link text-decoration-none text-dark"><b>Offer Title</b></span></th>
-				<th><span class="btn-link text-decoration-none text-dark"><b>Options</b></span></th>
+				<th><span class="btn-link text-decoration-none text-dark">ID</span></th>
+				<th><span class="btn-link text-decoration-none text-dark">Offer Title</span></th>
+				<th><span class="btn-link text-decoration-none text-dark">Options</span></th>
 			</tr>
 		<thead>
 		<tbody>
