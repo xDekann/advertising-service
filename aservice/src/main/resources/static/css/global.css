@@ -30,3 +30,27 @@
 #marginCenter{
     margin-left:38%;
 }
+#verticalAlignBottom{
+	vertical-align: bottom;
+}
+#ConfirmButtonWidth100{
+	width: 100%;
+}
+#ButtonWidth45{
+	width:47%;
+}
+#tableRowHeight{
+	line-height:80px;
+}
+#boldText{
+	font-weight: bold;
+}
+
+#tableLink a{
+	color:black;
+}
+
+#tableLink a:hover{
+	color: #ffffff;
+	background-color:#0275d8;
+}

@@ -134,6 +134,7 @@ public class UserPanelController {
 		
 		if(userDao.getUserReportsAmount(userId)>=UserConst.USER_REPORT_LIMIT.getValue()) {
 			model.addAttribute("info", "reportUserLimit");
+			model.addAttribute("givenName", UserUtil.getLoggedUserName());
 			return "main/home";
 		}
 		
@@ -161,6 +162,7 @@ public class UserPanelController {
 		userDao.addUser(userToReport);
 
 		model.addAttribute("info", "reportUserSuccess");
+		model.addAttribute("givenName", UserUtil.getLoggedUserName());
 		
 		return "main/home";	
 	}

@@ -45,18 +45,21 @@ public class MessageController {
 		
 		if(currentUser.getId()== receiverId) {
 			redirectAttributes.addFlashAttribute("info", "messageFail");
+			redirectAttributes.addFlashAttribute("givenName", UserUtil.getLoggedUserName());
 			return "redirect:/main/";
 		}
 		
 		// if current user has blocked target user
 		if(messageDao.getBlock(currentUser.getId(), receiverId)!=null) {
 			redirectAttributes.addFlashAttribute("info", "youHaveBlocked");
+			redirectAttributes.addFlashAttribute("givenName", UserUtil.getLoggedUserName());
 			return "redirect:/main/";
 		}
 		
 		// if target user has blocked current user
 		if(messageDao.getBlock(receiverId, currentUser.getId())!=null) {
 			redirectAttributes.addFlashAttribute("info", "youAreBlocked");
+			redirectAttributes.addFlashAttribute("givenName", UserUtil.getLoggedUserName());
 			return "redirect:/main/";
 		}
 		
@@ -149,6 +152,7 @@ public class MessageController {
 		messageDao.addMessage(message);
 		
 		redirectAttributes.addFlashAttribute("info", "messageSuccess");
+		redirectAttributes.addFlashAttribute("givenName", UserUtil.getLoggedUserName());
 		return "redirect:/main/";
 	}
 	

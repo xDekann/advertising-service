@@ -3,12 +3,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="/css/global.css">
-
 	<title>Offer menu</title>
 </head>
-<body>
+<body class="bg-light">
+	<span th:if="${listModifier.wantOwnOffers}==false and ${listModifier.wantSubbedList}==false">
+		<h3 class="display-6 p-3 text-center">Available offers</h3>
+	</span>
+	<span th:if="${listModifier.wantOwnOffers}==true and ${listModifier.wantSubbedList}==false">
+		<h3 class="display-6 p-3 text-center">User own offers</h3>
+	</span>
+	<span th:if="${listModifier.wantOwnOffers}==false and ${listModifier.wantSubbedList}==true">
+		<h3 class="display-6 p-3 text-center">User followed offers</h3>
+	</span>
 	<form th:action="@{/offer/list/view/show}" th:object="${listModifier}" method="GET">
 		<input type="hidden" th:field="*{isShowClicked}">
 		<input type="hidden" th:field="*{isNext}">
@@ -20,59 +29,75 @@
 		
 		<input type="hidden" th:field="*{startingRow}">
 		<input type="hidden" th:field="*{comparingMethod}">
-		
-		<span th:if="${listModifier.filter}==null">
-		Title: <input type="text" th:field="*{filter}"><br>
-		</span>
-		
-		<button th:if="${listModifier.isShowClicked}==false" type="submit">Show</button>
-		
-		<button type="submit" th:formaction="@{'/offer/list/'+${listModifier.wantSubbedList}+'/'+${listModifier.wantOwnOffers}}">Refresh</button>
-		<a th:href="@{/main/}">Back to main panel</a>
-	<table>
-		<tr>
-			<th><button id="textButton" type="submit" th:formaction="@{/offer/list/view/id}">ID</button></th>
-			<th><button id="textButton" type="submit" th:formaction="@{/offer/list/view/title}">Title</button></th>
-			<th><button id="textButton" type="submit" th:formaction="@{/offer/list/view/dateOfCreation}">Added</button></th>
-			<th><button id="textButton" type="submit" th:formaction="@{/offer/list/view/price}">Price</button></th>
-			<th><span id="textNoButton">Author</span></th>
-			<th><span id="textNoButton">Picture</span></th>
-			<th></th>
-			<th></th>
-		</tr>
-		<tr th:each="offer : ${offers}">
-			<td th:text="${offer.key.id}"></td>
-			<td><a th:href="@{'/offer/list/pickedoffer/'+${offer.key.id}+'/false/false'}" th:text="${offer.key.title}"></a></td>
-			<td th:text="${#strings.substring(offer.key.dateOfCreation,0,10)}"></td>
-			<td th:text="${offer.key.price}+'$'"></td>
-			<td th:text="${offer.key.user.username}"></td>
-			<td><img th:if="${offer.value}" th:src="@{'/img/offer-images/'+${offer.key.user.id}+'/'+${offer.key.id}+'/'+${offer.value}}" alt="Missing image" width="80" height="80"></td>
-			<span th:if="${offer.key.user.id}==${loggedUserId}">
-				<td>
-					<a th:href="@{'/main/creation/offer/form/'+${offer.key.id}+'/'+${loggedUserId}}">Modify Offer/</a>
-					<a th:href="@{'/offer/delete/form/'+${offer.key.id}+'/'+${offer.key.user.id}+'/success'}">Delete Offer/</a>
-					<a th:if="${offer.key.isActive}==true" th:href="'/offer/disable/'+${offer.key.id}+'/'+${offer.key.user.id}">Disable</a>
-					<a th:if="${offer.key.isActive}==false" th:href="'/offer/enable/'+${offer.key.id}+'/'+${offer.key.user.id}">Enable</a>
-				</td>
-			</span>
-			<span sec:authorize="hasRole('ROLE_ADMIN')">
-				<td>
-					<a th:href="@{'/admin/offer/modify/form/'+${offer.key.id}}">Admin modify/</a>
-					<a th:href="@{'/admin/offer/delete/form/'+${offer.key.id}}">Admin Delete</a>
-				</td>
-			</span>
-		</tr>
+		 
+		<div th:if="${listModifier.filter}==null" class="text-left m-auto w-25">
+			<label for="title">Title:</label>
+			<input type="text" th:field="*{filter}" name="title" class="form-control" id="title">
+		</div>
+		<div class="text-left m-auto w-25 mt-2">
+			<a th:href="@{/main/}" class="btn btn-primary mt-2">Back to main panel</a>
+			
+			<button th:if="${listModifier.isShowClicked}==false" type="submit" class="btn btn-primary mt-2 w-25">Show</button>
+			
+			<button type="submit" th:formaction="@{'/offer/list/'+${listModifier.wantSubbedList}+'/'+${listModifier.wantOwnOffers}}"
+			class="btn btn-primary mt-2 w-25">Refresh</button>
+		</div>
+	<table class="table table-striped w-75 m-auto mt-2 text-center">
+		<thead>
+			<tr>
+				<th><button class="btn btn-link text-decoration-none text-dark" type="submit" th:formaction="@{/offer/list/view/id}"><b>ID</b></button></th>
+				<th><button class="btn btn-link text-decoration-none text-dark" type="submit" th:formaction="@{/offer/list/view/title}"><b>Title</b></button></th>
+				<th><button class="btn btn-link text-decoration-none text-dark" type="submit" th:formaction="@{/offer/list/view/dateOfCreation}"><b>Added</b></button></th>
+				<th><button class="btn btn-link text-decoration-none text-dark" type="submit" th:formaction="@{/offer/list/view/price}"><b>Price</b></button></th>
+				<th><span class="btn-link text-decoration-none text-dark"><b>Author</b></span></th>
+				<th><span class="btn-link text-decoration-none text-dark"><b>Picture</b></span></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="offer : ${offers}" id="tableRowHeight">
+				<td th:text="${offer.key.id}" id="boldText"></td>
+				<td id="tableLink"><a class="text-decoration-none" th:href="@{'/offer/list/pickedoffer/'+${offer.key.id}+'/false/false'}" th:text="${offer.key.title}"></a></td>
+				<td th:text="${#strings.substring(offer.key.dateOfCreation,0,10)}"></td>
+				<td th:text="${offer.key.price}+'$'"></td>
+				<td th:text="${offer.key.user.username}"></td>
+				<td><img th:if="${offer.value}" th:src="@{'/img/offer-images/'+${offer.key.user.id}+'/'+${offer.key.id}+'/'+${offer.value}}" class="border border-secondary" alt="Missing image" width="80" height="80"></td>
+				<span th:if="${offer.key.user.id}==${loggedUserId}">
+					<td>
+						<a th:href="@{'/main/creation/offer/form/'+${offer.key.id}+'/'+${loggedUserId}}" class="btn btn-primary">Modify Offer</a>
+						<a th:href="@{'/offer/delete/form/'+${offer.key.id}+'/'+${offer.key.user.id}+'/success'}" class="btn btn-danger">Delete Offer</a>
+						<a th:if="${offer.key.isActive}==true" th:href="'/offer/disable/'+${offer.key.id}+'/'+${offer.key.user.id}" class="btn btn-danger">Disable</a>
+						<a th:if="${offer.key.isActive}==false" th:href="'/offer/enable/'+${offer.key.id}+'/'+${offer.key.user.id}" class="btn btn-success">Enable</a>
+						<a class="btn btn-primary" th:href="@{'/offer/list/pickedoffer/'+${offer.key.id}+'/false/true'}">See offer</a>
+					</td>
+				</span>
+				<span th:if="${offer.key.user.id}!=${loggedUserId}">
+					<td>
+						<span th:if="${listModifier.wantOwnOffers}==false and ${listModifier.wantSubbedList}==false">
+							<a class="btn btn-primary" th:href="@{'/offer/list/pickedoffer/'+${offer.key.id}+'/false/false'}">See offer</a>
+						</span>
+						<span th:if="${listModifier.wantOwnOffers}==true and ${listModifier.wantSubbedList}==false">
+							<a class="btn btn-primary" th:href="@{'/offer/list/pickedoffer/'+${offer.key.id}+'/false/true'}">See offer</a>
+						</span>
+						<span th:if="${listModifier.wantOwnOffers}==false and ${listModifier.wantSubbedList}==true">
+							<a class="btn btn-primary" th:href="@{'/offer/list/pickedoffer/'+${offer.key.id}+'/false/false'}">See offer</a>
+						</span>
+					</td>
+				</span>
+			</tr>
+		</tbody>
 	</table><br>
 	
-	<span th:if="${listModifier.isShowClicked}">
-		<button th:if="${listModifier.previousPage}>0" type="submit" th:formaction="@{/offer/list/view/left}">&larr;</button>
+	<div class="text-center">
+		<span th:if="${listModifier.isShowClicked}">
+			<button th:if="${listModifier.previousPage}>0" type="submit" th:formaction="@{/offer/list/view/left}" class="btn btn-primary">&larr;</button>
 		
-		<span th:text="${'Page: '+listModifier.currentPage}"></span>
+			<span th:text="${'Page: '+listModifier.currentPage}"></span>
 		
-		<button th:if="${listModifier.isNext}" type="submit" th:formaction="@{/offer/list/view/right}">&rarr;</button>
-	</span>
+			<button th:if="${listModifier.isNext}" type="submit" th:formaction="@{/offer/list/view/right}" class="btn btn-primary">&rarr;</button>
+		</span>
+	</div>
 	
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	</form>
 	
 </body>

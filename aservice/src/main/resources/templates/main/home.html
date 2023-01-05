@@ -18,21 +18,22 @@
 		<a th:href="@{'/offer/list/'+${false}+'/'+${false}}" class="list-group-item list-group-item-action gap-3 py-3 w-25 mt-2 border-top">View offers</a>
 		<a th:href="@{/admin/panel}" sec:authorize="hasRole('ROLE_ADMIN')" class="list-group-item list-group-item-danger gap-3 py-3 w-25 mt-2 border-top">Admin panel</a>
 	</div>
-	<p th:if="${info}=='uploadFail'" class="displayFont"> Offer upload has failed, exceeded server assigned image size limit </p>
-	<p th:if="${info}=='reportLimit'" class="displayFont"> The offer has already received multiple reports - limit exceeded</p>
-	<p th:if="${info}=='reportSuccess'" class="displayFont"> Offer has been successfully reported</p>
-	<p th:if="${info}=='reportUserSuccess'" class="displayFont"> User has been successfully reported</p>
-	<p th:if="${info}=='reportUserLimit'" class="displayFont"> The user has already received multiple reports - limit exceeded</p>
-	<p th:if="${info}=='deleteOfferSuccess'" class="displayFont"> Offer has been successfully deleted</p>
-	<p th:if="${info}=='messageSuccess'" class="displayFont"> Successfully sent message!</p>
-	<p th:if="${info}=='messageFail'" class="displayFont"> Failed to send the message!</p>
-	<p th:if="${info}=='youHaveBlocked'" class="displayFont"> You have blocked the user you are trying to message. Make sure to unblock him first!</p>
-	<p th:if="${info}=='youAreBlocked'" class="displayFont"> You have been blocked by the user you are trying to message!</p>
-	
-	<form th:action="@{/logout}" method="POST">
-		
+
+	<form th:action="@{/logout}" method="POST" class="mb-2">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<input type="submit" class="w-25 btn btn-lg btn-primary mt-3" value="Logout">
 	</form>
+	
+	<p th:if="${info}=='uploadFail'" class="displayfont"> Offer upload has failed, exceeded server assigned image size limit </p>
+	<p th:if="${info}=='reportLimit'" class="displayfont"> The offer has already received multiple reports - limit exceeded</p>
+	<p th:if="${info}=='reportSuccess'" class="displayfont"> Offer has been successfully reported</p>
+	<p th:if="${info}=='reportUserSuccess'" class="displayfont"> User has been successfully reported</p>
+	<p th:if="${info}=='reportUserLimit'" class="displayfont"> The user has already received multiple reports - limit exceeded</p>
+	<p th:if="${info}=='deleteOfferSuccess'" class="displayfont"> Offer has been successfully deleted</p>
+	<p th:if="${info}=='messageSuccess'" class="displayfont"> Successfully sent message!</p>
+	<p th:if="${info}=='messageFail'" class="displayfont"> Failed to send the message!</p>
+	<p th:if="${info}=='youHaveBlocked'" class="displayfont"> You have blocked the user you are trying to message. Make sure to unblock him first!</p>
+	<p th:if="${info}=='youAreBlocked'" class="displayfont"> You have been blocked by the user you are trying to message!</p>
+	
 </body>
 </html>

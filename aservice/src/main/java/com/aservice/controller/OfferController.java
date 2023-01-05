@@ -236,6 +236,7 @@ public class OfferController {
 		}
 		
 		redirectAttributes.addFlashAttribute("info", "deleteOfferSuccess");
+		redirectAttributes.addFlashAttribute("givenName", UserUtil.getLoggedUserName());
 		return "redirect:/main/";
 	}
 	
@@ -272,6 +273,7 @@ public class OfferController {
 		
 		if(offerDao.getOfferReportsAmount(offerId)>=OfferUtil.OfferConst.OFFER_REPORT_LIMIT.getValue()) {
 			model.addAttribute("info", "reportLimit");
+			model.addAttribute("givenName", UserUtil.getLoggedUserName());
 			return "main/home";
 		}
 		
@@ -298,6 +300,7 @@ public class OfferController {
 		offerDao.addOffer(offerToReport);
 		
 		model.addAttribute("info", "reportSuccess");
+		model.addAttribute("givenName", UserUtil.getLoggedUserName());
 		
 		return "main/home";
 		

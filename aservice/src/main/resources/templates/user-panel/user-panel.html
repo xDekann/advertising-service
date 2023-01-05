@@ -12,9 +12,11 @@
 	<a th:href="@{/user/modify/form}">Modify account</a><br>
 	<a th:href="@{/user/delete/form}">Delete account</a><br>
 	<a th:href="@{/user/password/form}">Change your password</a><br>
-	<a th:href="@{'/offer/list/'+${false}+'/'+${true}}">View your offers</a><br>
-	<a th:href="@{'/offer/list/'+${true}+'/'+${false}}">View subscribed offers</a><br>
 	<a th:href="@{/message/list/contacts}">View your contacts</a><br>
+	<span sec:authorize="!hasRole('ROLE_ADMIN')">
+		<a th:href="@{'/offer/list/'+${false}+'/'+${true}}">View your offers</a><br>
+		<a th:href="@{'/offer/list/'+${true}+'/'+${false}}">View subscribed offers</a><br>
+	</span>
 	<a th:href="@{/main/}">Back</a> 
 
 </body>

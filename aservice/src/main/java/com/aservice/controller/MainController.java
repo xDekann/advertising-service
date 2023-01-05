@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,7 +43,7 @@ public class MainController {
 	private OfferDao offerDao;
 	
 
-	@GetMapping("/")
+	@RequestMapping(value="/", method= {RequestMethod.GET, RequestMethod.POST})
 	public String loggedIn(Model model) {
 		
 		User userToUpdate = userDao.getUserByUsername(UserUtil.getLoggedUserName());
@@ -52,7 +54,7 @@ public class MainController {
 		return "main/home";
 	}
 	
-	@GetMapping("/creation/offer/form/{offerId}/{userId}")
+	@RequestMapping(value="/creation/offer/form/{offerId}/{userId}", method= {RequestMethod.GET, RequestMethod.POST})
 	public String createOfferForm(@PathVariable("offerId") int offerId,
 								  @PathVariable("userId") int userId, Model model) {
 		
@@ -66,7 +68,7 @@ public class MainController {
 		return "main/offer-form";
 	}
 	
-	@PostMapping("/creation/offer/creation")
+	@RequestMapping(value="/creation/offer/creation", method= {RequestMethod.GET, RequestMethod.POST})
 	public String createOffer(@Valid @ModelAttribute("offer") Offer offer,
 			BindingResult bindingResult, 
 			@RequestParam(value="imageParam", required = false) MultipartFile[] images) {
@@ -118,7 +120,8 @@ public class MainController {
 	public String maxUploadExceptionHandler(Model model) {
 		
 		model.addAttribute("info", "uploadFail");
-
+		model.addAttribute("givenName", UserUtil.getLoggedUserName());
+		System.out.println("Test");
 		return "main/home";
 	}
 }
