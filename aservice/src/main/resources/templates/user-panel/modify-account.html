@@ -12,7 +12,6 @@
 	<h3 class="display-6 p-3 text-center">Modify account</h3>
 	<form th:action="@{/user/modify}" th:object="${userDetails}" method="POST" class="m-auto w-25">
 		<input type="hidden" th:field="*{id}">
-		<input type="hidden" th:field="*{email}">
 		<input type="hidden" th:field="*{lastLogin}">
 		
 		<span th:errors="*{name}"></span><br>
@@ -22,6 +21,10 @@
 		<span th:errors="*{surname}"></span><br>
 		<label for="surname" class="form-label">Surname:</label>
 		<input type="text" th:field="*{surname}" class="form-control" id="surname">
+		
+		<span th:errors="*{email}"></span><br>
+		<label for="email" class="form-label">Email:</label>
+		<input type="text" th:field="*{email}" class="form-control" id="email">
 		
 		<span th:errors="*{city}"></span><br>
 		<label for="city" class="form-label">City:</label>
@@ -44,8 +47,8 @@
 	<div th:if="${credentials == 'fail'}" class="displayfont text-center mt-2">
 		<p>Invalid credentials</p>
 	</div>
-	<div th:if="${credentials == 'success'}" class="displayfont text-center mt-2">
-		<p>Modification succeeded</p>
+	<div th:if="${credentials == 'existsEmail'}" class="displayfont text-center mt-2">
+		<p>Provided email already exists!</p>
 	</div>
 </body>
 </html>
