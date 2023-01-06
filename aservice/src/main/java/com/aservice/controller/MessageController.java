@@ -1,10 +1,13 @@
 package com.aservice.controller;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +24,7 @@ import com.aservice.dao.MessageDao;
 import com.aservice.dao.UserDao;
 import com.aservice.entity.Block;
 import com.aservice.entity.Message;
+import com.aservice.entity.Offer;
 import com.aservice.entity.User;
 import com.aservice.util.SharedUtil;
 import com.aservice.util.UserUtil;
@@ -180,8 +184,6 @@ public class MessageController {
 			listModifier.setFilter(listModifier.getFilter().substring(1));
 		}
 		
-		System.out.println("LIMIT!"+listModifier.getLimit());
-		
 		// user button click
 		switch (task) {
 		case "show": {
@@ -205,8 +207,8 @@ public class MessageController {
 		}
 		
 		User currentUser = userDao.getUserByUsername(UserUtil.getLoggedUserName());
-		List<User> dbContacts = null;
-		dbContacts = messageDao.getContacts(listModifier,currentUser.getId());
+		List<User> dbContactsNoMess = null;
+		dbContactsNoMess = messageDao.getContacts(listModifier,currentUser.getId());
 		
 		listModifier.setStartingRow(listModifier.getStartingRow()+listModifier.getLimit());
 		if(messageDao.getContacts(listModifier,currentUser.getId())!=null) 
@@ -215,10 +217,35 @@ public class MessageController {
 			listModifier.setIsNext(false);
 		listModifier.setStartingRow(listModifier.getStartingRow()-listModifier.getLimit());
 		
-		if(dbContacts==null) dbContacts = new ArrayList<>();
+		if(dbContactsNoMess==null) dbContactsNoMess = new ArrayList<>();
+		
+		int loggedUserId = userDao.getUserByUsername(UserUtil.getLoggedUserName()).getId();
+		
+		Map<User,Message> dbContacts = new LinkedHashMap<>();
+		dbContactsNoMess.forEach(contact->{
+			
+			Comparator<Message> dateComparator = Comparator.comparing(Message::getMessageDate);
+			
+			Message mostRecentMessage = null;
+			
+			try {
+				mostRecentMessage = 
+						contact.getMessages()
+						.stream()
+						.filter(message -> message.getReceiverId()==loggedUserId)
+						.max(dateComparator).get();
+			}
+			catch (Exception exception) {
+			
+			}
+			
+			dbContacts.put(contact, mostRecentMessage);
+		});
+		
 		
 		model.addAttribute("contacts", dbContacts);
 		model.addAttribute("listModifier", listModifier);
+		model.addAttribute("loggedUserId", loggedUserId);
 		
 		return "message/contact-list";
 	}

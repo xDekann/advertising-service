@@ -35,24 +35,24 @@
 		</thead>
 		<tbody>
 			<tr th:each="contact : ${contacts}">
-				<td th:text="${contact.id}" id="boldText"></td>
-				<td id="tableLink"><a class="text-decoration-none"  th:href="@{'/user/viewprofile/picked/'+${contact.id}}" th:text="${contact.username}"></a></td>
-				<span th:if="${contact.messages.size()}>0">
-					<span th:if="${#strings.length(contact.messages[0].messageContent)}<=31">
-						<td th:text="${contact.messages[0].messageContent}"></td>
+				<td th:text="${contact.key.id}" id="boldText"></td>
+				<td id="tableLink"><a class="text-decoration-none"  th:href="@{'/user/viewprofile/picked/'+${contact.key.id}}" th:text="${contact.key.username}"></a></td>
+				<span th:if="${contact.value} != null">
+					<span th:if="${#strings.length(contact.value.messageContent)}<=31">
+						<td th:text="${contact.value.messageContent}"></td>
 					</span>
 					
-					<span th:if="${#strings.length(contact.messages[0].messageContent)}>=31">
-						<td th:text="${#strings.substring(contact.messages[0].messageContent,0,30)+'...'}"></td>
+					<span th:if="${#strings.length(contact.value.messageContent)}>=31">
+						<td th:text="${#strings.substring(contact.value.messageContent,0,30)+'...'}"></td>
 					</span>
 					
-					<td th:text="${#strings.substring(contact.messages[0].messageDate,0,16)}"></td>
+					<td th:text="${#strings.substring(contact.value.messageDate,0,16)}"></td>
 				</span>
-				<span th:if="${contact.messages.size()}<=0">
+				<span th:if="${contact.value} == null">
 					<td>---</td>
 					<td>---</td>
 				</span>
-				<td><a th:href="@{'/message/create/'+${contact.id}}" class="btn btn-primary">Message</td>
+				<td><a th:href="@{'/message/create/'+${contact.key.id}}" class="btn btn-primary">Message</td>
 			</tr>
 		</tbody>
 	</table><br>

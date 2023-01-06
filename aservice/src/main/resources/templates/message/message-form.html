@@ -53,7 +53,7 @@
 		
 		<div th:object="${message}" class="m-auto w-50 mt-2">
 			<input type="hidden" th:field="*{receiverId}">	
-			Message:<br><textarea class="form-control" rows="10" cols="100" th:field="*{messageContent}" placeholder="Hi, I have a question about/want to buy..." th:required="required"></textarea><br>
+			Message:<br><textarea class="form-control" rows="10" cols="100" th:field="*{messageContent}" placeholder="Hi, I have a question about/want to buy..."></textarea><br>
 			<button type="submit" th:formaction="@{/message/send}" class="btn btn-primary w-100">Send message</button>
 		</div>
 		

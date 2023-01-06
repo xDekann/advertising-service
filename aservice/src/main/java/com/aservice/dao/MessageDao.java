@@ -46,12 +46,12 @@ public class MessageDao {
 		
 		try {
 			queryText = 
-			 "select distinct u from User u left join fetch u.messages um where u.id in "
-			+"(select m.receiverId from Message m where m.receiverId!=:loggedUserId and m.user.id=:loggedUserId) "
-			+"OR u.id in "
-			+"(select m.user.id from Message m where m.user.id!=:loggedUserId and m.receiverId=:loggedUserId) "
-			+ "and u.id!=:loggedUserId "
-			+"order by um.messageDate DESC";
+				 "select distinct u from User u join fetch u.messages um where u.id in "
+				+"(select m.receiverId from Message m where m.receiverId!=:loggedUserId and m.user.id=:loggedUserId) "
+				+"OR u.id in "
+				+"(select m.user.id from Message m where m.user.id!=:loggedUserId and m.receiverId=:loggedUserId) "
+				+ "and u.id!=:loggedUserId "
+				+"order by um.messageDate DESC";
 			
 			query = entityManager.createQuery(queryText, User.class);
 			query.setParameter("loggedUserId", loggedUserId);
