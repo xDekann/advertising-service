@@ -12,13 +12,13 @@
 	<p class="display-1">User panel</p>
 
 	<div class="list-group align-items-center">
-		<a th:href="@{/user/modify/form}" class="list-group-item list-group-item-success gap-3 py-3 w-25 mt-3 border-top">Modify account</a>
-		<a th:href="@{/user/delete/form}" class="list-group-item list-group-item-danger gap-3 py-3 w-25 mt-2 border-top">Delete account</a>
-		<a th:href="@{/user/password/form}" class="list-group-item list-group-item-success gap-3 py-3 w-25 mt-2 border-top">Change your password</a>
+		<a th:href="@{/user/modify/form}" class="list-group-item list-group-item-success gap-3 py-3 w-25 mt-3 border-top border-success">Modify account</a>
+		<a th:href="@{/user/delete/form}" class="list-group-item list-group-item-danger gap-3 py-3 w-25 mt-2 border-top border-danger">Delete account</a>
+		<a th:href="@{/user/password/form}" class="list-group-item list-group-item-success gap-3 py-3 w-25 mt-2 border-top border-success">Change your password</a>
 		<a th:href="@{/message/list/contacts}" class="list-group-item list-group-item-action gap-3 py-3 w-25 mt-2 border-top">View your contacts</a>
 		<a th:href="@{'/offer/list/'+${false}+'/'+${true}}" sec:authorize="!hasRole('ROLE_ADMIN')" class="list-group-item list-group-item-action gap-3 py-3 w-25 mt-2 border-top">View your offers</a>
 		<a th:href="@{'/offer/list/'+${true}+'/'+${false}}" sec:authorize="!hasRole('ROLE_ADMIN')" class="list-group-item list-group-item-action gap-3 py-3 w-25 mt-2 border-top">View subscribed offers</a>
-		<a th:href="@{/main/}" class="list-group-item list-group-item-primary gap-3 py-3 w-25 mt-2 border-top">Back</a> 
+		<a th:href="@{/main/}" class="list-group-item list-group-item-primary gap-3 py-3 w-25 mt-2 border-top border-primary">Back</a>
 	</div>
 
 </body>

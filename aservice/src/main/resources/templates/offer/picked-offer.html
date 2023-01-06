@@ -68,8 +68,9 @@
 		<h3 th:text="'Price: '+${offer.price}+' USD'"></h3>
 		<hr>
 		<p th:text="${offer.description}"></p>
+		<hr>
 	</div>
-	<hr>
+
 	<div class="container p-2">
 		<div class="row">
 			<div class="col-md-auto" th:each="offerImage : ${offerImages}">
@@ -79,12 +80,12 @@
 		<hr>
 		<div class="row">
 			<div class="w-50 col-md-auto text-start">
-				<span class="w-25 btn btn-primary btn-sm" th:if="${backTwice}==true">
-					<a onclick="history.go(-2)">Back to the list</a>
-				</span>
-				<span class="w-25 btn btn-primary btn-sm" th:if="${backTwice}==false">
-					<a onclick="history.go(-1)">Back to the list</a>
-				</span>
+				<div onclick="history.go(-2)" class="w-25 btn btn-primary btn-sm" th:if="${backTwice}==true">
+					Back to the list
+				</div>
+				<div onclick="history.go(-1)" class="w-25 btn btn-primary btn-sm" th:if="${backTwice}==false">
+					Back to the list
+				</div>
 			</div>
 			<div class="w-50 col-md-auto text-end">
 				<span th:text="'Added: '+${date}+' by: '"></span><a th:href="@{'/user/viewprofile/picked/'+${offer.user.id}}" th:text="${offer.user.username}"></a><br>
