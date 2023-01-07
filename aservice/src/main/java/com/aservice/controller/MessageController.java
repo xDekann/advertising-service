@@ -149,8 +149,7 @@ public class MessageController {
 	}
 
 	@PostMapping("/send")
-	public String sendMessage(@ModelAttribute("message") Message message,
-							  RedirectAttributes redirectAttributes) {
+	public String sendMessage(@ModelAttribute("message") Message message) {
 		
 		User sender = userDao.getUserByUsername(UserUtil.getLoggedUserName());
 	
@@ -159,9 +158,7 @@ public class MessageController {
 		message.setUser(sender);
 		messageDao.addMessage(message);
 		
-		redirectAttributes.addFlashAttribute("info", "messageSuccess");
-		redirectAttributes.addFlashAttribute("givenName", UserUtil.getLoggedUserName());
-		return "redirect:/main/";
+		return "redirect:/message/list/contacts";
 	}
 	
 	@GetMapping("/list/contacts")
