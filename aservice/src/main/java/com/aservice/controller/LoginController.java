@@ -64,10 +64,11 @@ public class LoginController {
 	
 	@PostMapping("/registerForm/creation")
 	public String createUser(@Valid @ModelAttribute("user") User user, BindingResult bindUser,
-							 @Valid @ModelAttribute("userDetails") UserDetails userDetails, 
+							 @Valid @ModelAttribute("userDetails") UserDetails userDetails,
+							 BindingResult bindUserDetails,
 							 @RequestParam(required = false, name="auths") List<String> roles,
 							 SecurityContextHolderAwareRequestWrapper reqForRoles,
-							 BindingResult bindUserDetails, Model model) {
+							 Model model) {
 		
 		User currentLoggedUser = userDao.getUserByUsername(UserUtil.getLoggedUserName());
 		
@@ -80,7 +81,7 @@ public class LoginController {
 			model.addAttribute("userExists", "exists");
 			return "login-and-register/register";
 		}
-		
+				
 		user.setEnabled(true);
 		user.setPassword(passwdEncoder.encode(user.getPassword()));
 		user.setResetCode(passwdEncoder.encode(user.getResetCode()));
