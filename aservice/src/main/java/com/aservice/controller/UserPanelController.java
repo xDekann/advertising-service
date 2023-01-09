@@ -73,15 +73,16 @@ public class UserPanelController {
 	@PostMapping("/modify")
 	public String modifyAccount(@Valid @ModelAttribute("userDetails") UserDetails userD, BindingResult bindingUserDetails,
 								@RequestParam("passwdC") String passwordC, Model model) {
-		
-		User checkIfUserByEmailExists = userDao.getUserByEmail(userD.getEmail());
+			
+		User currentLoggedUser = userDao.getUserByUsername(UserUtil.getLoggedUserName());
 		
 		if(bindingUserDetails.hasErrors())
 			return "user-panel/modify-account";
 		
 		User userToUpdate = userDao.getUserByUsername(UserUtil.getLoggedUserName());
 		
-		if(checkIfUserByEmailExists!=null) {
+		if((userDao.getUserByEmail(userD.getEmail())!=null && 
+				userDao.getUserByEmail(userD.getEmail()).getId()!=currentLoggedUser.getId())){
 			model.addAttribute("credentials","existsEmail");
 			model.addAttribute("userDetails",userToUpdate.getUserDetails());
 			return "user-panel/modify-account";
