@@ -1,7 +1,7 @@
 package com.aservice;
 
-import static org.junit.Assert.assertEquals;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,7 +49,7 @@ class AserviceApplicationTests {
 	public void setUser() {
 		user=userDao.getUserByUsername(username);
 		System.out.println("user from db"+user);
-		assertEquals(user.getUsername(),"admin");
+		Assertions.assertEquals(user.getUsername(),"admin");
 	}
 	
 	@Test
