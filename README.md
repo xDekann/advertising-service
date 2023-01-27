@@ -19,6 +19,37 @@ After making a choice, set up mySQL connection and import the **.sql** file. MyS
 
 Once you are done, simply run the app **AserviceApplication.java** as an Java app and the app should be working! You can then use it via your browser by connecting to localhost.
 
-# Short app description <TO DO>
+## Quick app display
+After logging in to the account created via registration form or pre-created (prepopulated **.sql** import), main menu appears:
+
+![image](https://user-images.githubusercontent.com/106389146/215152858-58389826-23a3-41c5-9014-fe8aa17203ac.png)
+
+From here, user might go to his panel for account related options:
+
+<img src="https://user-images.githubusercontent.com/106389146/215153037-dadf3a0c-0957-4d0c-9214-6d4e31e684e6.png" width="465">
+
+Create his offer:
+
+![image](https://user-images.githubusercontent.com/106389146/215153113-d9b503f8-a25d-42c9-80c3-5fb6a4e7376d.png)
+
+Or view other user's offers:
+
+![image](https://user-images.githubusercontent.com/106389146/215153202-74a0584c-4bac-4f81-9072-e7de2ea8d81f.png)
+
+To communicate with other users, to get more of the offer details there is a chat function included. To begin chatting user has to pick offer and go to the other user's profile. Example of how to reach user's profile:
+
+![image](https://user-images.githubusercontent.com/106389146/215153854-23979c5c-92e3-4ffc-a254-f123f9b4a77f.png)
+
+After reaching their profile, there will be "Message user" button. After clicking it, chat endpoint will be reached:
+
+![image](https://user-images.githubusercontent.com/106389146/215154146-fbe2dd65-4d63-47d1-a069-e2ca3d7833f4.png)
+
+## Other information & known issues
+This app saves images (while adding offer) locally instead of using database to increase performance. Because of that, IDE needs to support auto content refreshing to make them visible.
+In Eclipse it is being set up by moving to: **Window->Preferences->Workspace->"Refresh using native hooks or polling"**. In IntellijIdea it is also required to set the correct refreshment settings in project run configuration.
+Images also might not be displayed depending on that, how the project is gonna be imported since absolute path is being used. Make sure that **"aservice"** is being top directory in project explorer
+
+![image](https://user-images.githubusercontent.com/106389146/215160780-f56a258d-2351-4405-9383-3b779608f457.png)
+
 
 
