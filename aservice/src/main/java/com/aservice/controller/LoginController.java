@@ -76,7 +76,7 @@ public class LoginController {
 			return "login-and-register/register";
 		}
 		
-		if(userDao.getUserByEmail(userDetails.getEmail())!=null 
+		if(userDao.getUserByEmail(userDetails.getEmail())!=null
 				|| userDao.getUserByUsername(user.getUsername())!=null) {
 			model.addAttribute("userExists", "exists");
 			return "login-and-register/register";

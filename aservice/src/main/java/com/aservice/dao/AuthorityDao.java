@@ -18,7 +18,6 @@ import jakarta.transaction.Transactional;
 public class AuthorityDao {
 	
 	private EntityManager entityManager;
-	
 	private Logger logger = LoggerFactory.getLogger(AuthorityDao.class);
 
 	@Autowired

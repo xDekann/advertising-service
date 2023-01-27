@@ -55,5 +55,4 @@ public class SecurityConfig {
 				.exceptionHandling(configurer->configurer.accessDeniedPage("/login/access-denied"))
 				.build();
 	}
-	
 }

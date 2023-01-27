@@ -21,7 +21,6 @@ import jakarta.transaction.Transactional;
 public class UserDao {
 
 	private EntityManager entityManager;
-	
 	private Logger logger = LoggerFactory.getLogger(UserDao.class);
 	
 	@Autowired

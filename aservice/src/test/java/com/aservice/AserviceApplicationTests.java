@@ -17,15 +17,6 @@ import com.aservice.entity.User;
 
 import jakarta.persistence.EntityManager;
 
-/*
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@TestPropertySource(properties = {
-		"spring.datasource.url=jdbc:mysql://localhost:3306/serwis_ogloszeniowy?useSSL=false&serverTimezone=UTC"
-})
-@TestInstance(Lifecycle.PER_CLASS)
-*/
-//@SpringBootTest
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @TestInstance(Lifecycle.PER_CLASS)

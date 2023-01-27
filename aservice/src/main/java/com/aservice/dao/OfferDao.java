@@ -22,10 +22,13 @@ import jakarta.transaction.Transactional;
 @Repository
 public class OfferDao {
 	
-	@Autowired
 	private EntityManager entityManager;
-	
 	private Logger logger = LoggerFactory.getLogger(OfferDao.class);
+	
+	@Autowired
+	public OfferDao(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
 
 	@Transactional
 	public void addOffer(Offer offer) {

@@ -21,10 +21,13 @@ import jakarta.transaction.Transactional;
 @Repository
 public class MessageDao {
 
-	@Autowired
 	private EntityManager entityManager;
-	
 	private Logger logger = LoggerFactory.getLogger(MessageDao.class);
+	
+	@Autowired
+	public MessageDao(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
 	
 	@Transactional
 	public void addMessage(Message message) {

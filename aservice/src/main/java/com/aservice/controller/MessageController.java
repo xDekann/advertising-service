@@ -1,13 +1,11 @@
 package com.aservice.controller;
 
-import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,7 +22,6 @@ import com.aservice.dao.MessageDao;
 import com.aservice.dao.UserDao;
 import com.aservice.entity.Block;
 import com.aservice.entity.Message;
-import com.aservice.entity.Offer;
 import com.aservice.entity.User;
 import com.aservice.util.SharedUtil;
 import com.aservice.util.UserUtil;
